@@ -1,0 +1,649 @@
+{
+	"info": {
+		"_postman_id": "0e2fe108-d242-4d74-b40f-03cbc020d990",
+		"name": "VSDC API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38103428",
+		"_collection_link": "https://vsdc-pastel-integration.postman.co/workspace/VSDC---Pastel-Integration-Works~ce5411a8-f940-4cb1-8606-039d925a72ec/collection/38103428-0e2fe108-d242-4d74-b40f-03cbc020d990?action=share&source=collection_link&creator=38103428"
+	},
+	"item": [
+		{
+			"name": "Test Server Running",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{current_url}}/",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Device Initialization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"dvcSrlNo\": \"CHC-EVO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/initializer/selectInitInfo",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"initializer",
+						"selectInitInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Units of Measure",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/code/selectCodes",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"code",
+						"selectCodes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Classification Codes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/itemClass/selectItemsClass",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"itemClass",
+						"selectItemsClass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notices",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/notices/selectNotices",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"notices",
+						"selectNotices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Branches",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/branches/selectBranches",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"branches",
+						"selectBranches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/items/selectItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"items",
+						"selectItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\",\r\n    \"custmTpin\": \"8888888888\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/customers/selectCustomer",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"customers",
+						"selectCustomer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Stock Master",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"regrId\": \"Admin\",\r\n    \"regrNm\": \"Admin\",\r\n    \"modrNm\": \"Admin\",\r\n    \"modrId\": \"Admin\",\r\n    \"stockItemList\": [\r\n        {\r\n            \"itemCd\": \"P10007\",\r\n            \"rsdQty\": 34\r\n        },\r\n        {\r\n            \"itemCd\": \"P10005\",\r\n            \"rsdQty\": 34\r\n        },\r\n        {\"itemCd\":\"P10006\",\r\n        \"rsdQty\":34 }]\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/stockMaster/saveStockMaster",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"stockMaster",
+						"saveStockMaster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Purchases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/trnsPurchase/selectTrnsPurchaseSales",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"trnsPurchase",
+						"selectTrnsPurchaseSales"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Stock Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/stock/selectStockItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"stock",
+						"selectStockItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Stock Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"sarNo\": 1,\r\n    \"orgSarNo\": 0,\r\n    \"regTyCd\": \"M\",\r\n    \"custTpin\": null,\r\n    \"custNm\": null,\r\n    \"custBhfId\": null,\r\n    \"sarTyCd\": \"02\",\r\n    \"ocrnDt\": \"20240509\",\r\n    \"totItemCnt\": 1,\r\n    \"totTaxblAmt\": 86.2069,\r\n    \"totTaxAmt\": 13.7931,\r\n    \"totAmt\": 100,\r\n    \"remark\": null,\r\n    \"regrId\": \"Admin\",\r\n    \"regrNm\": \"Admin\",\r\n    \"modrNm\": \"Admin\",\r\n    \"modrId\": \"Admin\",\r\n    \"itemList\": [\r\n        {\r\n            \"itemSeq\": 1,\r\n            \"itemCd\": \"20044\",\r\n            \"itemClsCd\": \"50102517\",\r\n            \"itemNm\": \"Soupu dedede\",\r\n            \"pkgUnitCd\": \"BA\",\r\n            \"qtyUnitCd\": \"BE\",\r\n            \"qty\": 1,\r\n            \"prc\": 100,\r\n            \"splyAmt\": 100,\r\n            \"taxblAmt\": 86.21,\r\n            \"vatCatCd\": \"A\",\r\n            \"taxAmt\": 13.79,\r\n            \"totAmt\": 100\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/stock/saveStockItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"stock",
+						"saveStockItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Purchases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"invcNo\": 1,\r\n    \"orgInvcNo\": 0,\r\n    \"spplrTpin\": \"9999999990\",\r\n    \"spplrBhfId\": \"000\",\r\n    \"spplrNm\": \"Supplier Name1\",\r\n    \"spplrInvcNo\": \"INV0001\",\r\n    \"regTyCd\": \"M\",\r\n    \"pchsTyCd\": \"N\",\r\n    \"rcptTyCd\": \"P\",\r\n    \"pmtTyCd\": \"01\",\r\n    \"pchsSttsCd\": \"02\",\r\n    \"cfmDt\": \"20240509210300\",\r\n    \"pchsDt\": \"20240509\",\r\n    \"cnclReqDt\": \"\",\r\n    \"cnclDt\": \"\",\r\n    \"totItemCnt\": 1,\r\n    \"totTaxblAmt\": 86.2069,\r\n    \"totTaxAmt\": 13.7931,\r\n    \"totAmt\": 100.00,\r\n    \"remark\": \"remarks\",\r\n    \"regrNm\": \"ADMIN\",\r\n    \"regrId\": \"ADMIN\",\r\n    \"modrNm\": \"ADMIN\",\r\n    \"modrId\": \"ADMIN\",\r\n    \"itemList\": [\r\n        {\r\n            \"itemSeq\": 1,\r\n            \"itemCd\": \"ZM2BGKG0000001\",\r\n            \"itemClsCd\": \"50102517\",\r\n            \"itemNm\": \"Item Name1\",\r\n            \"bcd\": null,\r\n            \"pkgUnitCd\": \"BG\",\r\n            \"pkg\": 0,\r\n            \"qtyUnitCd\": \"KG\",\r\n            \"qty\": 1,\r\n            \"prc\": 100,\r\n            \"splyAmt\": 100,\r\n            \"dcRt\": 0,\r\n            \"dcAmt\": 0,\r\n            \"taxTyCd\": \"A\",\r\n            \"iplCatCd\": null,\r\n            \"tlCatCd\": null,\r\n            \"taxblAmt\": 86.21,\r\n            \"vatCatCd\": \"A\",\r\n            \"iplTaxblAmt\": null,\r\n            \"tlTaxblAmt\": null,\r\n            \"taxAmt\": 13.79,\r\n            \"totAmt\": 100.00\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/trnsPurchase/savePurchase",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"trnsPurchase",
+						"savePurchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Select Invoice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\",\r\n    \"invcSdcId\": \"SDC0060000356\", \r\n    \"cisInvcNo\": \"CIS001-7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/trnsSales/selectInvoice",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"trnsSales",
+						"selectInvoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Sales",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"orgInvcNo\": 0,\r\n    \"cisInvcNo\": \"CIS001-1372\",\r\n    \"custTpin\": \"8888888888\",\r\n    \"custNm\": \"Smart Customer\",\r\n    \"salesTyCd\": \"N\",\r\n    \"rcptTyCd\": \"S\",\r\n    \"pmtTyCd\": \"01\",\r\n    \"salesSttsCd\": \"02\",\r\n    \"cfmDt\": \"20240508102010\",\r\n    \"salesDt\": \"20240508\",\r\n    \"stockRlsDt\": null,\r\n    \"cnclReqDt\": null,\r\n    \"cnclDt\": null,\r\n    \"rfdDt\": null,\r\n    \"rfdRsnCd\": null,\r\n    \"totItemCnt\": 2,\r\n    \"taxblAmtA\": 86.2069,\r\n    \"taxblAmtB\": 0.0,\r\n    \"taxblAmtC1\": 0.0,\r\n    \"taxblAmtC2\": 0.0,\r\n    \"taxblAmtC3\": 0.0,\r\n    \"taxblAmtD\": 0.0,\r\n    \"taxblAmtRvat\": 0.0,\r\n    \"taxblAmtE\": 0.0,\r\n    \"taxblAmtF\": 0.0,\r\n    \"taxblAmtIpl1\": 0.0,\r\n    \"taxblAmtIpl2\": 100,\r\n    \"taxblAmtTl\": 0.0,\r\n    \"taxblAmtEcm\": 0,\r\n    \"taxblAmtExeeg\": 0.0,\r\n    \"taxblAmtTot\": 0.0,\r\n    \"taxRtA\": 16,\r\n    \"taxRtB\": 16,\r\n    \"taxRtC1\": 0,\r\n    \"taxRtC2\": 0,\r\n    \"taxRtC3\": 0,\r\n    \"taxRtD\": 0,\r\n    \"tlAmt\": 0.0,\r\n    \"taxRtRvat\": 16,\r\n    \"taxRtE\": 0,\r\n    \"taxRtF\": 10,\r\n    \"taxRtIpl1\": 5,\r\n    \"taxRtIpl2\": 0,\r\n    \"taxRtTl\": 1.5,\r\n    \"taxRtEcm\": 5,\r\n    \"taxRtExeeg\": 3,\r\n    \"taxRtTot\": 0,\r\n    \"taxAmtA\": 13.7931,\r\n    \"taxAmtB\": 0.0,\r\n    \"taxAmtC1\": 0.0,\r\n    \"taxAmtC2\": 0.0,\r\n    \"taxAmtC3\": 0.0,\r\n    \"taxAmtD\": 0.0,\r\n    \"taxAmtRvat\": 0.0,\r\n    \"taxAmtE\": 0.0,\r\n    \"taxAmtF\": 0.0,\r\n    \"taxAmtIpl1\": 0.0,\r\n    \"taxAmtIpl2\": 0.0,\r\n    \"taxAmtTl\": 0.0,\r\n    \"taxAmtEcm\": 0.0,\r\n    \"taxAmtExeeg\": 0.0,\r\n    \"taxAmtTot\": 0.0,\r\n    \"totTaxblAmt\": 186.2069,\r\n    \"totTaxAmt\": 13.7931,\r\n    \"totAmt\": 200,\r\n    \"prchrAcptcYn\": \"N\",\r\n    \"remark\": \"\",\r\n    \"regrId\": \"admin\",\r\n    \"regrNm\": \"admin\",\r\n    \"modrId\": \"admin\",\r\n    \"modrNm\": \"admin\",\r\n    \"saleCtyCd\": \"1\",\r\n    \"lpoNumber\": null,\r\n    \"currencyTyCd\": \"ZMW\",\r\n    \"exchangeRt\": \"1\",\r\n    \"destnCountryCd\": \"\",\r\n    \"dbtRsnCd\": \"\",\r\n    \"invcAdjustReason\": \"\",\r\n    \"itemList\": [\r\n        {\r\n            \"itemSeq\": 1,\r\n            \"itemCd\": \"20056\",\r\n            \"itemClsCd\": \"50102518\",\r\n            \"itemNm\": \"Bread\",\r\n            \"bcd\": \"\",\r\n            \"pkgUnitCd\": \"BA\",\r\n            \"pkg\": 0.0,\r\n            \"qtyUnitCd\": \"BE\",\r\n            \"qty\": 1.0,\r\n            \"prc\": 100,\r\n            \"splyAmt\": 100,\r\n            \"dcRt\": 0.0,\r\n            \"dcAmt\": 0.0,\r\n            \"isrccCd\": \"\",\r\n            \"isrccNm\": \"\",\r\n            \"isrcRt\": 0.0,\r\n            \"isrcAmt\": 0.0,\r\n            \"vatCatCd\": \"A\",\r\n            \"exciseTxCatCd\": null,\r\n            \"tlCatCd\": null,\r\n            \"iplCatCd\": null,\r\n            \"vatTaxblAmt\": 86.2069,\r\n            \"vatAmt\": 13.7931,\r\n            \"exciseTaxblAmt\": 0,\r\n            \"tlTaxblAmt\": 0.0,\r\n            \"iplTaxblAmt\": 0.0,\r\n            \"iplAmt\": 0.0,\r\n            \"tlAmt\": 0.0,\r\n            \"exciseTxAmt\": 0,\r\n            \"totAmt\": 100\r\n        },\r\n        {\r\n            \"itemSeq\": 2,\r\n            \"itemCd\": \"20056\",\r\n            \"itemClsCd\": \"50102518\",\r\n            \"itemNm\": \"Reinsurance\",\r\n            \"bcd\": \"\",\r\n            \"pkgUnitCd\": \"BA\",\r\n            \"pkg\": 0.0,\r\n            \"qtyUnitCd\": \"BE\",\r\n            \"qty\": 1.0,\r\n            \"prc\": 100,\r\n            \"splyAmt\": 100,\r\n            \"dcRt\": 0.0,\r\n            \"dcAmt\": 0.0,\r\n            \"isrccCd\": \"\",\r\n            \"isrccNm\": \"\",\r\n            \"isrcRt\": 0.0,\r\n            \"isrcAmt\": 0.0,\r\n            \"vatCatCd\": null,\r\n            \"exciseTxCatCd\": null,\r\n            \"vatTaxblAmt\": 0.0,\r\n            \"exciseTaxblAmt\": 0,\r\n            \"tlTaxblAmt\": 0.0,\r\n            \"tlCatCd\": null,\r\n            \"tlAmt\": 0.0,\r\n            \"iplCatCd\": \"IPL2\",\r\n            \"iplAmt\": 0.0,\r\n            \"iplTaxblAmt\": 100,\r\n            \"vatAmt\": 0.0,\r\n            \"exciseTxAmt\": 0,\r\n            \"totAmt\": 100\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/trnsSales/saveSales",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"trnsSales",
+						"saveSales"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Import Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"taskCd\": \"4561614\",\r\n    \"dclDe\": \"20240426\",\r\n    \"importItemList\": [\r\n        {\r\n            \"itemSeq\": 2,\r\n            \"hsCd\": \"72149900000\",\r\n            \"itemClsCd\": \"5022110801\",\r\n            \"itemCd\": \"RW1NTXU0000006\",\r\n            \"imptItemSttsCd\": \"3\",\r\n            \"remark\": \"remark\",\r\n            \"modrNm\": \"Admin\",\r\n            \"modrId\": \"Admin\"\r\n        },\r\n        {\r\n            \"itemSeq\": 3,\r\n            \"hsCd\": \"04051000000\",\r\n            \"itemClsCd\": \"5022110802\",\r\n            \"itemCd\": \"RW1NTXU0000007\",\r\n            \"imptItemSttsCd\": \"4\",\r\n            \"remark\": \"another remark\",\r\n            \"modrNm\": \"Admin2\",\r\n            \"modrId\": \"Admin2\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/imports/updateImportItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"imports",
+						"updateImportItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Imports",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\",\r\n    \"dclRefNum\":\"CX1100096839\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/imports/selectImportItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"imports",
+						"selectImportItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/items/selectItems",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"items",
+						"selectItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Item Composition",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"itemCd\": \"ZM2NTBA0000051\",\r\n    \"cpstItemCd\": \"ZM2NTBA0000051\",\r\n    \"cpstQty\": 3,\r\n    \"regrId\": \"ADMIN\",\r\n    \"regrNm\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/items/saveItemComposition",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"items",
+						"saveItemComposition"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"itemCd\": \"P200005\",\r\n    \"itemClsCd\": \"46181901\",\r\n    \"itemTyCd\": \"2\",\r\n    \"itemNm\": \"Corn Flakes\",\r\n    \"itemStdNm\": \"Corn Flakes\",\r\n    \"orgnNatCd\": \"SA\",\r\n    \"pkgUnitCd\": \"BOX\",\r\n    \"qtyUnitCd\": \"U\",\r\n    \"vatCatCd\": \"A\",\r\n    \"iplCatCd\": \"IPL1\",\r\n    \"tlCatCd\": null,\r\n    \"exciseTxCatCd\": null,\r\n    \"btchNo\": null,\r\n    \"bcd\": null,\r\n    \"dftPrc\": 15,\r\n    \"addInfo\": null,\r\n    \"sftyQty\": 5,\r\n    \"isrcAplcbYn\": \"N\",\r\n    \"useYn\": \"Y\",\r\n    \"regrNm\": \"ADMIN\",\r\n    \"regrId\": \"ADMIN\",\r\n    \"modrNm\": \"ADMIN\",\r\n    \"modrId\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/items/updateItem",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"items",
+						"updateItem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"itemCd\": \"ZM2NTBA0000012\",\r\n    \"itemClsCd\": \"46181901\",\r\n    \"itemTyCd\": \"2\",\r\n    \"itemNm\": \"Corn Flakes\",\r\n    \"itemStdNm\": \"Corn Flakes\",\r\n    \"orgnNatCd\": \"SA\",\r\n    \"pkgUnitCd\": \"BOX\",\r\n    \"qtyUnitCd\": \"U\",\r\n    \"vatCatCd\": \"A\",\r\n    \"iplCatCd\": \"IPL1\",\r\n    \"tlCatCd\": null,\r\n    \"exciseTxCatCd\": null,\r\n    \"btchNo\": null,\r\n    \"bcd\": null,\r\n    \"dftPrc\": 15,\r\n    \"addInfo\": null,\r\n    \"sftyQty\": 5,\r\n    \"isrcAplcbYn\": \"N\",\r\n    \"useYn\": \"Y\",\r\n    \"regrNm\": \"ADMIN\",\r\n    \"regrId\": \"ADMIN\",\r\n    \"modrNm\": \"ADMIN\",\r\n    \"modrId\": \"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/items/saveItem",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"items",
+						"saveItem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Branch Customers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"lastReqDt\": \"20240910000000\",\r\n    \"custNo\": \"097\",\r\n    \"custTpin\": \"88888888\",\r\n    \"custNm\": \"ZRA\",\r\n    \"adrs\": null,\r\n    \"email\": null,\r\n    \"faxNo\": null,\r\n    \"useYn\": \"Y\",\r\n    \"remark\": null,\r\n    \"regrNm\": \"Admin\",\r\n    \"regrId\": \"Admin\",\r\n    \"modrNm\": \"Admin\",\r\n    \"modrId\": \"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/branches/saveBrancheCustomers",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"branches",
+						"saveBrancheCustomers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Branch User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"1002546945\",\r\n    \"bhfId\": \"000\",\r\n    \"userId\":\"SMART USER\",\r\n    \"userNm\":\"Val Siddle\",\r\n    \"adrs\":\"FARM NO SUB ,OFF GREAT NORTH,Lusaka\",\r\n    \"useYn\":\"Y\",\r\n    \"regrNm\":\"Admin\",\r\n    \"regrId\":\"Admin\",\r\n    \"modrNm\":\"Admin\",\r\n    \"modrId\":\"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/branches/saveBrancheUser",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"branches",
+						"saveBrancheUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Device Initialization Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tpin\": \"9999999999\",\r\n    \"bhfId\": \"000\",\r\n    \"dvcSrlNo\": \"4CE150BX5D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{current_url}}/initializer/selectInitInfo",
+					"host": [
+						"{{current_url}}"
+					],
+					"path": [
+						"initializer",
+						"selectInitInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

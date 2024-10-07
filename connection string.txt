@@ -1,0 +1,3 @@
+
+
+dotnet ef dbcontext scaffold "Server=localhost; Database=EVO-CHEM; User Id=sa; Password=Hackproof123; Trust Server Certificate=true;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --context AppDBContext --no-build --data-annotations --force
