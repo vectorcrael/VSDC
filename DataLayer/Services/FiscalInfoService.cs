@@ -65,7 +65,9 @@ namespace DataLayer.Services
         // Methods for PurchaseInfo
         public async Task<List<PurchaseInfo>> GetAllPurchasesAsync()
         {
-            return await _context.PurchaseInfos.ToListAsync();
+            return await _context.PurchaseInfos
+                .FromSqlRaw("SELECT * FROM PurchaseInfo")
+                .ToListAsync();
         }
 
         public async Task UpdateFiscalDetailsAsync(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
