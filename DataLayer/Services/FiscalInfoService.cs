@@ -40,7 +40,9 @@ namespace DataLayer.Services
 
             foreach (var invoice in invoices)
             {
-                invoice.Items = await GetInvoiceItemsAsync(invoice.Id);
+                var dbInvoices = await GetInvoiceItemsAsync(invoice.Id);
+                if (dbInvoices.Count > 0)
+                    invoice.Items = dbInvoices.ToList();
             }
 
             return invoices;
@@ -80,6 +82,6 @@ namespace DataLayer.Services
             };
 
             await _context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
-        } 
+        }
     }
 }

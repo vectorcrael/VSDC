@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Models2
 {
+    [Keyless]
     public class ZraInvoiceItem
     {
-        [Key]
         public required string RefId { get; set; } // Invoice ID
         public required int ItemSequenceNumber { get; set; } // Sequence number of the item
         public string? ItemDesc { get; set; } // Description of the item

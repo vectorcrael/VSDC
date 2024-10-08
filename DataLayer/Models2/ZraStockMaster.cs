@@ -1,6 +1,9 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+
 namespace DataLayer.Models2
 {
+    [Keyless]
     public class ZraStockMaster
     {
         public required string ItemCode { get; set; }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Models2
 {
+    [Keyless]
     public class ZraInvoice
     {
-        [Key]
         public required string Id { get; set; }
         public required string InvoiceNumber { get; set; }
         public int? OriginalInvoiceNumber { get; set; }

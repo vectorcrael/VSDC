@@ -1497,6 +1497,7 @@ public partial class AppDBContext : DbContext
     {
         modelBuilder.UseCollation("Latin1_General_CI_AS");
 
+        modelBuilder.Entity<ZraInvoiceItem>().HasKey(i => new { i.RefId, i.ItemSequenceNumber });
 
         modelBuilder.Entity<FiscalInfo>(entity =>
         {
