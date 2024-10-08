@@ -37,7 +37,8 @@ SELECT TOP 5
     CASE
 		WHEN Inv.DocType = 1 THEN '06'
 		ELSE NULL
-	END AS RefundReasonCode
+	END AS RefundReasonCode,
+	inv.*
 FROM [InvNum] as Inv
 WITH (NOLOCK)
 left JOIN Currency Curr on Curr.CurrencyLink = Inv.ForeignCurrencyID

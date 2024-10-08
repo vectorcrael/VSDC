@@ -43,6 +43,7 @@ SELECT
 	--CAST(fQuantityLineTotIncl AS DECIMAL(20, 4))  AS TotalAmount,
 	1 as isTaxInclusive,
 	COALESCE(CAST(fRecommendedRetailPrice AS DECIMAL(20,4)), 0.0) AS RRP
+	,It.*
 from [_btblInvoiceLines] It
 WITH (NOLOCK)
 LEFT JOIN _bvStockFull st ON st.StockLink = It.iStockCodeID
