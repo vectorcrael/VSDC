@@ -13,7 +13,7 @@ namespace VSDCAPI
 
     public class TimerService : IHostedService, IDisposable
     {
-        private readonly int timeOut = 30000;
+        private readonly int timeOut = 60000;
         private readonly ILogger<TimerService> _logger;
         private System.Timers.Timer _timer;
         private readonly IFiscalInfoService _fiscalInfoService;
