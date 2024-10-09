@@ -26,6 +26,9 @@ namespace DataLayer.Models2
         public string? RefundReasonCode { get; set; }
 
         public List<ZraInvoiceItem>? Items { get; set; } = new List<ZraInvoiceItem>();
+        public double invtottax { get; set; }
+        public double invtotincl { get; set; }
+        public double invtotexcl { get; set; }
     }
 }
 
