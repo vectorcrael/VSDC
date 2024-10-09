@@ -20,7 +20,7 @@ namespace VSDCAPI
         Task<Stream> SaveStockItem(SaveStockItemRequest request);
         Task<Stream> SavePurchases(SavePurchasesRequest request);
         Task<Stream> SelectInvoice(SelectInvoiceRequest request);
-        Task<Stream> SaveSales(SaveSalesRequest request);
+        Task<ZraResponse> SaveSales(SaveSalesRequest request);
         Task<Stream> UpdateImportItems(UpdateImportItemsRequest request);
         Task<Stream> GetImports(GetImportsRequest request);
         Task<Stream> GetItems2(CustomersRequest request);
