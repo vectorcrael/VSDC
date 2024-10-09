@@ -88,7 +88,7 @@ namespace VSDCAPI
         public string dbtRsnCd { get; set; }
         public string invcAdjustReason { get; set; }
 
-        public List<ItemList3> ItemList { get; set; }
+        public List<ItemList3> itemList { get; set; }
     }
 
     public class ItemList3
