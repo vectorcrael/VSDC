@@ -8,15 +8,15 @@ namespace DataLayer.Models2
     [Keyless]
     public class ZraInvoiceItem
     {
-        public required string RefId { get; set; } // Invoice ID
-        public required int ItemSequenceNumber { get; set; } // Sequence number of the item
+        public int RefId { get; set; } // Invoice ID
+        public int ItemSequenceNumber { get; set; } // Sequence number of the item
         public string? ItemDesc { get; set; } // Description of the item
-        public int? ItemClassificationCode { get; set; } // Classification code
+        public string? ItemClassificationCode { get; set; } // Classification code
         public string? ItemCode { get; set; } // Item code
         public decimal Quantity { get; set; } // Quantity of the item
         public string? TaxLabel { get; set; } // Tax label associated with the item
-        public int? PackagingUnitCode { get; set; } // Packaging unit code
-        public int? QuantityUnitCode { get; set; } // Quantity unit code
+        public string? PackagingUnitCode { get; set; } // Packaging unit code
+        public string? QuantityUnitCode { get; set; } // Quantity unit code
         public decimal DiscountAmount { get; set; } // Discount amount
         public decimal UnitPrice { get; set; } // Price per unit
         public decimal TotalAmount { get; set; } // Total amount for the item

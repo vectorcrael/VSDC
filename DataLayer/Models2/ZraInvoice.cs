@@ -10,7 +10,7 @@ namespace DataLayer.Models2
         public required string Id { get; set; }
         public required string InvoiceNumber { get; set; }
         public int? OriginalInvoiceNumber { get; set; }
-        public required string DestinationCountryCode { get; set; }
+        public string? DestinationCountryCode { get; set; }
         public string? LocalPurchaseOrder { get; set; }
         public string? BranchId { get; set; }
         public string? PaymentTypeCode { get; set; }

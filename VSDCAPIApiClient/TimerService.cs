@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DataLayer.Services;
 using VSDCAPIApiClient;
+using Newtonsoft.Json;
 
 namespace VSDCAPI
 {
@@ -55,9 +56,10 @@ namespace VSDCAPI
             {
                 var saveInvoices = DataMapper.ConvertInvoice(invoice);
                 var response = await _client.SaveSales(saveInvoices);
+                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
 
                 //if response is OK THEN save items
-                foreach (var item in saveInvoices.ItemList)
+                foreach (var item in saveInvoices.itemList)
                 {
                     var updateRequest = DataMapper.MapToUpdateItemRequest(item);
                     var itemResponse = await _client.SaveItems(updateRequest);
@@ -70,9 +72,9 @@ namespace VSDCAPI
 
         private async Task testServerRunning()
         {
-            _logger.LogInformation("Running the Test call! This is the VSDCAPI");
+            _logger.LogInformation("Running the Test Server call!");
             var testResp = await _client.TestServerRunning();
-            _logger.LogInformation(testResp.ToString());
+            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
         }
 
         private async Task initializeDeviceAsync()
@@ -85,7 +87,7 @@ namespace VSDCAPI
             };
 
             var zraResponse = await _client.DeviceInitialization(request);
-            _logger.LogInformation(zraResponse!.ToString());
+            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(zraResponse));
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

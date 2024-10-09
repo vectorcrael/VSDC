@@ -231,12 +231,15 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> SaveSales(SaveSalesRequest request)
+        public async Task<ZraResponse?> SaveSales(SaveSalesRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsSales/saveSales", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+                // Deserialize the content
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {

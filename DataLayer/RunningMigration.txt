@@ -6,6 +6,7 @@ sudo docker exec -it sql mkdir /var/opt/mssql/backup
 
 - copy the file from the local machine into docker
 sudo docker cp CHC_Chem_Sandboxbak.bak sql:/var/opt/mssql/backup
+sudo docker cp eve-back.bak sql:/var/opt/mssql/backup
 
 - this is the location of the file in docker
 /var/opt/mssql/backup/CHC_Chem_Sandboxbak.bak

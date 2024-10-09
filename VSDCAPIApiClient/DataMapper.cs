@@ -100,16 +100,16 @@ namespace VSDCAPIApiClient
                 //InvcAdjustReason =zraInvoice
             };
 
-            invoice.ItemList = new List<ItemList3>();
+            invoice.itemList = new List<ItemList3>();
 
             foreach (var item in zraInvoice.Items)
             {
-                invoice.ItemList.Add(new ItemList3
+                invoice.itemList.Add(new ItemList3
                 {
                     itemSeq = item.ItemSequenceNumber,
                     itemCd = item.ItemCode,
                     itemClsCd = item.ItemClassificationCode!.ToString(),
-                    itemNm = item.RefId,
+                    itemNm = item.RefId.ToString(),
                     //Bcd = item. ,
                     pkgUnitCd = item.PackagingUnitCode!.ToString(),
                     pkg = 0 ,
