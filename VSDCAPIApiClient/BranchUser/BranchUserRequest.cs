@@ -7,15 +7,15 @@ namespace VSDCAPI
 {
     public class BranchUserRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public string UserId { get; set; }
-        public string UserNm { get; set; }
-        public string Adrs { get; set; }
-        public string UseYn { get; set; }
-        public string RegrNm { get; set; }
-        public string RegrId { get; set; }
-        public string ModrNm { get; set; }
-        public string ModrId { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public string userId { get; set; }
+        public string userNm { get; set; }
+        public string adrs { get; set; }
+        public string useYn { get; set; }
+        public string regrNm { get; set; }
+        public string regrId { get; set; }
+        public string modrNm { get; set; }
+        public string modrId { get; set; }
     }
 }

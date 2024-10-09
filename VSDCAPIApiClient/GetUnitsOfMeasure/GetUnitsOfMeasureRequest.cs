@@ -7,8 +7,8 @@ namespace VSDCAPI
 {
     public class GetUnitsOfMeasureRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public string LastReqDt { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public string lastReqDt { get; set; }
     }
 }

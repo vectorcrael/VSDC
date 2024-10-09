@@ -7,30 +7,30 @@ namespace VSDCAPI
 {
     public class UpdateItemRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public string ItemCd { get; set; }
-        public string ItemClsCd { get; set; }
-        public string ItemTyCd { get; set; }
-        public string ItemNm { get; set; }
-        public string ItemStdNm { get; set; }
-        public string OrgnNatCd { get; set; }
-        public string PkgUnitCd { get; set; }
-        public string QtyUnitCd { get; set; }
-        public string VatCatCd { get; set; }
-        public string IplCatCd { get; set; }
-        public object TlCatCd { get; set; }
-        public object ExciseTxCatCd { get; set; }
-        public object BtchNo { get; set; }
-        public object Bcd { get; set; }
-        public int DftPrc { get; set; }
-        public object AddInfo { get; set; }
-        public int SftyQty { get; set; }
-        public string IsrcAplcbYn { get; set; }
-        public string UseYn { get; set; }
-        public string RegrNm { get; set; }
-        public string RegrId { get; set; }
-        public string ModrNm { get; set; }
-        public string ModrId { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public string itemCd { get; set; }
+        public string itemClsCd { get; set; }
+        public string itemTyCd { get; set; }
+        public string itemNm { get; set; }
+        public string itemStdNm { get; set; }
+        public string orgnNatCd { get; set; }
+        public string pkgUnitCd { get; set; }
+        public string qtyUnitCd { get; set; }
+        public string vatCatCd { get; set; }
+        public string iplCatCd { get; set; }
+        public object tlCatCd { get; set; }
+        public object exciseTxCatCd { get; set; }
+        public object btchNo { get; set; }
+        public object bcd { get; set; }
+        public int dftPrc { get; set; }
+        public object addInfo { get; set; }
+        public int sftyQty { get; set; }
+        public string isrcAplcbYn { get; set; }
+        public string useYn { get; set; }
+        public string regrNm { get; set; }
+        public string regrId { get; set; }
+        public string modrNm { get; set; }
+        public string modrId { get; set; }
     }
 }
