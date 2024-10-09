@@ -40,26 +40,13 @@ namespace VSDCAPI
 
         private async void OnTimedEventAsync(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Hello, World! This is the VSDCAPI");
-
             // Logic to execute on timer event
             _logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
             // Add your code here to do something every minute
 
-            //test all the things here
-            Console.WriteLine("Running the Test call! This is the VSDCAPI");
-            var testResp = await _client.TestServerRunning();
-            _logger.LogInformation(testResp.ToString());
+            //await testServerRunning();
             
-            var request = new DeviceInitializationRequest
-            {
-                Tpin = DataMapper.DeviceDetails.Tpin,
-                BhfId = DataMapper.DeviceDetails.BhfId,
-                DvcSrlNo = DataMapper.DeviceDetails.DvcSrlNo
-            };
-
-            var zraResponse = await _client.DeviceInitialization(request);
-            _logger.LogInformation(zraResponse!.ToString());
+            //await initializeDeviceAsync();
 
             //steps to fiscalise invoices
             var invoices = await _fiscalInfoService.GetZraInvoicesAsync();
@@ -79,6 +66,26 @@ namespace VSDCAPI
 
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task testServerRunning()
+        {
+            _logger.LogInformation("Running the Test call! This is the VSDCAPI");
+            var testResp = await _client.TestServerRunning();
+            _logger.LogInformation(testResp.ToString());
+        }
+
+        private async Task initializeDeviceAsync()
+        {
+            var request = new DeviceInitializationRequest
+            {
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                dvcSrlNo = DataMapper.DeviceDetails.DvcSrlNo
+            };
+
+            var zraResponse = await _client.DeviceInitialization(request);
+            _logger.LogInformation(zraResponse!.ToString());
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

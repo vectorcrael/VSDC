@@ -7,8 +7,8 @@ namespace VSDCAPI
 {
     public class DeviceInitializationRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public string DvcSrlNo { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public string dvcSrlNo { get; set; }
     }
 }
