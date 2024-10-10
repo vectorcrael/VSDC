@@ -10,7 +10,7 @@ namespace VSDCAPI
         public string tpin { get; set; }
         public string bhfId { get; set; }
         public string itemCd { get; set; }
-        public string itemClsCd { get; set; }
+        public int itemClsCd { get; set; }
         public string itemTyCd { get; set; }
         public string itemNm { get; set; }
         public string itemStdNm { get; set; }
@@ -29,7 +29,7 @@ namespace VSDCAPI
         public string isrcAplcbYn { get; set; }
         public string useYn { get; set; }
         public string regrNm { get; set; }
-        public string regrId { get; set; }
+        public string regrId { get; set; } = "1";
         public string modrNm { get; set; }
         public string modrId { get; set; }
     }

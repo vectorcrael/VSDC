@@ -11,7 +11,7 @@ namespace VSDCAPI
         public string bhfId { get; set; }
         public int orgInvcNo { get; set; }
         public string cisInvcNo { get; set; }
-        public string custTpin { get; set; }
+        public string custTpin { get; set; } 
         public string custNm { get; set; }
         public string salesTyCd { get; set; }
         public string rcptTyCd { get; set; }
@@ -19,10 +19,10 @@ namespace VSDCAPI
         public string salesSttsCd { get; set; }
         public string cfmDt { get; set; }
         public string salesDt { get; set; }
-        public object stockRlsDt { get; set; }
-        public object cnclReqDt { get; set; }
-        public object cnclDt { get; set; }
-        public object rfdDt { get; set; }
+        public object stockRlsDt { get; set; } =null;
+        public object cnclReqDt { get; set; }=null;
+        public object cnclDt { get; set; }=null;
+        public object rfdDt { get; set; }=null;
         public object rfdRsnCd { get; set; }
         public int totItemCnt { get; set; } = 2;
         public double taxblAmtA { get; set; }= 0;
@@ -75,8 +75,8 @@ namespace VSDCAPI
         public double totTaxAmt { get; set; }= 0;
         public int totAmt { get; set; }= 0;
         public string prchrAcptcYn { get; set; }
-        public string remark { get; set; }
-        public string regrId { get; set; }
+        public string remark { get; set; }=null;
+        public string regrId { get; set; } ="";
         public string regrNm { get; set; }
         public string modrId { get; set; }
         public string modrNm { get; set; }
@@ -95,7 +95,7 @@ namespace VSDCAPI
     {
         public int itemSeq { get; set; }
         public string itemCd { get; set; }
-        public string itemClsCd { get; set; }
+        public int itemClsCd { get; set; } = 0;
         public string itemNm { get; set; }
         public string bcd { get; set; }
         public string pkgUnitCd { get; set; }
