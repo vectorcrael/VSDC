@@ -40,7 +40,7 @@ namespace VSDCAPI
         public int taxblAmtEcm { get; set; }
         public double taxblAmtExeeg { get; set; }
         public double taxblAmtTot { get; set; }
-        public int taxRtA { get; set; }
+        public int taxRtA { get; set; } =0;
         public int taxRtB { get; set; }
         public int taxRtC1 { get; set; }
         public int taxRtC2 { get; set; }
