@@ -24,56 +24,56 @@ namespace VSDCAPI
         public object cnclDt { get; set; }
         public object rfdDt { get; set; }
         public object rfdRsnCd { get; set; }
-        public int totItemCnt { get; set; }
-        public double taxblAmtA { get; set; }
-        public double taxblAmtB { get; set; }
-        public double taxblAmtC1 { get; set; }
-        public double taxblAmtC2 { get; set; }
-        public double taxblAmtC3 { get; set; }
-        public double taxblAmtD { get; set; }
-        public double taxblAmtRvat { get; set; }
-        public double taxblAmtE { get; set; }
-        public double taxblAmtF { get; set; }
-        public double taxblAmtIpl1 { get; set; }
-        public int taxblAmtIpl2 { get; set; }
-        public double taxblAmtTl { get; set; }
-        public int taxblAmtEcm { get; set; }
-        public double taxblAmtExeeg { get; set; }
-        public double taxblAmtTot { get; set; }
+        public int totItemCnt { get; set; } = 2;
+        public double taxblAmtA { get; set; }= 0;
+        public double taxblAmtB { get; set; } = 0;
+        public double taxblAmtC1 { get; set; }= 0;
+        public double taxblAmtC2 { get; set; }= 0;
+        public double taxblAmtC3 { get; set; }= 0;
+        public double taxblAmtD { get; set; }= 0;
+        public double taxblAmtRvat { get; set; }= 0;
+        public double taxblAmtE { get; set; }= 0;
+        public double taxblAmtF { get; set; }= 0;
+        public double taxblAmtIpl1 { get; set; }= 0;
+        public int taxblAmtIpl2 { get; set; }= 0;
+        public double taxblAmtTl { get; set; }= 0;
+        public int taxblAmtEcm { get; set; }= 0;
+        public double taxblAmtExeeg { get; set; }= 0;
+        public double taxblAmtTot { get; set; }= 0;
         public int taxRtA { get; set; } =0;
-        public int taxRtB { get; set; }
-        public int taxRtC1 { get; set; }
-        public int taxRtC2 { get; set; }
-        public int taxRtC3 { get; set; }
-        public int taxRtD { get; set; }
-        public double tlAmt { get; set; }
-        public int taxRtRvat { get; set; }
-        public int taxRtE { get; set; }
-        public int taxRtF { get; set; }
-        public int taxRtIpl1 { get; set; }
-        public int taxRtIpl2 { get; set; }
-        public double taxRtTl { get; set; }
-        public int taxRtEcm { get; set; }
-        public int taxRtExeeg { get; set; }
-        public int taxRtTot { get; set; }
-        public double taxAmtA { get; set; }
-        public double taxAmtB { get; set; }
-        public double taxAmtC1 { get; set; }
-        public double taxAmtC2 { get; set; }
-        public double taxAmtC3 { get; set; }
-        public double taxAmtD { get; set; }
-        public double taxAmtRvat { get; set; }
-        public double taxAmtE { get; set; }
-        public double taxAmtF { get; set; }
-        public double taxAmtIpl1 { get; set; }
-        public double taxAmtIpl2 { get; set; }
-        public double taxAmtTl { get; set; }
-        public double taxAmtEcm { get; set; }
-        public double taxAmtExeeg { get; set; }
-        public double taxAmtTot { get; set; }
-        public double totTaxblAmt { get; set; }
-        public double totTaxAmt { get; set; }
-        public int totAmt { get; set; }
+        public int taxRtB { get; set; }= 0;
+        public int taxRtC1 { get; set; }= 0;
+        public int taxRtC2 { get; set; }= 0;
+        public int taxRtC3 { get; set; }= 0;
+        public int taxRtD { get; set; }= 0;
+        public double tlAmt { get; set; }= 0;
+        public int taxRtRvat { get; set; }= 0;
+        public int taxRtE { get; set; }= 0;
+        public int taxRtF { get; set; }= 0;
+        public int taxRtIpl1 { get; set; }= 0;
+        public int taxRtIpl2 { get; set; }= 0;
+        public double taxRtTl { get; set; }= 0;
+        public int taxRtEcm { get; set; }= 0;
+        public int taxRtExeeg { get; set; }= 0;
+        public int taxRtTot { get; set; }= 0;
+        public double taxAmtA { get; set; }= 0;
+        public double taxAmtB { get; set; }= 0;
+        public double taxAmtC1 { get; set; }= 0;
+        public double taxAmtC2 { get; set; }= 0;
+        public double taxAmtC3 { get; set; }= 0;
+        public double taxAmtD { get; set; }= 0;
+        public double taxAmtRvat { get; set; }= 0;
+        public double taxAmtE { get; set; }= 0;
+        public double taxAmtF { get; set; }= 0;
+        public double taxAmtIpl1 { get; set; }= 0;
+        public double taxAmtIpl2 { get; set; }= 0;
+        public double taxAmtTl { get; set; }= 0;
+        public double taxAmtEcm { get; set; }= 0;
+        public double taxAmtExeeg { get; set; }= 0;
+        public double taxAmtTot { get; set; }= 0;
+        public double totTaxblAmt { get; set; }= 0;
+        public double totTaxAmt { get; set; }= 0;
+        public int totAmt { get; set; }= 0;
         public string prchrAcptcYn { get; set; }
         public string remark { get; set; }
         public string regrId { get; set; }

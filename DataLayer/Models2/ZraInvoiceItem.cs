@@ -22,6 +22,8 @@ namespace DataLayer.Models2
         public decimal TotalAmount { get; set; } // Total amount for the item
         public int IsTaxInclusive { get; set; } // Indicates if tax is included in the price
         public decimal RRP { get; set; } // Recommended retail price
+        public double fQuantityLineTaxAmount { get; set; }
+        public double fQuantityLineTotExcl { get; set; }
     }
 }
 
