@@ -13,6 +13,7 @@ sudo docker cp eve-back.bak sql:/var/opt/mssql/backup
 
 - delete the back up file
 sudo docker rm /var/opt/mssql/backup/CHC_Chem_Sandboxbak.bak
+sudo docker rm /var/opt/mssql/backup/eve-back.bak
 
 // this is the command that I used to run the migration and add models backwards into the DataLayer
 dotnet ef dbcontext scaffold "Server=localhost; Database=EVO-CHEM; User Id=sa; Password=Hackproof123; Trust Server Certificate=true;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --context AppDBContext --no-build --data-annotations --force

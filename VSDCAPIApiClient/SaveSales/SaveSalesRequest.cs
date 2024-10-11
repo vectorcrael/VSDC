@@ -47,7 +47,7 @@ namespace VSDCAPI
         public int taxRtC3 { get; set; }= 0;
         public int taxRtD { get; set; }= 0;
         public double tlAmt { get; set; }= 0;
-        public int taxRtRvat { get; set; }= 0;
+        public string taxRtRvat { get; set; }= "0";
         public int taxRtE { get; set; }= 0;
         public int taxRtF { get; set; }= 0;
         public int taxRtIpl1 { get; set; }= 0;
@@ -73,10 +73,11 @@ namespace VSDCAPI
         public double taxAmtTot { get; set; }= 0;
         public double totTaxblAmt { get; set; }= 0;
         public double totTaxAmt { get; set; }= 0;
-        public int totAmt { get; set; }= 0;
+        public double vatTaxblAmt { get; set; }= 0;
+        public double totAmt { get; set; }= 0;
         public string prchrAcptcYn { get; set; }
         public string remark { get; set; }=null;
-        public string regrId { get; set; } ="";
+        public string regrId { get; set; } ="admin";
         public string regrNm { get; set; }
         public string modrId { get; set; }
         public string modrNm { get; set; }

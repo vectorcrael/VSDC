@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Compression;
 using DataLayer.Models2;
 using VSDCAPI;
 
@@ -29,14 +30,13 @@ namespace VSDCAPIApiClient
                 pmtTyCd = zraInvoice.PaymentTypeCode,
                 salesSttsCd ="02",
                 cfmDt =zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
-                salesDt = zraInvoice.SaleDate.ToString("yyyyMMdd"),
+                salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
                 taxblAmtA =zraInvoice.invtotexcl,
                 taxblAmtTot =zraInvoice.invtottax,
-                tlAmt =zraInvoice.invtotincl,
                 taxAmtTot =zraInvoice.invtotincl,
                 prchrAcptcYn ="N",
-                regrId = zraInvoice.RefundReasonCode,
+                //regrId = zraInvoice.RefundReasonCode,
                 regrNm ="admin",
                 modrId ="admin",
                 modrNm ="admin",
@@ -46,7 +46,10 @@ namespace VSDCAPIApiClient
                 exchangeRt =zraInvoice.ConversionRate.ToString("F2"),
                 destnCountryCd = zraInvoice.DestinationCountryCode,
                 dbtRsnCd ="",
-                invcAdjustReason =""
+                invcAdjustReason ="",
+                totAmt =zraInvoice.invtotincl,
+                vatTaxblAmt =zraInvoice.invtotexcl,
+                taxRtRvat = zraInvoice.ConversionRate.ToString("F2")
             };
 
             invoice.itemList = new List<ItemList3>();
