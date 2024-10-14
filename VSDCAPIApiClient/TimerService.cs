@@ -33,7 +33,7 @@ namespace VSDCAPI
 
             _timer = new System.Timers.Timer(timeOut);
             _timer.Elapsed += OnTimedEventAsync;
-            _timer.AutoReset = true; 
+            _timer.AutoReset = true;
             _timer.Enabled = true;
 
             return Task.CompletedTask;
@@ -46,8 +46,24 @@ namespace VSDCAPI
             // Add your code here to do something every minute
 
             //await testServerRunning();
-            
+
             //await initializeDeviceAsync();
+
+            await FiscalizeInvoice();
+
+            //remove this in production
+            await StopAsync(CancellationToken.None);
+        }
+
+        private async Task testServerRunning()
+        {
+            _logger.LogInformation("Running the Test Server call!");
+            var testResp = await _client.TestServerRunning();
+            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
+        }
+
+        private async Task FiscalizeInvoice()
+        {
 
             //steps to fiscalise invoices
             var invoices = await _fiscalInfoService.GetZraInvoicesAsync();
@@ -65,18 +81,7 @@ namespace VSDCAPI
                     var itemResponse = await _client.SaveItems(updateRequest);
                 }
             }
-
-            //remove this in production
-            await StopAsync(CancellationToken.None);
         }
-
-        private async Task testServerRunning()
-        {
-            _logger.LogInformation("Running the Test Server call!");
-            var testResp = await _client.TestServerRunning();
-            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
-        }
-
         private async Task initializeDeviceAsync()
         {
             var request = new DeviceInitializationRequest

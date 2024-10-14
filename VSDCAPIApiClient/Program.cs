@@ -11,6 +11,6 @@ builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(build
 builder.Services.AddScoped<IFiscalInfoService, FiscalInfoService>();
 builder.Services.AddScoped<HttpClient, HttpClient>();
 builder.Services.AddScoped<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
-builder.Services.AddHostedService<TimerService>();
+builder.Services.AddHostedService<TimerService>(); //do not start up the Timer service
 var app = builder.Build();
 app.Run();
