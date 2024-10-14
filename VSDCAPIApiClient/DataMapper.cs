@@ -56,6 +56,8 @@ namespace VSDCAPIApiClient
 
             foreach (var item in zraInvoice.Items)
             {
+                var noVat = item.fQuantityLineTotExcl > 0;
+
                 invoice.itemList.Add(new ItemList3
                 {
                     itemSeq = item.ItemSequenceNumber,
@@ -67,19 +69,19 @@ namespace VSDCAPIApiClient
                     pkg = 0 ,
                     qtyUnitCd = item.QuantityUnitCode!.ToString(),
                     qty = (double)item.Quantity,
-                    prc = (int)item.RRP,
-                    splyAmt = 0 ,
+                    prc = (int)item.UnitPrice,
+                    splyAmt =  (int)item.TotalAmount,
                     dcRt = 0 ,
                     dcAmt = 0 ,
                     isrccCd = item.IsTaxInclusive.ToString(),
                     isrccNm = "",
                     isrcRt = 0 ,
                     isrcAmt = 0 ,
-                    vatCatCd = "A" ,
+                    vatCatCd = noVat? "D": "A" ,
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = item.fQuantityLineTotExcl ,
+                    vatTaxblAmt = noVat ? 0 : item.fQuantityLineTotExcl,
                     vatAmt = item.fQuantityLineTaxAmount ,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0 ,
