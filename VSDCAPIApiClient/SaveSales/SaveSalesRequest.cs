@@ -24,7 +24,8 @@ namespace VSDCAPI
         public object cnclDt { get; set; }=null;
         public object rfdDt { get; set; }=null;
         public object rfdRsnCd { get; set; }
-        public int totItemCnt { get; set; } = 2;
+        public int totItemCnt { get; set; }
+        
         public double taxblAmtA { get; set; }= 0;
         public double taxblAmtB { get; set; } = 0;
         public double taxblAmtC1 { get; set; }= 0;
@@ -89,7 +90,7 @@ namespace VSDCAPI
         public string dbtRsnCd { get; set; }
         public string invcAdjustReason { get; set; }
 
-        public List<ItemList3> itemList { get; set; }
+        public List<ItemList3> itemList { get; set; } = new List<ItemList3>();
     }
 
     public class ItemList3

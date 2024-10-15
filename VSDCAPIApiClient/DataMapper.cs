@@ -53,7 +53,8 @@ namespace VSDCAPIApiClient
                 invcAdjustReason = "",
                 totAmt = zraInvoice.invtotincl,
                 vatTaxblAmt = noVatOnPatent? 0: zraInvoice.invtotexcl,
-                 totTaxblAmt = zraInvoice.invtotexcl
+                 totTaxblAmt = zraInvoice.invtotexcl,
+                 totItemCnt = zraInvoice.totItemCnt
 
             };
 
@@ -85,7 +86,7 @@ namespace VSDCAPIApiClient
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = noVatOnPatent ? item.fQuantityLineTotExcl :0,
+                    vatTaxblAmt = item.fQuantityLineTotExcl ,
                     vatAmt = item.fQuantityLineTaxAmount,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0,
@@ -94,6 +95,7 @@ namespace VSDCAPIApiClient
                     tlAmt = 0,
                     exciseTxAmt = 0,
                     totAmt = (int)item.TotalAmount
+
                 });
             };
 

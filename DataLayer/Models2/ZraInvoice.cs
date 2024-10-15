@@ -7,6 +7,8 @@ namespace DataLayer.Models2
     [Keyless]
     public class ZraInvoice
     {
+        public int totItemCnts;
+
         public required string Id { get; set; }
         public required string InvoiceNumber { get; set; }
         public int? OriginalInvoiceNumber { get; set; }
@@ -29,6 +31,7 @@ namespace DataLayer.Models2
         public double invtottax { get; set; }
         public double invtotincl { get; set; }
         public double invtotexcl { get; set; }
+        public int totItemCnt {get;set; }
     }
 }
 

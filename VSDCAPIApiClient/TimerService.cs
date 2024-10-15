@@ -81,9 +81,9 @@ namespace VSDCAPI
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
                         signature: sd.rcptSign,
                         internalData: sd.intrlData,
-                        invoiceNumber: sd.rcptNo.ToString(),
-                        invoiceType: sd.sdcId,
-                        invoiceSequence: sd.mrcNo,
+                        invoiceNumber:saveInvoices.cisInvcNo,
+                        invoiceType: saveInvoices.rcptTyCd,
+                        invoiceSequence: sd.rcptNo.ToString(),
                         qrCode: sd.qrCodeUrl,
                         vsdcDate: sd.vsdcRcptPbctDate);
                 }
