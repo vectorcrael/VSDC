@@ -17,13 +17,16 @@ namespace VSDCAPIApiClient
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
         {
+            var custPin =  (new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray()));
+
+
             SaveSalesRequest invoice = new SaveSalesRequest
             {
                 bhfId = DeviceDetails.BhfId,
                 tpin = DeviceDetails.Tpin,
                 orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
                 cisInvcNo = zraInvoice.InvoiceNumber,
-                custTpin = new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray()) , //verify this
+                custTpin = string.IsNullOrWhiteSpace(custPin) ? null: custPin, //verify this
                 custNm = zraInvoice.CustomerName,
                 salesTyCd ="N",
                 rcptTyCd = zraInvoice.ReceiptTypeCode,
@@ -81,7 +84,7 @@ namespace VSDCAPIApiClient
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = noVat ? 0 : item.fQuantityLineTotExcl,
+                    vatTaxblAmt =  item.fQuantityLineTotExcl,
                     vatAmt = item.fQuantityLineTaxAmount ,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0 ,

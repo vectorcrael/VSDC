@@ -11,7 +11,7 @@ namespace VSDCAPI
         public string bhfId { get; set; }
         public int orgInvcNo { get; set; }
         public string cisInvcNo { get; set; }
-        public string custTpin { get; set; } 
+        public string? custTpin { get; set; } 
         public string custNm { get; set; }
         public string salesTyCd { get; set; }
         public string rcptTyCd { get; set; }
@@ -40,21 +40,20 @@ namespace VSDCAPI
         public int taxblAmtEcm { get; set; }= 0;
         public double taxblAmtExeeg { get; set; }= 0;
         public double taxblAmtTot { get; set; }= 0;
-        public int taxRtA { get; set; } =0;
-        public int taxRtB { get; set; }= 0;
+        public int taxRtA { get; set; } =16;
+        public int taxRtB { get; set; }= 16;
         public int taxRtC1 { get; set; }= 0;
         public int taxRtC2 { get; set; }= 0;
         public int taxRtC3 { get; set; }= 0;
         public int taxRtD { get; set; }= 0;
         public double tlAmt { get; set; }= 0;
-        public string taxRtRvat { get; set; }= "0";
+        public string taxRtRvat { get; set; }= "16";
         public int taxRtE { get; set; }= 0;
-        public int taxRtF { get; set; }= 0;
-        public int taxRtIpl1 { get; set; }= 0;
+        public int taxRtF { get; set; }= 10;
+        public int taxRtIpl1 { get; set; }= 5;
         public int taxRtIpl2 { get; set; }= 0;
-        public double taxRtTl { get; set; }= 0;
-        public int taxRtEcm { get; set; }= 0;
-        public int taxRtExeeg { get; set; }= 0;
+        public double taxRtTl { get; set; }= 1.5;        public int taxRtEcm { get; set; }= 0;
+        public int taxRtExeeg { get; set; }= 3;
         public int taxRtTot { get; set; }= 0;
         public double taxAmtA { get; set; }= 0;
         public double taxAmtB { get; set; }= 0;
