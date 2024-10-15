@@ -36,6 +36,7 @@ namespace VSDCAPIApiClient
                 salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
                 taxblAmtA = noVatOnPatent? 0: zraInvoice.invtotexcl,
+                taxblAmtD =  noVatOnPatent? zraInvoice.invtotexcl :0,
                 taxblAmtTot = noVatOnPatent? 0: zraInvoice.invtotexcl,
                 taxAmtTot = noVatOnPatent? 0: zraInvoice.invtottax,
                 prchrAcptcYn = "N",
@@ -52,14 +53,14 @@ namespace VSDCAPIApiClient
                 invcAdjustReason = "",
                 totAmt = zraInvoice.invtotincl,
                 vatTaxblAmt = noVatOnPatent? 0: zraInvoice.invtotexcl,
-                taxRtRvat = noVatOnPatent ?  "0" :"16"
+                 totTaxblAmt = zraInvoice.invtotexcl
+
             };
 
             invoice.itemList = new List<ItemList3>();
 
             foreach (var item in zraInvoice.Items)
             {
-                var noVat = item.fQuantityLineTotExcl > 0;
 
                 invoice.itemList.Add(new ItemList3
                 {
@@ -80,11 +81,11 @@ namespace VSDCAPIApiClient
                     isrccNm = "",
                     isrcRt = 0,
                     isrcAmt = 0,
-                    vatCatCd = noVat ? "D" : "A",
+                    vatCatCd = noVatOnPatent ? "D" : "A",
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = noVat ? 0 : item.fQuantityLineTotExcl,
+                    vatTaxblAmt = noVatOnPatent ? item.fQuantityLineTotExcl :0,
                     vatAmt = item.fQuantityLineTaxAmount,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0,

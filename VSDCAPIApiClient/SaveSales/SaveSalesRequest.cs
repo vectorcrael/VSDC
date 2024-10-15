@@ -47,12 +47,13 @@ namespace VSDCAPI
         public int taxRtC3 { get; set; }= 0;
         public int taxRtD { get; set; }= 0;
         public double tlAmt { get; set; }= 0;
-        public string taxRtRvat { get; set; }= "16";
+        public string taxRtRvat { get; set; } = "16";
         public int taxRtE { get; set; }= 0;
         public int taxRtF { get; set; }= 10;
         public int taxRtIpl1 { get; set; }= 5;
         public int taxRtIpl2 { get; set; }= 0;
-        public double taxRtTl { get; set; }= 1.5;        public int taxRtEcm { get; set; }= 0;
+        public double taxRtTl { get; set; }= 1.5;        
+        public int taxRtEcm { get; set; }= 5;
         public int taxRtExeeg { get; set; }= 3;
         public int taxRtTot { get; set; }= 0;
         public double taxAmtA { get; set; }= 0;
