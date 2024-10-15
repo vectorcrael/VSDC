@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using DataLayer.Services;
 using VSDCAPIApiClient;
 using Newtonsoft.Json;
+using VSDCAPIApiClient.DTOs;
 
 namespace VSDCAPI
 {
@@ -74,12 +75,26 @@ namespace VSDCAPI
                 var response = await _client.SaveSales(saveInvoices);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
 
-                //if response is OK THEN save items
-                foreach (var item in saveInvoices.itemList)
-                {
-                    var updateRequest = DataMapper.MapToUpdateItemRequest(item);
-                    var itemResponse = await _client.SaveItems(updateRequest);
+                if(response.ResultCd =="000"){
+                    //once the signature is generated save back to the database
+                    var sd =(SaveInvoiceData)response.Data;
+                    var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
+                        signature: sd.rcptSign,
+                        internalData: sd.intrlData,
+                        invoiceNumber: sd.rcptNo.ToString(),
+                        invoiceType: sd.sdcId,
+                        invoiceSequence: sd.mrcNo,
+                        qrCode: sd.qrCodeUrl,
+                        vsdcDate: sd.vsdcRcptPbctDate);
                 }
+
+                // //No need to save items individually
+                // //if response is OK THEN save items
+                // foreach (var item in saveInvoices.itemList)
+                // {
+                //     var updateRequest = DataMapper.MapToUpdateItemRequest(item);
+                //     var itemResponse = await _client.SaveItems(updateRequest);
+                // }
             }
         }
         private async Task initializeDeviceAsync()
