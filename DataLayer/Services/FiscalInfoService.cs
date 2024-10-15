@@ -70,7 +70,7 @@ namespace DataLayer.Services
                 .ToListAsync();
         }
 
-        public async Task UpdateFiscalDetailsAsync(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+        public async Task<int> UpdateFiscalDetailsAsync(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
         {
             var parameters = new[]
             {
@@ -83,7 +83,7 @@ namespace DataLayer.Services
                 new SqlParameter("@VsdcDate", vsdcDate)
             };
 
-            await _context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
+            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
         }
     }
 }
