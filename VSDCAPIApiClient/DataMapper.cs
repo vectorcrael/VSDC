@@ -17,16 +17,17 @@ namespace VSDCAPIApiClient
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
         {
-            var custPin =  new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray());
+            var custPin = new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray());
             var noVatOnPatent = zraInvoice.invtottax == 0 ? true : false;
 
             SaveSalesRequest invoice = new SaveSalesRequest
             {
+
                 bhfId = DeviceDetails.BhfId,
                 tpin = DeviceDetails.Tpin,
                 orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
                 cisInvcNo = zraInvoice.InvoiceNumber,
-                custTpin = string.IsNullOrWhiteSpace(custPin) ? null: custPin, //verify this
+                custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, //verify this
                 custNm = zraInvoice.CustomerName,
                 salesTyCd = "N",
                 rcptTyCd = zraInvoice.ReceiptTypeCode,
@@ -35,10 +36,10 @@ namespace VSDCAPIApiClient
                 cfmDt = zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
                 salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
-                taxblAmtA = noVatOnPatent? 0: zraInvoice.invtotexcl,
-                taxblAmtD =  noVatOnPatent? zraInvoice.invtotexcl :0,
-                taxblAmtTot = noVatOnPatent? 0: zraInvoice.invtotexcl,
-                taxAmtTot = noVatOnPatent? 0: zraInvoice.invtottax,
+                taxblAmtA = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
+                taxblAmtD = noVatOnPatent ? zraInvoice.invtotexcl : 0,
+                taxblAmtTot = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
+                taxAmtTot = noVatOnPatent ? 0 : zraInvoice.invtottax,
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
                 regrNm = "admin",
@@ -52,9 +53,9 @@ namespace VSDCAPIApiClient
                 dbtRsnCd = "",
                 invcAdjustReason = "",
                 totAmt = zraInvoice.invtotincl,
-                vatTaxblAmt = noVatOnPatent? 0: zraInvoice.invtotexcl,
-                 totTaxblAmt = zraInvoice.invtotexcl,
-                 totItemCnt = zraInvoice.totItemCnt
+                vatTaxblAmt = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
+                totTaxblAmt = zraInvoice.invtotexcl,
+                totItemCnt = zraInvoice.Items.Count
 
             };
 
@@ -86,7 +87,7 @@ namespace VSDCAPIApiClient
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = item.fQuantityLineTotExcl ,
+                    vatTaxblAmt = item.fQuantityLineTotExcl,
                     vatAmt = item.fQuantityLineTaxAmount,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0,
