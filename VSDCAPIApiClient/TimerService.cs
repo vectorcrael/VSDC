@@ -8,6 +8,7 @@ using DataLayer.Services;
 using VSDCAPIApiClient;
 using Newtonsoft.Json;
 using VSDCAPIApiClient.DTOs;
+using Newtonsoft.Json.Linq;
 
 namespace VSDCAPI
 {
@@ -77,7 +78,9 @@ namespace VSDCAPI
 
                 if(response.ResultCd =="000"){
                     //once the signature is generated save back to the database
-                    var sd =(SaveInvoiceData)response.Data;
+                    var jsonData = (JObject)response.Data; // Cast response.Data to JObject
+                    var sd = jsonData.ToObject<SaveInvoiceData>(); 
+
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
                         signature: sd.rcptSign,
                         internalData: sd.intrlData,
