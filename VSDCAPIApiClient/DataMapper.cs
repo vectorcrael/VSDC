@@ -10,9 +10,9 @@ namespace VSDCAPIApiClient
 
         public static class DeviceDetails
         {
-            public static string Tpin { get; set; } = "1002546945";
+            public static string Tpin { get; set; } = "1012443282";
             public static string BhfId { get; set; } = "000";
-            public static string DvcSrlNo { get; set; } = "CHC-EVO";
+            public static string DvcSrlNo { get; set; } = "100 GEC";
         }
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
@@ -36,10 +36,10 @@ namespace VSDCAPIApiClient
                 cfmDt = zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
                 salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
-                taxblAmtA = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
+                taxblAmtA = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
                 taxblAmtD = noVatOnPatent ? (double) zraInvoice.Items.Sum( item => item.VatableAmount) : 0,
                 taxblAmtTot = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
-                taxAmtTot = noVatOnPatent ? 0 : zraInvoice.invtottax,
+                taxAmtTot = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.TaxAmount),
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
                 regrNm = "admin",
@@ -88,7 +88,7 @@ namespace VSDCAPIApiClient
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
                     vatTaxblAmt = (double)item.VatableAmount,
-                    vatAmt = item.fQuantityLineTaxAmount,
+                    vatAmt = (double)item.TaxAmount,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0,
                     iplTaxblAmt = 0,

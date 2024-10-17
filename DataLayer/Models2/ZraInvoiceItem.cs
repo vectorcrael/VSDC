@@ -25,7 +25,7 @@ namespace DataLayer.Models2
         public double fQuantityLineTaxAmount { get; set; }
         public double fQuantityLineTotExcl { get; set; }
         public decimal VatableAmount {get;set; }
-
+         public decimal TaxAmount {get;set; }
     }
 }
 
