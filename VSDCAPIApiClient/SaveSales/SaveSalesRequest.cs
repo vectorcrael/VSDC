@@ -104,8 +104,8 @@ namespace VSDCAPI
         public double pkg { get; set; }
         public string qtyUnitCd { get; set; }
         public double qty { get; set; }
-        public int prc { get; set; }
-        public int splyAmt { get; set; }
+        public double prc { get; set; }
+        public double splyAmt { get; set; }
         public double dcRt { get; set; }
         public double dcAmt { get; set; }
         public string isrccCd { get; set; }
@@ -124,6 +124,6 @@ namespace VSDCAPI
         public double iplAmt { get; set; }
         public double tlAmt { get; set; }
         public int exciseTxAmt { get; set; }
-        public int totAmt { get; set; }
+        public double totAmt { get; set; }
     }
 }

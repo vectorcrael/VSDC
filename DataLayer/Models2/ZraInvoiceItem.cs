@@ -24,6 +24,8 @@ namespace DataLayer.Models2
         public decimal RRP { get; set; } // Recommended retail price
         public double fQuantityLineTaxAmount { get; set; }
         public double fQuantityLineTotExcl { get; set; }
+        public decimal VatableAmount {get;set; }
+
     }
 }
 

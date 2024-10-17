@@ -37,8 +37,8 @@ namespace VSDCAPIApiClient
                 salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
                 taxblAmtA = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
-                taxblAmtD = noVatOnPatent ? zraInvoice.invtotexcl : 0,
-                taxblAmtTot = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
+                taxblAmtD = noVatOnPatent ? (double) zraInvoice.Items.Sum( item => item.VatableAmount) : 0,
+                taxblAmtTot = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
                 taxAmtTot = noVatOnPatent ? 0 : zraInvoice.invtottax,
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
@@ -52,9 +52,9 @@ namespace VSDCAPIApiClient
                 destnCountryCd = zraInvoice.DestinationCountryCode,
                 dbtRsnCd = "",
                 invcAdjustReason = "",
-                totAmt = zraInvoice.invtotincl,
-                vatTaxblAmt = noVatOnPatent ? 0 : zraInvoice.invtotexcl,
-                totTaxblAmt = zraInvoice.invtotexcl,
+                totAmt = (double) zraInvoice.Items.Sum( item => item.TotalAmount),
+                vatTaxblAmt = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
+                totTaxblAmt = (double) zraInvoice.Items.Sum( item => item.VatableAmount),
                 totItemCnt = zraInvoice.Items.Count
 
             };
@@ -75,8 +75,8 @@ namespace VSDCAPIApiClient
                     pkg = 0,
                     qtyUnitCd = item.QuantityUnitCode!.ToString(),
                     qty = (double)item.Quantity,
-                    prc = (int)item.UnitPrice,
-                    splyAmt = (int)item.TotalAmount,
+                    prc = (double)item.UnitPrice,
+                    splyAmt = (double)item.TotalAmount,
                     dcRt = 0,
                     dcAmt = 0,
                     isrccCd = item.IsTaxInclusive.ToString(),
@@ -87,7 +87,7 @@ namespace VSDCAPIApiClient
                     exciseTxCatCd = "",
                     tlCatCd = item.TaxLabel,
                     iplCatCd = "",
-                    vatTaxblAmt = item.fQuantityLineTotExcl,
+                    vatTaxblAmt = (double)item.VatableAmount,
                     vatAmt = item.fQuantityLineTaxAmount,
                     exciseTaxblAmt = 0,
                     tlTaxblAmt = 0,
@@ -95,7 +95,7 @@ namespace VSDCAPIApiClient
                     iplAmt = 0,
                     tlAmt = 0,
                     exciseTxAmt = 0,
-                    totAmt = (int)item.TotalAmount
+                    totAmt = (double)item.TotalAmount
 
                 });
             };

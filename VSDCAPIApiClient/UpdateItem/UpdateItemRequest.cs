@@ -23,7 +23,7 @@ namespace VSDCAPI
         public object exciseTxCatCd { get; set; }
         public object btchNo { get; set; }
         public object bcd { get; set; }
-        public int dftPrc { get; set; }
+        public double dftPrc { get; set; }
         public object addInfo { get; set; }
         public int sftyQty { get; set; }
         public string isrcAplcbYn { get; set; }
