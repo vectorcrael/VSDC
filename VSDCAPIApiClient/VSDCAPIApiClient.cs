@@ -14,7 +14,7 @@ namespace VSDCAPI
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<VSDCAPIApiClient> _logger;
-        private readonly string _currentUrl = "localhost:8080/gecsandbox" ;//"localhost:8080/zrasandboxvsdc";
+        private readonly string _currentUrl = "localhost:8080/zrasandboxvsdc";
         public VSDCAPIApiClient(HttpClient httpClient, ILogger<VSDCAPIApiClient> logger)
         {
             _httpClient = httpClient;

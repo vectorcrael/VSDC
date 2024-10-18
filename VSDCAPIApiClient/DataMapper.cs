@@ -7,12 +7,13 @@ namespace VSDCAPIApiClient
 {
     public class DataMapper
     {
+   
 
         public static class DeviceDetails
         {
-            public static string Tpin { get; set; } = "1012443282";
+            public static string Tpin { get; set; } = "1002546945";
             public static string BhfId { get; set; } = "000";
-            public static string DvcSrlNo { get; set; } = "100 GEC";
+            public static string DvcSrlNo { get; set; } = "CHC-EVO";
         }
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
