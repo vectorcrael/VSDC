@@ -12,7 +12,7 @@ namespace DataLayer.Services
         Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(string refId);
         Task<List<PurchaseInfo>> GetAllPurchasesAsync();
         Task<List<ZraInvoiceItem>> GetPurchaseItemsAsync(string refId);
-        Task<int> UpdateFiscalDetailsAsync(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate);
+        Task<int> UpdateFiscalDetailsAsync(byte [] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate);
     }
 }
 

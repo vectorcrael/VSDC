@@ -57,7 +57,7 @@ namespace DataLayer.Controllers
         }
 
         [HttpPost("update-fiscal-details")]
-        public async Task<IActionResult> UpdateFiscalDetails(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+        public async Task<IActionResult> UpdateFiscalDetails(byte [] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
         {
             await _fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType, invoiceSequence, qrCode, vsdcDate);
             return NoContent();

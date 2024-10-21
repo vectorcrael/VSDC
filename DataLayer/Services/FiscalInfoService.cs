@@ -70,7 +70,7 @@ namespace DataLayer.Services
                 .ToListAsync();
         }
 
-        public async Task<int> UpdateFiscalDetailsAsync(string signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+        public async Task<int> UpdateFiscalDetailsAsync(byte[] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
         {
             var parameters = new[]
             {
