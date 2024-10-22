@@ -85,5 +85,21 @@ namespace DataLayer.Services
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
         }
+
+        public async Task<List<ZraStockMaster>> GetStockMastersAsync()
+        {
+            var masters =  await _context.ZraStockMasters
+                .FromSqlRaw("SELECT * FROM ZraStockMaster")
+                .ToListAsync();
+
+                            foreach (var master in masters)
+            {
+                var dbInvoices = await GetInvoiceItemsAsync(invoice.Id);
+                if (dbInvoices.Count > 0)
+                    invoice.Items = dbInvoices.ToList();
+            }
+
+             return masters;
+        }
     }
 }

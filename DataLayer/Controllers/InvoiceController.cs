@@ -62,6 +62,13 @@ namespace DataLayer.Controllers
             await _fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType, invoiceSequence, qrCode, vsdcDate);
             return NoContent();
         }
+        
+        [HttpGet("stock-masters")]
+        public async Task<IActionResult> GetStockMasters()
+        {
+            var stockMasters = await _fiscalInfoService.GetStockMastersAsync();
+            return Ok(stockMasters);
+        }
     }
 }
 

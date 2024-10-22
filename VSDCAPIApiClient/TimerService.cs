@@ -49,7 +49,7 @@ namespace VSDCAPI
 
             //await testServerRunning();
 
-            //await initializeDeviceAsync();
+            await initializeDeviceAsync();
 
             await FiscalizeInvoice();
 
@@ -76,16 +76,17 @@ namespace VSDCAPI
                 var response = await _client.SaveSales(saveInvoices);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
 
-                if(response.ResultCd =="000"){
+                if (response.ResultCd == "000")
+                {
                     //once the signature is generated save back to the database
                     var jsonData = (JObject)response.Data; // Cast response.Data to JObject
-                    var sd = jsonData.ToObject<SaveInvoiceData>(); 
+                    var sd = jsonData.ToObject<SaveInvoiceData>();
                     var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd.qrCodeUrl);
 
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
                         signature: qrCode, //sd.rcptSign
                         internalData: sd.intrlData,
-                        invoiceNumber:saveInvoices.cisInvcNo,
+                        invoiceNumber: saveInvoices.cisInvcNo,
                         invoiceType: saveInvoices.rcptTyCd,
                         invoiceSequence: sd.rcptNo.ToString(),
                         qrCode: sd.qrCodeUrl,
@@ -110,8 +111,14 @@ namespace VSDCAPI
                 dvcSrlNo = DataMapper.DeviceDetails.DvcSrlNo
             };
 
-            var zraResponse = await _client.DeviceInitialization(request);
-            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(zraResponse));
+            var response = await _client.DeviceInitialization(request);
+            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
+
+            if (response!.ResultCd == "000")
+            {
+                var jsonData = (JObject)response.Data; 
+                var info = jsonData.ToObject<Info>();
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

@@ -16,6 +16,8 @@ namespace DataLayer.Models2
         public decimal Quantity { get; set; }
         public string? TaxLabel { get; set; }
         public string? BranchId { get; set; }
+
+        //stockItemList
     }
 }
 
