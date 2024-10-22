@@ -92,12 +92,12 @@ namespace DataLayer.Services
                 .FromSqlRaw("SELECT * FROM ZraStockMaster")
                 .ToListAsync();
 
-                            foreach (var master in masters)
-            {
-                var dbInvoices = await GetInvoiceItemsAsync(invoice.Id);
-                if (dbInvoices.Count > 0)
-                    invoice.Items = dbInvoices.ToList();
-            }
+            // foreach (var master in masters)
+            // {
+            //     var dbInvoices = await GetInvoiceItemsAsync(master.ItemCode);
+            //     if (dbInvoices.Count > 0)
+            //         master.Items = dbInvoices.ToList();
+            // }
 
              return masters;
         }
