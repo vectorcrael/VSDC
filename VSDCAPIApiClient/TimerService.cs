@@ -80,10 +80,10 @@ namespace VSDCAPI
                     //once the signature is generated save back to the database
                     var jsonData = (JObject)response.Data; // Cast response.Data to JObject
                     var sd = jsonData.ToObject<SaveInvoiceData>(); 
-                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd.rcptSign);
+                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd.qrCodeUrl);
 
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
-                        signature: qrCode,
+                        signature: qrCode, //sd.rcptSign
                         internalData: sd.intrlData,
                         invoiceNumber:saveInvoices.cisInvcNo,
                         invoiceType: saveInvoices.rcptTyCd,
