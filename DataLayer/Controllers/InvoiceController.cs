@@ -1,5 +1,6 @@
 ﻿using System;
 using DataLayer.Models;
+using DataLayer.Models2;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,17 +58,45 @@ namespace DataLayer.Controllers
         }
 
         [HttpPost("update-fiscal-details")]
-        public async Task<IActionResult> UpdateFiscalDetails(byte [] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+        public async Task<IActionResult> UpdateFiscalDetails(byte[] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
         {
             await _fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType, invoiceSequence, qrCode, vsdcDate);
             return NoContent();
         }
-        
+
         [HttpGet("stock-masters")]
         public async Task<IActionResult> GetStockMasters()
         {
             var stockMasters = await _fiscalInfoService.GetStockMastersAsync();
             return Ok(stockMasters);
+        }
+
+        [HttpGet("device-init")]
+        public async Task<IActionResult> GetDeviceInitInfo()
+        {
+            var deviceInits = await _fiscalInfoService.GetAllDeviceInitsAsync();
+            return Ok(deviceInits);
+        }
+
+        [HttpPost("device-init")]
+        public async Task<IActionResult> UpdateDeviceInitInfo([FromBody] DeviceInit deviceInit)
+        {
+            await _fiscalInfoService.SetDeviceInitsAsync(deviceInit);
+            return NoContent();
+        }
+
+        [HttpGet("classification-codes")]
+        public async Task<IActionResult> GetZraClassCodes()
+        {
+            var codes = await _fiscalInfoService.GetAllZraClassCodesAsync();
+            return Ok(codes);
+        }
+
+        [HttpPost("classification-codes")]
+        public async Task<IActionResult> UpdateClassificationCodes([FromBody] ZraClassCode zraClassCode)
+        {
+            await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
+            return NoContent();
         }
     }
 }

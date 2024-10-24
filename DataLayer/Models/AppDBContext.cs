@@ -20,6 +20,8 @@ public partial class AppDBContext : DbContext
     public virtual DbSet<ZraInvoice> ZraInvoices { get; set; }
     public virtual DbSet<ZraInvoiceItem> ZraInvoiceItems { get; set; }
     public virtual DbSet<PurchaseInfo> PurchaseInfos { get; set; }
+    public virtual DbSet<ZraClassCode> ZraClassCodes { get; set; }
+    public virtual DbSet<DeviceInit> DeviceInits { get; set; }
     public virtual DbSet<ZraStockMaster> ZraStockMasters { get; set; }
 
     public virtual DbSet<AccPrev> AccPrevs { get; set; }

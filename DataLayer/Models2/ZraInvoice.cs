@@ -8,7 +8,6 @@ namespace DataLayer.Models2
     public class ZraInvoice
     {
         public int totItemCnts;
-
         public required string Id { get; set; }
         public required string InvoiceNumber { get; set; }
         public int? OriginalInvoiceNumber { get; set; }

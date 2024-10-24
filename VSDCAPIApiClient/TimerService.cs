@@ -118,6 +118,7 @@ namespace VSDCAPI
             {
                 var jsonData = (JObject)response.Data; 
                 var info = jsonData.ToObject<Info>();
+                _fiscalInfoService.AddFiscalInfoAsync()
             }
         }
 

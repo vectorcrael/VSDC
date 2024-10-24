@@ -88,7 +88,7 @@ namespace DataLayer.Services
 
         public async Task<List<ZraStockMaster>> GetStockMastersAsync()
         {
-            var masters =  await _context.ZraStockMasters
+            var masters = await _context.ZraStockMasters
                 .FromSqlRaw("SELECT * FROM ZraStockMaster")
                 .ToListAsync();
 
@@ -99,7 +99,73 @@ namespace DataLayer.Services
             //         master.Items = dbInvoices.ToList();
             // }
 
-             return masters;
+            return masters;
+        }
+
+        public async Task<List<DeviceInit>> GetAllDeviceInitsAsync()
+        {
+            var deviceInits = await _context.DeviceInits
+                .FromSqlRaw("SELECT * FROM DeviceInit")
+                .ToListAsync();
+            return deviceInits;
+        }
+        public async Task<int> SetDeviceInitsAsync(DeviceInit deviceInit)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@resultCd", deviceInit.ResultCd),
+                new SqlParameter("@resultMsg", deviceInit.ResultMsg),
+                new SqlParameter("@resultDt", deviceInit.ResultDt),
+                new SqlParameter("@tpin", deviceInit.Tpin),
+                new SqlParameter("@taxprNm", deviceInit.TaxprNm),
+                new SqlParameter("@bsnsActv", deviceInit.BsnsActv),
+                new SqlParameter("@bhfId", deviceInit.BhfId),
+                new SqlParameter("@bhfNm", deviceInit.BhfNm),
+                new SqlParameter("@bhfOpenDt", deviceInit.BhfOpenDt),
+                new SqlParameter("@prvncNm", deviceInit.PrvncNm),
+                new SqlParameter("@dstrtNm", deviceInit.DstrtNm),
+                new SqlParameter("@sctrNm", deviceInit.SctrNm),
+                new SqlParameter("@locDesc", deviceInit.LocDesc),
+                new SqlParameter("@hqYn", deviceInit.HqYn),
+                new SqlParameter("@mgrNm", deviceInit.MgrNm),
+                new SqlParameter("@mgrTelNo", deviceInit.MgrTelNo),
+                new SqlParameter("@mgrEmail", deviceInit.MgrEmail),
+                new SqlParameter("@sdicId", deviceInit.SdicId),
+                new SqlParameter("@mrcNo", deviceInit.MrcNo),
+                new SqlParameter("@lastSaleInvcNo", deviceInit.LastSaleInvcNo.HasValue ? (object)deviceInit.LastSaleInvcNo.Value : DBNull.Value),
+                new SqlParameter("@lastPchsInvcNo", deviceInit.LastPchsInvcNo.HasValue ? (object)deviceInit.LastPchsInvcNo.Value : DBNull.Value),
+                new SqlParameter("@lastSaleRcptNo", deviceInit.LastSaleRcptNo.HasValue ? (object)deviceInit.LastSaleRcptNo.Value : DBNull.Value),
+                new SqlParameter("@lastInvcNo", deviceInit.LastInvcNo.HasValue ? (object)deviceInit.LastInvcNo.Value : DBNull.Value),
+                new SqlParameter("@lastTrainInvcNo", deviceInit.LastTrainInvcNo.HasValue ? (object)deviceInit.LastTrainInvcNo.Value : DBNull.Value),
+                new SqlParameter("@lastProfrmInvcNo", deviceInit.LastProfrmInvcNo.HasValue ? (object)deviceInit.LastProfrmInvcNo.Value : DBNull.Value),
+                new SqlParameter("@lastCopyInvcNo", deviceInit.LastCopyInvcNo.HasValue ? (object)deviceInit.LastCopyInvcNo.Value : DBNull.Value)
+            };
+
+            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateDeviceDetails @resultCd, @resultMsg, @resultDt, @tpin, @taxprNm, @bsnsActv, @bhfId, @bhfNm, @bhfOpenDt, @prvncNm, @dstrtNm, @sctrNm, @locDesc, @hqYn, @mgrNm, @mgrTelNo, @mgrEmail, @sdicId, @mrcNo, @lastSaleInvcNo, @lastPchsInvcNo, @lastSaleRcptNo, @lastInvcNo, @lastTrainInvcNo, @lastProfrmInvcNo, @lastCopyInvcNo", parameters);
+        }
+
+        public async Task<List<ZraClassCode>> GetAllZraClassCodesAsync()
+        {
+            var zraCodes = await _context.ZraClassCodes
+                .FromSqlRaw("SELECT * FROM ZRAClassCodes")
+                .ToListAsync();
+            return zraCodes;
+        }
+
+        public async Task<int> SetZraClassCodeAsync(ZraClassCode zraClassCodes)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@resultDt", zraClassCodes.ResultDt),
+                new SqlParameter("@temClsCd", zraClassCodes.TemClsCd),
+                new SqlParameter("@itemClsNm", zraClassCodes.ItemClsNm),
+                new SqlParameter("@itemClsLvl", zraClassCodes.ItemClsLvl),
+                new SqlParameter("@taxTyCd", zraClassCodes.TaxTyCd),
+                new SqlParameter("@mjrTgYn", zraClassCodes.MjrTgYn),
+                new SqlParameter("@useYn", zraClassCodes.UseYn)
+            };
+
+            return await _context.Database.ExecuteSqlRawAsync("EXEC SetZraClassCode @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
         }
     }
 }

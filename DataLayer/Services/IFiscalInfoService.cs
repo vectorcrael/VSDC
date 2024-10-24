@@ -14,7 +14,10 @@ namespace DataLayer.Services
         Task<List<ZraInvoiceItem>> GetPurchaseItemsAsync(string refId);
         Task<int> UpdateFiscalDetailsAsync(byte [] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate);
         Task<List<ZraStockMaster>> GetStockMastersAsync();
-
+        Task<List<DeviceInit>> GetAllDeviceInitsAsync();
+        Task<int> SetDeviceInitsAsync(DeviceInit deviceInit);
+        Task<List<ZraClassCode>> GetAllZraClassCodesAsync();
+        Task<int> SetZraClassCodeAsync(ZraClassCode zraClassCodes);
     }
 }
 
