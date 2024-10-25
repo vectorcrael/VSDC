@@ -2,6 +2,7 @@
 using System.IO.Compression;
 using DataLayer.Models2;
 using VSDCAPI;
+using VSDCAPIApiClient.DTOs;
 
 namespace VSDCAPIApiClient
 {
@@ -137,6 +138,37 @@ namespace VSDCAPIApiClient
                 modrId = null
             };
         }
+
+        public static DeviceInit MapToDeviceInit(Device.Info deviceInfo)
+        {
+            return new DeviceInit
+            {
+                TaxprNm = deviceInfo.taxprNm,
+                BsnsActv = deviceInfo.bsnsActv,
+                BhfId = deviceInfo.bhfId,
+                BhfNm = deviceInfo.bhfNm,
+                BhfOpenDt = deviceInfo.bhfOpenDt,
+                PrvncNm = deviceInfo.prvncNm,
+                DstrtNm = deviceInfo.dstrtNm,
+                SctrNm = deviceInfo.sctrNm,
+                LocDesc = deviceInfo.locDesc,
+                HqYn = deviceInfo.hqYn,
+                MgrNm = deviceInfo.mgrNm,
+                MgrTelNo = deviceInfo.mgrTelNo,
+                MgrEmail = deviceInfo.mgrEmail,
+                SdicId = deviceInfo.sdcId,
+                MrcNo = deviceInfo.mrcNo,
+                LastSaleInvcNo = deviceInfo.lastSaleInvcNo,
+                LastPchsInvcNo = deviceInfo.lastPchsInvcNo,
+                LastSaleRcptNo = deviceInfo.lastSaleRcptNo,
+                LastInvcNo = deviceInfo.lastInvcNo,
+                LastTrainInvcNo = deviceInfo.lastTrainInvcNo,
+                LastProfrmInvcNo = deviceInfo.lastProfrmInvcNo,
+                LastCopyInvcNo = deviceInfo.lastCopyInvcNo
+            };
+        }
+
+
     }
 }
 
