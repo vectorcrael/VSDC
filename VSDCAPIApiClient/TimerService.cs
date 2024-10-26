@@ -9,6 +9,8 @@ using VSDCAPIApiClient;
 using Newtonsoft.Json;
 using VSDCAPIApiClient.DTOs;
 using Newtonsoft.Json.Linq;
+using DataLayer.Models2;
+using Microsoft.Identity.Client;
 
 namespace VSDCAPI
 {
@@ -16,6 +18,7 @@ namespace VSDCAPI
 
     public class TimerService : IHostedService, IDisposable
     {
+        private bool deviceInitialized { get; set; } = false;
         private readonly int timeOut = 60000;
         private readonly ILogger<TimerService> _logger;
         private System.Timers.Timer _timer;
@@ -48,8 +51,8 @@ namespace VSDCAPI
             // Add your code here to do something every minute
 
             //await testServerRunning();
-
-            await initializeDeviceAsync();
+            if (!deviceInitialized)
+                await initializeDeviceAsync();
 
             await FiscalizeInvoice();
 
@@ -104,6 +107,7 @@ namespace VSDCAPI
         }
         private async Task initializeDeviceAsync()
         {
+
             var request = new DeviceInitializationRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
@@ -116,10 +120,33 @@ namespace VSDCAPI
 
             if (response!.ResultCd == "000")
             {
-                var jsonData = (JObject)response.Data; 
-                var info = jsonData.ToObject<Info>();
-                _fiscalInfoService.AddFiscalInfoAsync()
+                var jsonData = (JObject)response.Data;
+                var deviceInfo = jsonData.ToObject<Device>();
+                var deviceInit = DataMapper.MapToDeviceInit(deviceInfo!.info);
+
+                deviceInit.ResultCd = response!.ResultCd;
+                deviceInit.ResultDt = response!.ResultDt;
+                deviceInit.ResultMsg = response!.ResultMsg;
+
+                var dbUpdate = await _fiscalInfoService.SetDeviceInitsAsync(deviceInit);
+                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
             }
+            else if (response!.ResultCd == "902")
+            {
+                // continue work
+                var deviceInit = await _fiscalInfoService.GetAllDeviceInitsAsync();
+
+                foreach (var device in deviceInit)
+                {
+                    _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(device));
+                }
+            }
+            else
+            {
+                throw new Exception("Cannot work with a device that is not initialized");
+            }
+
+            deviceInitialized = true;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

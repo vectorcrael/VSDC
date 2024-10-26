@@ -1,0 +1,303 @@
+{
+    "resultCd": "000",
+    "resultMsg": "It is succeeded",
+    "resultDt": "20241025201311",
+    "data": {
+        "clsList": [
+            {
+                "cdCls": "10",
+                "cdClsNm": "Quantity Unit",
+                "userDfnNm1": null,
+                "dtlList": [
+                    {
+                        "cd": "P1",
+                        "cdNm": "Pack",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "EA",
+                        "cdNm": "Each",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "PL",
+                        "cdNm": "Pallet",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "EACH",
+                        "cdNm": "Each",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "Ft",
+                        "cdNm": "Feet",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "MM",
+                        "cdNm": "Millimetre",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "In",
+                        "cdNm": "Inches",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "Oz",
+                        "cdNm": "Ounce",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "YR",
+                        "cdNm": "Year",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "M ",
+                        "cdNm": "Month",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "Wk",
+                        "cdNm": "Week",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "D",
+                        "cdNm": "Day",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "hr",
+                        "cdNm": "Hour",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "ha",
+                        "cdNm": "Hectare",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "yd2",
+                        "cdNm": "Square yards",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "ft2",
+                        "cdNm": "Square feet",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "cm2",
+                        "cdNm": "Square centimetre",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "m2",
+                        "cdNm": "Square metre",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "pt",
+                        "cdNm": "Pints",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "qt",
+                        "cdNm": "Quarts",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "mm",
+                        "cdNm": "Millilitre",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "2X",
+                        "cdNm": "Meter/Minute",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "4G",
+                        "cdNm": "Microliter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "4O",
+                        "cdNm": "Microfarad",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "4T",
+                        "cdNm": "Pikofarad",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "A",
+                        "cdNm": "Ampere",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "A87",
+                        "cdNm": "Gigaohm",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "A93",
+                        "cdNm": "Gram/Cubic meter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "ACR",
+                        "cdNm": "Acre",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B34",
+                        "cdNm": "Kilogram/cubic decimeter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B45",
+                        "cdNm": "Kilomol",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B47",
+                        "cdNm": "Kilonewton",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B73",
+                        "cdNm": "Meganewton",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B75",
+                        "cdNm": "Megohm",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B78",
+                        "cdNm": "Megavolt",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "B84",
+                        "cdNm": "Microampere",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "BAG",
+                        "cdNm": "Bag",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "BAR",
+                        "cdNm": "bar",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "BOT",
+                        "cdNm": "Bottle",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "BQK",
+                        "cdNm": "Becquerel/kilogram",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C10",
+                        "cdNm": "Millifarad",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C36",
+                        "cdNm": "Mol per cubic meter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C38",
+                        "cdNm": "Mol per liter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C39",
+                        "cdNm": "Nanoampere",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C3S",
+                        "cdNm": "Cubic centimeter/second",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C41",
+                        "cdNm": "Nanofarad",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "C56",
+                        "cdNm": "Newton/Square millimeter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "CCM",
+                        "cdNm": "Cubic centimeter",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "CD",
+                        "cdNm": "Candela",
+                        "userDfnCd1": null
+                    },
+                    {
+                        "cd": "CDM",
+                        "cdNm": "Cubic decimeter",
+                        "userDfnCd1": null
+                    }
+                ]
+            },
+            {
+                "cdCls": "400",
+                "cdClsNm": "Taxation Type",
+                "userDfnNm1": "Tax Rate",
+                "dtlList": [
+                    {
+                        "cd": "A",
+                        "cdNm": "Standard Rated(16%)",
+                        "userDfnCd1": "16"
+                    },
+                    {
+                        "cd": "B",
+                        "cdNm": "Minimum Taxable Value (MTV-16%)",
+                        "userDfnCd1": "16"
+                    },
+                    {
+                        "cd": "C3",
+                        "cdNm": "Zero-rated by nature",
+                        "userDfnCd1": "0"
+                    },
+                    {
+                        "cd": "D",
+                        "cdNm": "Exempt",
+                        "userDfnCd1": "0"
+                    },
+                    {
+                        "cd": "RVAT",
+                        "cdNm": "Reverse VAT",
+                        "userDfnCd1": "16"
+                    },
+                    {
+                        "cd": "E",
+                        "cdNm": "Disbursement",
+                        "userDfnCd1": "0"
+                    }
+                ]
+            }
+        ]
+    }
+}
