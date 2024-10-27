@@ -11,6 +11,7 @@ using VSDCAPIApiClient.DTOs;
 using Newtonsoft.Json.Linq;
 using DataLayer.Models2;
 using Microsoft.Identity.Client;
+using DataLayer.Models;
 
 namespace VSDCAPI
 {
@@ -19,6 +20,7 @@ namespace VSDCAPI
     public class TimerService : IHostedService, IDisposable
     {
         private bool deviceInitialized { get; set; } = false;
+        private bool codesUpdated { get; set; } = false;
         private readonly int timeOut = 60000;
         private readonly ILogger<TimerService> _logger;
         private System.Timers.Timer _timer;
@@ -54,10 +56,28 @@ namespace VSDCAPI
             if (!deviceInitialized)
                 await initializeDeviceAsync();
 
+            if (!codesUpdated)
+                await updateZraCodes();
+
             await FiscalizeInvoice();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task updateZraCodes()
+        {
+            _logger.LogInformation("Updating Zra Codes");
+            var request = new RequestParameters
+            {
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                lastReqDt = DataMapper.DeviceDetails.LastReqDt
+            };
+            var response = await _client.GetUnitsOfMeasure(request);
+            var jsonData = (JObject)response!.Data;
+            var zraCodes = jsonData.ToObject<ClassificationCodes>();
+            _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
         }
 
         private async Task testServerRunning()
@@ -107,7 +127,6 @@ namespace VSDCAPI
         }
         private async Task initializeDeviceAsync()
         {
-
             var request = new DeviceInitializationRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,

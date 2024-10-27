@@ -63,12 +63,14 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> GetUnitsOfMeasure(GetUnitsOfMeasureRequest request)
+        public async Task<ZraResponse?> GetUnitsOfMeasure(RequestParameters request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"code/selectCodes", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -77,12 +79,14 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> ClassificationCodes(GetUnitsOfMeasureRequest request)
+        public async Task<ZraResponse?> ClassificationCodes(RequestParameters request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"itemClass/selectItemsClass", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -91,7 +95,7 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> Notices(GetUnitsOfMeasureRequest request)
+        public async Task<Stream> Notices(RequestParameters request)
         {
             try
             {
@@ -105,7 +109,7 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> Branches(GetUnitsOfMeasureRequest request)
+        public async Task<Stream> Branches(RequestParameters request)
         {
             try
             {
@@ -119,7 +123,7 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<Stream> GetItems(GetUnitsOfMeasureRequest request)
+        public async Task<Stream> GetItems(RequestParameters request)
         {
             try
             {

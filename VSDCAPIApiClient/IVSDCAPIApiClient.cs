@@ -8,11 +8,11 @@ namespace VSDCAPI
     {
         Task<Stream> TestServerRunning();
         Task<ZraResponse?> DeviceInitialization(DeviceInitializationRequest request);
-        Task<Stream> GetUnitsOfMeasure(GetUnitsOfMeasureRequest request);
-        Task<Stream> ClassificationCodes(GetUnitsOfMeasureRequest request);
-        Task<Stream> Notices(GetUnitsOfMeasureRequest request);
-        Task<Stream> Branches(GetUnitsOfMeasureRequest request);
-        Task<Stream> GetItems(GetUnitsOfMeasureRequest request);
+        Task<ZraResponse?> GetUnitsOfMeasure(RequestParameters request);
+        Task<ZraResponse?> ClassificationCodes(RequestParameters request);
+        Task<Stream> Notices(RequestParameters request);
+        Task<Stream> Branches(RequestParameters request);
+        Task<Stream> GetItems(RequestParameters request);
         Task<Stream> Customers(CustomersRequest request);
         Task<Stream> SaveStockMaster(SaveStockMasterRequest request);
         Task<Stream> GetPurchases(CustomersRequest request);

@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace VSDCAPI
 {
-    public class GetUnitsOfMeasureRequest
+    public class RequestParameters
     {
         public string tpin { get; set; }
         public string bhfId { get; set; }

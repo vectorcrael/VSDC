@@ -15,6 +15,7 @@ namespace VSDCAPIApiClient
             public static string Tpin { get; set; } = "1002546945";
             public static string BhfId { get; set; } = "000";
             public static string DvcSrlNo { get; set; } = "CHC-EVO";
+            public static string LastReqDt { get; set; } = "20241025201419";
         }
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
