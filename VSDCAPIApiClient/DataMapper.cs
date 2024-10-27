@@ -8,7 +8,7 @@ namespace VSDCAPIApiClient
 {
     public class DataMapper
     {
-   
+
 
         public static class DeviceDetails
         {
@@ -39,10 +39,10 @@ namespace VSDCAPIApiClient
                 cfmDt = zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
                 salesDt = (zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
                 rfdRsnCd = zraInvoice.RefundReasonCode,
-                taxblAmtA = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
-                taxblAmtD = noVatOnPatent ? (double) zraInvoice.Items.Sum( item => item.VatableAmount) : 0,
-                taxblAmtTot = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
-                taxAmtTot = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.TaxAmount),
+                taxblAmtA = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
+                taxblAmtD = noVatOnPatent ? (double)zraInvoice.Items.Sum(item => item.VatableAmount) : 0,
+                taxblAmtTot = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
+                taxAmtTot = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
                 regrNm = "admin",
@@ -55,9 +55,9 @@ namespace VSDCAPIApiClient
                 destnCountryCd = zraInvoice.DestinationCountryCode,
                 dbtRsnCd = "",
                 invcAdjustReason = "",
-                totAmt = (double) zraInvoice.Items.Sum( item => item.TotalAmount),
-                vatTaxblAmt = noVatOnPatent ? 0 : (double) zraInvoice.Items.Sum( item => item.VatableAmount),
-                totTaxblAmt = (double) zraInvoice.Items.Sum( item => item.VatableAmount),
+                totAmt = (double)zraInvoice.Items.Sum(item => item.TotalAmount),
+                vatTaxblAmt = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
+                totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
                 totItemCnt = zraInvoice.Items.Count
 
             };
@@ -169,7 +169,20 @@ namespace VSDCAPIApiClient
             };
         }
 
+        public static ZraClassCode MapClassCode(DetailInfo code)
+        {
+            return new ZraClassCode
+            {
+                ResultDt = code.cd,
+                TemClsCd = code.cd,
+                ItemClsNm = code.cdNm,
+                ItemClsLvl = 0,
+                TaxTyCd = "",
+                MjrTgYn = "",
+                UseYn = ""
+            };
 
+        }
     }
 }
 

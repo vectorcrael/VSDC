@@ -78,6 +78,16 @@ namespace VSDCAPI
             var jsonData = (JObject)response!.Data;
             var zraCodes = jsonData.ToObject<ClassificationCodes>();
             _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
+            //save the data back to the database
+            foreach (var codeGroup in zraCodes!.clsList)
+            {
+                foreach (var code in codeGroup.dtlList)
+                {
+                    ZraClassCode zraClassCode = DataMapper.MapClassCode(code);
+                    await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
+                }
+            }
+            _logger.LogInformation("Done uploading the Zra Codes.");
         }
 
         private async Task testServerRunning()
