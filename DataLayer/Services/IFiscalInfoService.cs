@@ -16,8 +16,10 @@ namespace DataLayer.Services
         Task<List<ZraStockMaster>> GetStockMastersAsync();
         Task<List<DeviceInit>> GetAllDeviceInitsAsync();
         Task<int> SetDeviceInitsAsync(DeviceInit deviceInit);
+        Task<List<ZraSelectCode>> GetAllZraSelectCodesAsync();
         Task<List<ZraClassCode>> GetAllZraClassCodesAsync();
         Task<int> SetZraClassCodeAsync(ZraClassCode zraClassCodes);
+        Task<int> SetZraSelectCodesAsync(ZraSelectCode zraSelectCode);
     }
 }
 

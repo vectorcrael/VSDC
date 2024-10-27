@@ -98,6 +98,20 @@ namespace DataLayer.Controllers
             await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
             return NoContent();
         }
+
+        [HttpGet("selected-codes")]
+        public async Task<IActionResult> GetZraSelectCodes()
+        {
+            var codes = await _fiscalInfoService.GetAllZraSelectCodesAsync();
+            return Ok(codes);
+        }
+
+        [HttpPost("selected-codes")]
+        public async Task<IActionResult> UpdateSelectedCodes([FromBody] ZraSelectCode zraClassCode)
+        {
+            await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
+            return NoContent();
+        }
     }
 }
 

@@ -144,6 +144,29 @@ namespace DataLayer.Services
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateDeviceDetails @resultCd, @resultMsg, @resultDt, @tpin, @taxprNm, @bsnsActv, @bhfId, @bhfNm, @bhfOpenDt, @prvncNm, @dstrtNm, @sctrNm, @locDesc, @hqYn, @mgrNm, @mgrTelNo, @mgrEmail, @sdicId, @mrcNo, @lastSaleInvcNo, @lastPchsInvcNo, @lastSaleRcptNo, @lastInvcNo, @lastTrainInvcNo, @lastProfrmInvcNo, @lastCopyInvcNo", parameters);
         }
 
+        public async Task<List<ZraSelectCode>> GetAllZraSelectCodesAsync()
+        {
+            var zraCodes = await _context.ZraSelectCodes
+                .FromSqlRaw("SELECT * FROM ZRAStandardCodes")
+                .ToListAsync();
+            return zraCodes;
+        }
+
+        public async Task<int> SetZraSelectCodesAsync(ZraSelectCode zraSelectCode)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@resultDt", zraSelectCode.ResultDt),
+                new SqlParameter("@cdCls", zraSelectCode.CdCls),
+                new SqlParameter("@cdClsNm", zraSelectCode.CdClsNm),
+                new SqlParameter("@cd", zraSelectCode.Cd),
+                new SqlParameter("@cdNm", zraSelectCode.CdNm),
+                new SqlParameter("@userDfnNm1", zraSelectCode.UserDfnNm1)
+            };
+
+            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAStandardCodes @resultDt, @cdCls, @cdClsNm, @cd, @cdNm, @userDfnNm1", parameters);
+        }
+
         public async Task<List<ZraClassCode>> GetAllZraClassCodesAsync()
         {
             var zraCodes = await _context.ZraClassCodes
@@ -165,7 +188,7 @@ namespace DataLayer.Services
                 new SqlParameter("@useYn", zraClassCodes.UseYn)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC SetZraClassCode @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
+            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAClassCodes @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
         }
     }
 }

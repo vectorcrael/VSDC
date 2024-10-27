@@ -79,7 +79,7 @@ namespace VSDCAPI
             }
         }
     
-        public async Task<ZraResponse?> ClassificationCodes(RequestParameters request)
+        public async Task<ZraResponse?> GetClassificationCodes(RequestParameters request)
         {
             try
             {

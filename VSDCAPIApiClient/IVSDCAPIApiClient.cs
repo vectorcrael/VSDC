@@ -9,7 +9,7 @@ namespace VSDCAPI
         Task<Stream> TestServerRunning();
         Task<ZraResponse?> DeviceInitialization(DeviceInitializationRequest request);
         Task<ZraResponse?> GetUnitsOfMeasure(RequestParameters request);
-        Task<ZraResponse?> ClassificationCodes(RequestParameters request);
+        Task<ZraResponse?> GetClassificationCodes(RequestParameters request);
         Task<Stream> Notices(RequestParameters request);
         Task<Stream> Branches(RequestParameters request);
         Task<Stream> GetItems(RequestParameters request);

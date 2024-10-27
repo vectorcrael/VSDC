@@ -169,17 +169,28 @@ namespace VSDCAPIApiClient
             };
         }
 
-        public static ZraClassCode MapClassCode(DetailInfo code)
+        public static ZraSelectCode MapSelectCode(DetailInfo code)
+        {
+            return new ZraSelectCode
+            {
+                Cd = code.cd,
+                CdNm = code.cdNm,
+                UserDfnNm1 = code.userDfnCd1
+            };
+
+        }
+
+        public static ZraClassCode MapClassCode(ItemClass code)
         {
             return new ZraClassCode
             {
-                ResultDt = code.cd,
-                TemClsCd = code.cd,
-                ItemClsNm = code.cdNm,
-                ItemClsLvl = 0,
-                TaxTyCd = "",
-                MjrTgYn = "",
-                UseYn = ""
+                ResultDt = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                TemClsCd = code.itemClsCd,
+                ItemClsNm = code.itemClsNm,
+                ItemClsLvl = code.itemClsLvl,
+                TaxTyCd = code.taxTyCd,
+                MjrTgYn = code.mjrTgYn,
+                UseYn = code.useYn
             };
 
         }

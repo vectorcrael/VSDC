@@ -20,7 +20,8 @@ namespace VSDCAPI
     public class TimerService : IHostedService, IDisposable
     {
         private bool deviceInitialized { get; set; } = false;
-        private bool codesUpdated { get; set; } = false;
+        private bool selectCodesUpdated { get; set; } = false;
+        private bool classificationCodesUpdated { get; set; } = false;
         private readonly int timeOut = 60000;
         private readonly ILogger<TimerService> _logger;
         private System.Timers.Timer _timer;
@@ -56,8 +57,11 @@ namespace VSDCAPI
             if (!deviceInitialized)
                 await initializeDeviceAsync();
 
-            if (!codesUpdated)
-                await updateZraCodes();
+            if (!selectCodesUpdated)
+                await updateSelectCodes();
+
+            if (!classificationCodesUpdated)
+                await updateClassificationCodes();
 
             await FiscalizeInvoice();
 
@@ -65,9 +69,9 @@ namespace VSDCAPI
             await StopAsync(CancellationToken.None);
         }
 
-        private async Task updateZraCodes()
+        private async Task updateSelectCodes()
         {
-            _logger.LogInformation("Updating Zra Codes");
+            _logger.LogInformation("Updating Select Codes");
             var request = new RequestParameters
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
@@ -76,18 +80,49 @@ namespace VSDCAPI
             };
             var response = await _client.GetUnitsOfMeasure(request);
             var jsonData = (JObject)response!.Data;
-            var zraCodes = jsonData.ToObject<ClassificationCodes>();
+            var zraCodes = jsonData.ToObject<SelectCodes>();
             _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
             //save the data back to the database
             foreach (var codeGroup in zraCodes!.clsList)
             {
                 foreach (var code in codeGroup.dtlList)
                 {
-                    ZraClassCode zraClassCode = DataMapper.MapClassCode(code);
-                    await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
+                    ZraSelectCode zraClassCode = DataMapper.MapSelectCode(code);
+                    zraClassCode.CdCls = codeGroup.cdCls;
+                    zraClassCode.CdClsNm = codeGroup.cdClsNm;
+                    var savedCode = await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
+                    _logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
+
                 }
             }
-            _logger.LogInformation("Done uploading the Zra Codes.");
+            _logger.LogInformation("Done uploading the Select Codes.");
+            selectCodesUpdated = true;
+        }
+
+        private async Task updateClassificationCodes()
+        {
+            _logger.LogInformation("Updating Classification Codes");
+            var request = new RequestParameters
+            {
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                lastReqDt = DataMapper.DeviceDetails.LastReqDt
+            };
+            var response = await _client.GetClassificationCodes(request);
+            var jsonData = (JObject)response!.Data;
+            var zraCodes = jsonData.ToObject<ClassificationCodes>();
+            _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
+            //save the data back to the database
+            foreach (var itemClass in zraCodes!.itemClsList)
+            {
+
+                ZraClassCode zraClassCode = DataMapper.MapClassCode(itemClass);
+                var savedCode = await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
+                _logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
+
+            }
+            _logger.LogInformation("Done uploading the Classification Codes.");
+            classificationCodesUpdated = true;
         }
 
         private async Task testServerRunning()

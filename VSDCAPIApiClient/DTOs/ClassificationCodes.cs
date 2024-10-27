@@ -5,20 +5,15 @@ namespace VSDCAPIApiClient.DTOs;
 
 public class ClassificationCodes
 {
-    public List<ClassInfo> clsList { get; set; }
+    public List<ItemClass> itemClsList { get; set; }
 }
 
-public class ClassInfo
+public class ItemClass
 {
-    public string cdCls { get; set; }
-    public string cdClsNm { get; set; }
-    public string? userDfnNm1 { get; set; }
-    public List<DetailInfo> dtlList { get; set; }
-}
-
-public class DetailInfo
-{
-    public string cd { get; set; }
-    public string cdNm { get; set; }
-    public string? userDfnCd1 { get; set; }
+    public string itemClsCd { get; set; }
+    public string itemClsNm { get; set; }
+    public int itemClsLvl { get; set; }
+    public string? taxTyCd { get; set; } // Nullable
+    public string? mjrTgYn { get; set; } // Nullable
+    public string useYn { get; set; }
 }

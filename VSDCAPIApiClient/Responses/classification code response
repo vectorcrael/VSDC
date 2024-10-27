@@ -1,0 +1,73 @@
+{
+    "resultCd": "000",
+    "resultMsg": "It is succeeded",
+    "resultDt": "20240126000001",
+    "data": {
+        "itemClsList": [
+            {
+                "itemClsCd": "21102100",
+                "itemClsNm": "Agricultural processing machinery and equipment",
+                "itemClsLvl": 3,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201529",
+                "itemClsNm": "Line Tape",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201532",
+                "itemClsNm": "Polyvinyl chloride PVC tape",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201536",
+                "itemClsNm": "Polyethylene fleece tape",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201601",
+                "itemClsNm": "Chemical adhesives",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201603",
+                "itemClsNm": "Gums",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201606",
+                "itemClsNm": "Caulks",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            },
+            {
+                "itemClsCd": "31201609",
+                "itemClsNm": "Hot melt adhesives",
+                "itemClsLvl": 4,
+                "taxTyCd": null,
+                "mjrTgYn": null,
+                "useYn": "Y"
+            }
+        ]
+    }
+}
