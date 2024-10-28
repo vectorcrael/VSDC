@@ -161,7 +161,7 @@ namespace DataLayer.Services
                 new SqlParameter("@cdClsNm", zraSelectCode.CdClsNm),
                 new SqlParameter("@cd", zraSelectCode.Cd),
                 new SqlParameter("@cdNm", zraSelectCode.CdNm),
-                new SqlParameter("@userDfnNm1", zraSelectCode.UserDfnNm1)
+                new SqlParameter("@userDfnNm1", string.IsNullOrEmpty(zraSelectCode.UserDfnNm1) ? "": zraSelectCode.UserDfnNm1)
             };
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAStandardCodes @resultDt, @cdCls, @cdClsNm, @cd, @cdNm, @userDfnNm1", parameters);
