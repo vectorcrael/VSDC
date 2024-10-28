@@ -156,7 +156,7 @@ namespace DataLayer.Services
         {
             var parameters = new[]
             {
-                new SqlParameter("@resultDt", zraSelectCode.ResultDt),
+                new SqlParameter("@resultDt", string.IsNullOrEmpty(zraSelectCode.ResultDt) ? DateTime.Now.ToString("yyyyMMddHHmmss") : zraSelectCode.ResultDt),
                 new SqlParameter("@cdCls", zraSelectCode.CdCls),
                 new SqlParameter("@cdClsNm", zraSelectCode.CdClsNm),
                 new SqlParameter("@cd", zraSelectCode.Cd),
@@ -179,7 +179,7 @@ namespace DataLayer.Services
         {
             var parameters = new[]
             {
-                new SqlParameter("@resultDt", zraClassCodes.ResultDt),
+                new SqlParameter("@resultDt", string.IsNullOrEmpty(zraClassCodes.ResultDt) ? DateTime.Now.ToString("yyyyMMddHHmmss") : zraClassCodes.ResultDt),
                 new SqlParameter("@temClsCd", zraClassCodes.TemClsCd),
                 new SqlParameter("@itemClsNm", zraClassCodes.ItemClsNm),
                 new SqlParameter("@itemClsLvl", zraClassCodes.ItemClsLvl),
