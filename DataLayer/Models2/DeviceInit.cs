@@ -11,12 +11,12 @@ namespace DataLayer.Models2
         public string ResultDt { get; set; }
         public string Tpin { get; set; }
         public string TaxprNm { get; set; }
-        public string BsnsActv { get; set; }
+        public string? BsnsActv { get; set; }
         public string BhfId { get; set; }
         public string BhfNm { get; set; }
         public string BhfOpenDt { get; set; }
         public string PrvncNm { get; set; }
-        public string DstrtNm { get; set; }
+        public string? DstrtNm { get; set; }
         public string SctrNm { get; set; }
         public string LocDesc { get; set; }
         public string HqYn { get; set; }
