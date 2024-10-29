@@ -183,9 +183,9 @@ namespace DataLayer.Services
                 new SqlParameter("@temClsCd", zraClassCodes.TemClsCd),
                 new SqlParameter("@itemClsNm", zraClassCodes.ItemClsNm),
                 new SqlParameter("@itemClsLvl", zraClassCodes.ItemClsLvl),
-                new SqlParameter("@taxTyCd", zraClassCodes.TaxTyCd),
-                new SqlParameter("@mjrTgYn", zraClassCodes.MjrTgYn),
-                new SqlParameter("@useYn", zraClassCodes.UseYn)
+                new SqlParameter("@taxTyCd", zraClassCodes.TaxTyCd ?? (object)DBNull.Value),
+                new SqlParameter("@mjrTgYn", zraClassCodes.MjrTgYn ?? (object)DBNull.Value),
+                new SqlParameter("@useYn", zraClassCodes.UseYn ?? (object)DBNull.Value)
             };
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAClassCodes @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);

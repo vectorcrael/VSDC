@@ -88,6 +88,7 @@ namespace VSDCAPI
                 foreach (var code in codeGroup.dtlList)
                 {
                     ZraSelectCode zraClassCode = DataMapper.MapSelectCode(code);
+                    zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
                     zraClassCode.CdCls = codeGroup.cdCls;
                     zraClassCode.CdClsNm = codeGroup.cdClsNm;
                     var savedCode = await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
