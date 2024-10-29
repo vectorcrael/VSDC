@@ -113,8 +113,8 @@ namespace VSDCAPI
         public double isrcRt { get; set; }
         public double isrcAmt { get; set; }
         public string vatCatCd { get; set; }
-        public object exciseTxCatCd { get; set; }
-        public object tlCatCd { get; set; }
+        public string exciseTxCatCd { get; set; }
+        public string tlCatCd { get; set; }
         public string iplCatCd { get; set; }
         public double vatTaxblAmt { get; set; }
         public double vatAmt { get; set; }

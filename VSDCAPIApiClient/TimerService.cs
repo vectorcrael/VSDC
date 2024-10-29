@@ -35,7 +35,6 @@ namespace VSDCAPI
             _timer.Elapsed += OnTimedEventAsync!;
             _timer.AutoReset = true;
             _timer.Enabled = true;
-
             return Task.CompletedTask;
         }
 
@@ -71,39 +70,40 @@ namespace VSDCAPI
 
             foreach (var item in stockMasterItems)
             {
-                      var request = new UpdateItemRequest
-                      {
+                var request = new UpdateItemRequest
+                {
 
-                          tpin = DataMapper.DeviceDetails.Tpin,
-                          bhfId = DataMapper.DeviceDetails.BhfId,
-                          itemCd = item.ItemCode ?? "",
-                          itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
-                          itemTyCd = item.ItemTypeCode ?? "",
-                          itemNm = item.Description ?? "",
-                          itemStdNm = item.Description ?? "",
-                          orgnNatCd = item.OriginNationCode ?? "",
-                          pkgUnitCd = item.PackagingUnitCode ?? "",
-                          qtyUnitCd = item.QuantityUnitCode ?? "",
-                          vatCatCd = item.VatCatCd ?? "",
-                          iplCatCd = null,
-                          tlCatCd = null,
-                          exciseTxCatCd = null,
-                          btchNo = null,
-                          bcd = null,
-                          dftPrc = (double)(item.Prc ?? 0),
-                          addInfo = null,
-                          sftyQty = 0,
-                          isrcAplcbYn = "N",
-                          useYn = "Y",
-                          regrNm = "ADMIN",
-                          regrId = "ADMIN",
-                          modrNm = "ADMIN",
-                          modrId = "ADMIN"
-                      };
+                    tpin = DataMapper.DeviceDetails.Tpin,
+                    bhfId = DataMapper.DeviceDetails.BhfId,
+                    itemCd = item.ItemCode ?? "",
+                    itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
+                    itemTyCd = item.ItemTypeCode ?? "",
+                    itemNm = item.Description ?? "",
+                    itemStdNm = item.Description ?? "",
+                    orgnNatCd = item.OriginNationCode ?? "",
+                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    vatCatCd = item.VatCatCd ?? "",
+                    iplCatCd = null,
+                    tlCatCd = null,
+                    exciseTxCatCd = null,
+                    btchNo = null,
+                    bcd = null,
+                    dftPrc = (double)(item.Prc ?? 0),
+                    addInfo = null,
+                    sftyQty = 0,
+                    isrcAplcbYn = "N",
+                    useYn = "Y",
+                    regrNm = "ADMIN",
+                    regrId = "ADMIN",
+                    modrNm = "ADMIN",
+                    modrId = "ADMIN"
+                };
                 _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var response = await _client.SaveItems(request);
+                _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+
             }
-            _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
         private async Task updateStockAdjustments()
