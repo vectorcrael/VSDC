@@ -63,10 +63,67 @@ namespace VSDCAPI
             if (!classificationCodesUpdated)
                 await updateClassificationCodes();
 
+            await updateStockMaster();
+
             await FiscalizeInvoice();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task updateStockMaster()
+        {
+            _logger.LogInformation("Updating Stock Master");
+
+            var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
+            List<ItemList> ItemList = new List<ItemList>();
+            var itemSeq = 0;
+            foreach (var item in stockMasterItems)
+            {
+                ItemList.Add(new VSDCAPI.ItemList
+                {
+                    ItemSeq = ++itemSeq,
+                    ItemCd = item.ItemCode ?? "",
+                    ItemClsCd = item.ItemClassificationCode ??  "",
+                    ItemNm = item.ItemTypeCode ?? "",
+                    PkgUnitCd = item.PackagingUnitCode ?? "",
+                    QtyUnitCd = item.QuantityUnitCode ?? "",
+                    Qty = item.Quantity,
+                    Prc = (double) (item.Prc ?? 0),
+                    SplyAmt = (double) (item.SplyAmt ?? 0),
+                    TaxblAmt = (double) (item.TaxblAmt ?? 0),
+                    VatCatCd = item.TaxLabel ?? "",
+                    TaxAmt = (double) (item.TaxAmt ?? 0),
+                    TotAmt = (double) (item.TotAmt ?? 0)
+                });
+            }
+
+            var request = new SaveStockItemRequest
+            {
+                Tpin = DataMapper.DeviceDetails.Tpin,
+                BhfId = DataMapper.DeviceDetails.BhfId,
+                SarNo = 0,
+                OrgSarNo = 0,
+                RegTyCd = "",
+                CustTpin = "",
+                CustNm = "",
+                CustBhfId = "",
+                SarTyCd = "",
+                OcrnDt = "",
+                TotItemCnt = ItemList.Count,
+                TotTaxblAmt = ItemList.Sum(item=> item.TaxblAmt),
+                TotTaxAmt = ItemList.Sum(item=> item.TaxAmt),
+                TotAmt = ItemList.Sum(item=> item.TotAmt),
+                Remark = "",
+                RegrId = "",
+                RegrNm = "",
+                ModrNm = "",
+                ModrId = "",
+                ItemList = ItemList
+            };
+            _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await _client.SaveStockItem(request);
+            _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
         private async Task updateSelectCodes()
