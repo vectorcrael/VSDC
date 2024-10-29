@@ -89,12 +89,12 @@ namespace VSDCAPI
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
                     Qty = item.Quantity,
-                    Prc = 0.0,
-                    SplyAmt = 0.0,
-                    TaxblAmt = 0.0,
+                    Prc = (double) (item.Prc ?? 0),
+                    SplyAmt = (double) (item.SplyAmt ?? 0),
+                    TaxblAmt = (double) (item.TaxblAmt ?? 0),
                     VatCatCd = item.TaxLabel ?? "",
-                    TaxAmt = 0.0,
-                    TotAmt = 0.0
+                    TaxAmt = (double) (item.TaxAmt ?? 0),
+                    TotAmt = (double) (item.TotAmt ?? 0)
                 });
             }
 
