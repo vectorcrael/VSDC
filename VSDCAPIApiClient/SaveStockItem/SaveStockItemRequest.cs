@@ -20,8 +20,8 @@ namespace VSDCAPI
         public int TotItemCnt { get; set; }
         public double TotTaxblAmt { get; set; }
         public double TotTaxAmt { get; set; }
-        public int TotAmt { get; set; }
-        public object Remark { get; set; }
+        public double TotAmt { get; set; }
+        public string Remark { get; set; }
         public string RegrId { get; set; }
         public string RegrNm { get; set; }
         public string ModrNm { get; set; }
@@ -37,12 +37,12 @@ namespace VSDCAPI
         public string ItemNm { get; set; }
         public string PkgUnitCd { get; set; }
         public string QtyUnitCd { get; set; }
-        public int Qty { get; set; }
-        public int Prc { get; set; }
-        public int SplyAmt { get; set; }
+        public decimal Qty { get; set; }
+        public double Prc { get; set; }
+        public double SplyAmt { get; set; }
         public double TaxblAmt { get; set; }
         public string VatCatCd { get; set; }
         public double TaxAmt { get; set; }
-        public int TotAmt { get; set; }
+        public double TotAmt { get; set; }
     }
 }

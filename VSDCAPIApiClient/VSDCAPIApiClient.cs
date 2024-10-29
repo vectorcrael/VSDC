@@ -35,7 +35,7 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
+
         public async Task<ZraResponse?> DeviceInitialization(DeviceInitializationRequest request)
         {
             try
@@ -49,7 +49,7 @@ namespace VSDCAPI
                 // Read the content as a string
                 var contentString = await response.Content.ReadAsStringAsync();
 
-                // Deserialize the content
+                // Deserialize the stream content 
                 var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
 
                 // Convert the string back to a stream
@@ -62,7 +62,7 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
+
         public async Task<ZraResponse?> GetUnitsOfMeasure(RequestParameters request)
         {
             try
@@ -78,7 +78,7 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
+
         public async Task<ZraResponse?> GetClassificationCodes(RequestParameters request)
         {
             try
@@ -94,13 +94,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> Notices(RequestParameters request)
+
+        public async Task<ZraResponse?> Notices(RequestParameters request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"notices/selectNotices", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -108,13 +111,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> Branches(RequestParameters request)
+
+        public async Task<ZraResponse?> Branches(RequestParameters request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"branches/selectBranches", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -122,13 +128,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> GetItems(RequestParameters request)
+
+        public async Task<ZraResponse?> GetItems(RequestParameters request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"items/selectItems", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -136,13 +145,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> Customers(CustomersRequest request)
+
+        public async Task<ZraResponse?> Customers(CustomersRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"customers/selectCustomer", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -150,13 +162,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> SaveStockMaster(SaveStockMasterRequest request)
+
+        public async Task<ZraResponse?> SaveStockMaster(SaveStockMasterRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"stockMaster/saveStockMaster", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -164,13 +179,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> GetPurchases(CustomersRequest request)
+
+        public async Task<ZraResponse?> GetPurchases(CustomersRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsPurchase/selectTrnsPurchaseSales", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -178,13 +196,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> GetStockItems(CustomersRequest request)
+
+        public async Task<ZraResponse?> GetStockItems(CustomersRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"stock/selectStockItems", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -192,56 +213,14 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> SaveStockItem(SaveStockItemRequest request)
+
+        public async Task<ZraResponse?> SaveStockItem(SaveStockItemRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"stock/saveStockItems", request);
-                return await response.Content.ReadAsStreamAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error");
-                throw;
-            }
-        }
-    
-        public async Task<Stream> SavePurchases(SavePurchasesRequest request)
-        {
-            try
-            {
-                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsPurchase/savePurchase", request);
-                return await response.Content.ReadAsStreamAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error");
-                throw;
-            }
-        }
-    
-        public async Task<Stream> SelectInvoice(SelectInvoiceRequest request)
-        {
-            try
-            {
-                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsSales/selectInvoice", request);
-                return await response.Content.ReadAsStreamAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error");
-                throw;
-            }
-        }
-    
-        public async Task<ZraResponse?> SaveSales(SaveSalesRequest request)
-        {
-            try
-            {
-                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsSales/saveSales", request);
                 var contentString = await response.Content.ReadAsStringAsync();
-                // Deserialize the content
+
                 var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
                 return responseDeserialized;
             }
@@ -251,13 +230,67 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> UpdateImportItems(UpdateImportItemsRequest request)
+
+        public async Task<ZraResponse?> SavePurchases(SavePurchasesRequest request)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsPurchase/savePurchase", request);
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error");
+                throw;
+            }
+        }
+
+        public async Task<ZraResponse?> SelectInvoice(SelectInvoiceRequest request)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsSales/selectInvoice", request);
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error");
+                throw;
+            }
+        }
+
+        public async Task<ZraResponse?> SaveSales(SaveSalesRequest request)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsNewtonsoftJsonAsync($"trnsSales/saveSales", request);
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error");
+                throw;
+            }
+        }
+
+        public async Task<ZraResponse?> UpdateImportItems(UpdateImportItemsRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"imports/updateImportItems", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -265,13 +298,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> GetImports(GetImportsRequest request)
+
+        public async Task<ZraResponse?> GetImports(GetImportsRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"imports/selectImportItems", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -279,13 +315,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> GetItems2(CustomersRequest request)
+
+        public async Task<ZraResponse?> GetItems2(CustomersRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"items/selectItems", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -293,13 +332,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> SaveItemComposition(SaveItemCompositionRequest request)
+
+        public async Task<ZraResponse?> SaveItemComposition(SaveItemCompositionRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"items/saveItemComposition", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -307,13 +349,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> UpdateItem(UpdateItemRequest request)
+
+        public async Task<ZraResponse?> UpdateItem(UpdateItemRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"items/updateItem", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -321,13 +366,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> SaveItems(UpdateItemRequest request)
+
+        public async Task<ZraResponse?> SaveItems(UpdateItemRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"items/saveItem", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -335,13 +383,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> BranchCustomers(BranchCustomersRequest request)
+
+        public async Task<ZraResponse?> BranchCustomers(BranchCustomersRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"branches/saveBrancheCustomers", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -349,13 +400,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> BranchUser(BranchUserRequest request)
+
+        public async Task<ZraResponse?> BranchUser(BranchUserRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"branches/saveBrancheUser", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
@@ -363,13 +417,16 @@ namespace VSDCAPI
                 throw;
             }
         }
-    
-        public async Task<Stream> DeviceInitializationTest(DeviceInitializationRequest request)
+
+        public async Task<ZraResponse?> DeviceInitializationTest(DeviceInitializationRequest request)
         {
             try
             {
                 var response = await _httpClient.PostAsNewtonsoftJsonAsync($"initializer/selectInitInfo", request);
-                return await response.Content.ReadAsStreamAsync();
+                var contentString = await response.Content.ReadAsStringAsync();
+
+                var responseDeserialized = JsonConvert.DeserializeObject<ZraResponse>(contentString);
+                return responseDeserialized;
             }
             catch (Exception ex)
             {
