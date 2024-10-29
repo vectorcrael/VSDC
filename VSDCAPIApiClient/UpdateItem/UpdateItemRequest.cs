@@ -18,19 +18,20 @@ namespace VSDCAPI
         public string pkgUnitCd { get; set; }
         public string qtyUnitCd { get; set; }
         public string vatCatCd { get; set; }
-        public string iplCatCd { get; set; }
-        public object tlCatCd { get; set; }
-        public object exciseTxCatCd { get; set; }
-        public object btchNo { get; set; }
-        public object bcd { get; set; }
+        public string? iplCatCd { get; set; }
+        public string? tlCatCd { get; set; }
+        public string? exciseTxCatCd { get; set; }
+        public string? btchNo { get; set; }
+        public string? bcd { get; set; }
         public double dftPrc { get; set; }
-        public object addInfo { get; set; }
-        public int sftyQty { get; set; }
+        public string? addInfo { get; set; }
+        public decimal sftyQty { get; set; }
         public string isrcAplcbYn { get; set; }
         public string useYn { get; set; }
         public string regrNm { get; set; }
         public string regrId { get; set; } = "1";
         public string modrNm { get; set; }
         public string modrId { get; set; }
+
     }
 }

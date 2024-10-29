@@ -17,30 +17,22 @@ namespace VSDCAPI
 {
 
 
-    public class TimerService : IHostedService, IDisposable
+    public class TimerService(ILogger<TimerService> logger, IFiscalInfoService fiscalInfoService, IVSDCAPIApiClient vSDCAPIApiClient) : IHostedService, IDisposable
     {
         private bool deviceInitialized { get; set; } = false;
         private bool selectCodesUpdated { get; set; } = false;
         private bool classificationCodesUpdated { get; set; } = false;
         private readonly int timeOut = 60000;
-        private readonly ILogger<TimerService> _logger;
-        private System.Timers.Timer _timer;
-        private readonly IFiscalInfoService _fiscalInfoService;
-        private readonly IVSDCAPIApiClient _client;
-
-        public TimerService(ILogger<TimerService> logger, IFiscalInfoService fiscalInfoService, IVSDCAPIApiClient vSDCAPIApiClient)
-        {
-            _logger = logger;
-            _fiscalInfoService = fiscalInfoService;
-            _client = vSDCAPIApiClient;
-        }
+        private readonly ILogger<TimerService> _logger = logger;
+        private System.Timers.Timer? _timer;
+        private readonly IFiscalInfoService _fiscalInfoService = fiscalInfoService;
+        private readonly IVSDCAPIApiClient _client = vSDCAPIApiClient;
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Timer Service is starting.");
-
             _timer = new System.Timers.Timer(timeOut);
-            _timer.Elapsed += OnTimedEventAsync;
+            _timer.Elapsed += OnTimedEventAsync!;
             _timer.AutoReset = true;
             _timer.Enabled = true;
 
@@ -76,6 +68,49 @@ namespace VSDCAPI
             _logger.LogInformation("Updating Stock Master");
 
             var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
+
+            foreach (var item in stockMasterItems)
+            {
+                      var request = new UpdateItemRequest
+                      {
+
+                          tpin = DataMapper.DeviceDetails.Tpin,
+                          bhfId = DataMapper.DeviceDetails.BhfId,
+                          itemCd = item.ItemCode ?? "",
+                          itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
+                          itemTyCd = item.ItemTypeCode ?? "",
+                          itemNm = item.Description ?? "",
+                          itemStdNm = item.Description ?? "",
+                          orgnNatCd = item.OriginNationCode ?? "",
+                          pkgUnitCd = item.PackagingUnitCode ?? "",
+                          qtyUnitCd = item.QuantityUnitCode ?? "",
+                          vatCatCd = item.VatCatCd ?? "",
+                          iplCatCd = null,
+                          tlCatCd = null,
+                          exciseTxCatCd = null,
+                          btchNo = null,
+                          bcd = null,
+                          dftPrc = (double)(item.Prc ?? 0),
+                          addInfo = null,
+                          sftyQty = 0,
+                          isrcAplcbYn = "N",
+                          useYn = "Y",
+                          regrNm = "ADMIN",
+                          regrId = "ADMIN",
+                          modrNm = "ADMIN",
+                          modrId = "ADMIN"
+                      };
+                _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var response = await _client.SaveItems(request);
+            }
+            _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
+
+        private async Task updateStockAdjustments()
+        {
+            _logger.LogInformation("Updating Stock Master");
+
+            var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
             List<ItemList> ItemList = new List<ItemList>();
             var itemSeq = 0;
             foreach (var item in stockMasterItems)
@@ -84,17 +119,17 @@ namespace VSDCAPI
                 {
                     ItemSeq = ++itemSeq,
                     ItemCd = item.ItemCode ?? "",
-                    ItemClsCd = item.ItemClassificationCode ??  "",
+                    ItemClsCd = item.ItemClassificationCode ?? "",
                     ItemNm = item.ItemTypeCode ?? "",
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
                     Qty = item.Quantity,
-                    Prc = (double) (item.Prc ?? 0),
-                    SplyAmt = (double) (item.SplyAmt ?? 0),
-                    TaxblAmt = (double) (item.TaxblAmt ?? 0),
+                    Prc = (double)(item.Prc ?? 0),
+                    SplyAmt = (double)(item.SplyAmt ?? 0),
+                    TaxblAmt = (double)(item.TaxblAmt ?? 0),
                     VatCatCd = item.TaxLabel ?? "",
-                    TaxAmt = (double) (item.TaxAmt ?? 0),
-                    TotAmt = (double) (item.TotAmt ?? 0)
+                    TaxAmt = (double)(item.TaxAmt ?? 0),
+                    TotAmt = (double)(item.TotAmt ?? 0)
                 });
             }
 
@@ -111,9 +146,9 @@ namespace VSDCAPI
                 SarTyCd = "",
                 OcrnDt = "",
                 TotItemCnt = ItemList.Count,
-                TotTaxblAmt = ItemList.Sum(item=> item.TaxblAmt),
-                TotTaxAmt = ItemList.Sum(item=> item.TaxAmt),
-                TotAmt = ItemList.Sum(item=> item.TotAmt),
+                TotTaxblAmt = ItemList.Sum(item => item.TaxblAmt),
+                TotTaxAmt = ItemList.Sum(item => item.TaxAmt),
+                TotAmt = ItemList.Sum(item => item.TotAmt),
                 Remark = "",
                 RegrId = "",
                 RegrNm = "",
@@ -206,7 +241,7 @@ namespace VSDCAPI
                     //once the signature is generated save back to the database
                     var jsonData = (JObject)response.Data; // Cast response.Data to JObject
                     var sd = jsonData.ToObject<SaveInvoiceData>();
-                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd.qrCodeUrl);
+                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
                         signature: qrCode, //sd.rcptSign
