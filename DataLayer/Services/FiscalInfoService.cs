@@ -190,5 +190,34 @@ namespace DataLayer.Services
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAClassCodes @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
         }
+
+        public async Task<int> SetImportsAsync(ZraImportData item)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@taskCd", item.taskCd),
+                new SqlParameter("@dclDe", item.dclDe),
+                new SqlParameter("@itemSeq", item.itemSeq ?? (object)DBNull.Value),
+                new SqlParameter("@dclNo", item.dclNo),
+                new SqlParameter("@hsCd", item.hsCd),
+                new SqlParameter("@itemNm", item.itemNm),
+                new SqlParameter("@orgnNatCd", item.orgnNatCd),
+                new SqlParameter("@exptNatCd", item.exptNatCd),
+                new SqlParameter("@pkg", item.pkg ?? (object)DBNull.Value),
+                new SqlParameter("@pkgUnitCd", item.pkgUnitCd),
+                new SqlParameter("@qty", item.qty ?? (object)DBNull.Value),
+                new SqlParameter("@qtyUnitCd", item.qtyUnitCd),
+                new SqlParameter("@totWt", item.totWt ?? (object)DBNull.Value),
+                new SqlParameter("@netWt", item.netWt ?? (object)DBNull.Value),
+                new SqlParameter("@spplrNm", item.spplrNm ?? (object)DBNull.Value),
+                new SqlParameter("@agntNm", item.agntNm ?? (object)DBNull.Value),
+                new SqlParameter("@invcFcurAmt", item.invcFcurAmt ?? (object)DBNull.Value),
+                new SqlParameter("@invcFcurCd", item.invcFcurCd),
+                new SqlParameter("@invcFcurExcrt", item.invcFcurExcrt ?? (object)DBNull.Value),
+                new SqlParameter("@dclRefNum", item.dclRefNum)
+            };
+
+            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAImports @taskCd, @dclDe, @itemSeq, @dclNo, @hsCd, @itemNm, @orgnNatCd, @exptNatCd, @pkg, @pkgUnitCd, @qty, @qtyUnitCd, @totWt, @netWt, @spplrNm, @agntNm, @invcFcurAmt, @invcFcurCd, @invcFcurExcrt, @dclRefNum", parameters);
+        }
     }
 }

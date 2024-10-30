@@ -56,10 +56,59 @@ namespace VSDCAPI
 
             await updateStockMaster();
 
+            await updateImports();
+
             await FiscalizeInvoice();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task updateImports()
+        {
+            _logger.LogInformation("Updating Imports ");
+            var request = new GetImportsRequest
+            {
+                Tpin = DataMapper.DeviceDetails.Tpin,
+                BhfId = DataMapper.DeviceDetails.BhfId,
+                LastReqDt = DataMapper.DeviceDetails.LastReqDt
+            };
+
+            var response = await _client.GetImports(request);
+            _logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
+
+            var jsonData = (JObject)response!.Data;
+            var imports = jsonData.ToObject<GetImports>();
+            foreach (var import in imports!.itemList)
+            {
+                var item = new ZraImportData
+                {
+                    taskCd = import.taskCd,
+                    dclDe = import.dclDe,
+                    itemSeq = import.itemSeq,
+                    dclNo = import.dclNo,
+                    hsCd = import.hsCd,
+                    itemNm = import.itemNm,
+                    orgnNatCd = import.orgnNatCd,
+                    exptNatCd = import.exptNatCd,
+                    pkg = import.pkg,
+                    pkgUnitCd = import.pkgUnitCd,
+                    qty = import.qty,
+                    qtyUnitCd = import.qtyUnitCd,
+                    totWt = import.totWt,
+                    netWt = import.netWt,
+                    spplrNm = import.spplrNm,
+                    agntNm = import.agntNm,
+                    invcFcurAmt = import.invcFcurAmt,
+                    invcFcurCd = import.invcFcurCd,
+                    invcFcurExcrt = import.invcFcurExcrt,
+                    dclRefNum = import.dclRefNum,
+                };
+                _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var saveResponse = await _fiscalInfoService.SetImportsAsync(item);
+                _logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
+
+            }
         }
 
         private async Task updateStockMaster()

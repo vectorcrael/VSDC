@@ -20,6 +20,7 @@ namespace DataLayer.Services
         Task<List<ZraClassCode>> GetAllZraClassCodesAsync();
         Task<int> SetZraClassCodeAsync(ZraClassCode zraClassCodes);
         Task<int> SetZraSelectCodesAsync(ZraSelectCode zraSelectCode);
+        Task<int> SetImportsAsync(ZraImportData item);
     }
 }
 
