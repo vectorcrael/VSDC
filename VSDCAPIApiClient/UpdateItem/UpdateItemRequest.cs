@@ -22,7 +22,7 @@ namespace VSDCAPI
         public string? tlCatCd { get; set; }
         public string? exciseTxCatCd { get; set; }
         public string? btchNo { get; set; }
-        public string? bcd { get; set; }
+      //  public string? bcd { get; set; }
         public double dftPrc { get; set; }
         public string? addInfo { get; set; }
         public decimal sftyQty { get; set; }
