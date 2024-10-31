@@ -15,8 +15,6 @@ using DataLayer.Models;
 
 namespace VSDCAPI
 {
-
-
     public class TimerService(ILogger<TimerService> logger, IFiscalInfoService fiscalInfoService, IVSDCAPIApiClient vSDCAPIApiClient) : IHostedService, IDisposable
     {
         private bool deviceInitialized { get; set; } = false;
@@ -58,7 +56,9 @@ namespace VSDCAPI
 
             await updateImports();
 
-            await FiscalizeInvoice();
+            await fiscalizePurchases();
+
+            await fiscalizeInvoices();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
@@ -266,15 +266,39 @@ namespace VSDCAPI
             _logger.LogInformation("Done uploading the Classification Codes.");
             classificationCodesUpdated = true;
         }
-
         private async Task testServerRunning()
         {
             _logger.LogInformation("Running the Test Server call!");
             var testResp = await _client.TestServerRunning();
             _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
         }
+        private async Task fiscalizePurchases(){
+            var purchases = await _fiscalInfoService.GetAllPurchasesAsync();
+            foreach (var purchase in purchases)
+            {
+                var request = DataMapper.ConvertPurchase(purchase);
+                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var response = await _client.SavePurchases(request);
+                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
-        private async Task FiscalizeInvoice()
+                if (response.ResultCd == "000")
+                {
+                    var jsonData = (JObject)response.Data; 
+                    var sd = jsonData.ToObject<SaveInvoiceData>();
+                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
+
+                    var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
+                        signature: qrCode,
+                        internalData: sd.intrlData,
+                        invoiceNumber: request.invcNo.ToString(),
+                        invoiceType: request.rcptTyCd,
+                        invoiceSequence: sd.rcptNo.ToString(),
+                        qrCode: sd.qrCodeUrl,
+                        vsdcDate: sd.vsdcRcptPbctDate);
+                }
+            }
+        }
+        private async Task fiscalizeInvoices()
         {
 
             //steps to fiscalise invoices
@@ -354,14 +378,12 @@ namespace VSDCAPI
 
             deviceInitialized = true;
         }
-
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Timer Service is stopping.");
             _timer?.Stop();
             return Task.CompletedTask;
         }
-
         public void Dispose()
         {
             _timer?.Dispose();

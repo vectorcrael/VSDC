@@ -18,6 +18,67 @@ namespace VSDCAPIApiClient
             public static string LastReqDt { get; set; } = "20241025201419";
         }
 
+        public static SavePurchasesRequest ConvertPurchase(PurchaseInfo purchase)
+        {
+            var list = new List<ItemList2>();
+            var listItem = new ItemList2
+            {
+                itemSeq = 1,
+                itemCd = "ZM2BGKG0000001",
+                itemClsCd = "50102517",
+                itemNm = "Item Name1",
+                bcd = null,
+                pkgUnitCd = "BG",
+                pkg = 0,
+                qtyUnitCd = "KG",
+                qty = 1,
+                prc = 100,
+                splyAmt = 100,
+                dcRt = 0,
+                dcAmt = 0,
+                taxTyCd = "A",
+                iplCatCd = null,
+                tlCatCd = null,
+                taxblAmt = 86.21,
+                vatCatCd = "A",
+                iplTaxblAmt = null,
+                tlTaxblAmt = null,
+                taxAmt = 13.79,
+                totAmt = 100.00
+            };
+
+            return new SavePurchasesRequest
+            {
+                tpin = DeviceDetails.Tpin,
+                bhfId = DeviceDetails.BhfId,
+                invcNo = Convert.ToInt32(purchase.InvoiceNumber),
+                orgInvcNo = 0,
+                spplrTpin = "9999999990",
+                spplrBhfId = "000",
+                spplrNm = "Supplier Name1",
+                spplrInvcNo = "INV0001",
+                regTyCd = "M",
+                pchsTyCd = "N",
+                rcptTyCd = "P",
+                pmtTyCd = "01",
+                pchsSttsCd = "02",
+                cfmDt = "20240509210300",
+                pchsDt = "20240509",
+                cnclReqDt = "",
+                cnclDt = "",
+                totItemCnt = list.Count,
+                totTaxblAmt = list.Sum(item => item.taxblAmt),
+                totTaxAmt = list.Sum(item => item.taxAmt),
+                totAmt = list.Sum(item => item.totAmt),
+                remark = "remarks",
+                regrNm = "ADMIN",
+                regrId = "ADMIN",
+                modrNm = "ADMIN",
+                modrId = "ADMIN",
+                itemList = list
+            };
+        }
+
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
         {
             var custPin = new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray());

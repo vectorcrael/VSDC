@@ -7,58 +7,58 @@ namespace VSDCAPI
 {
     public class SavePurchasesRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public int InvcNo { get; set; }
-        public int OrgInvcNo { get; set; }
-        public string SpplrTpin { get; set; }
-        public string SpplrBhfId { get; set; }
-        public string SpplrNm { get; set; }
-        public string SpplrInvcNo { get; set; }
-        public string RegTyCd { get; set; }
-        public string PchsTyCd { get; set; }
-        public string RcptTyCd { get; set; }
-        public string PmtTyCd { get; set; }
-        public string PchsSttsCd { get; set; }
-        public string CfmDt { get; set; }
-        public string PchsDt { get; set; }
-        public string CnclReqDt { get; set; }
-        public string CnclDt { get; set; }
-        public int TotItemCnt { get; set; }
-        public double TotTaxblAmt { get; set; }
-        public double TotTaxAmt { get; set; }
-        public double TotAmt { get; set; }
-        public string Remark { get; set; }
-        public string RegrNm { get; set; }
-        public string RegrId { get; set; }
-        public string ModrNm { get; set; }
-        public string ModrId { get; set; }
-        public List<ItemList2> ItemList { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public int invcNo { get; set; }
+        public int orgInvcNo { get; set; }
+        public string spplrTpin { get; set; }
+        public string spplrBhfId { get; set; }
+        public string spplrNm { get; set; }
+        public string spplrInvcNo { get; set; }
+        public string regTyCd { get; set; }
+        public string pchsTyCd { get; set; }
+        public string rcptTyCd { get; set; }
+        public string pmtTyCd { get; set; }
+        public string pchsSttsCd { get; set; }
+        public string cfmDt { get; set; }
+        public string pchsDt { get; set; }
+        public string? cnclReqDt { get; set; }
+        public string? cnclDt { get; set; }
+        public int totItemCnt { get; set; }
+        public double totTaxblAmt { get; set; }
+        public double totTaxAmt { get; set; }
+        public double totAmt { get; set; }
+        public string remark { get; set; }
+        public string regrNm { get; set; }
+        public string regrId { get; set; }
+        public string modrNm { get; set; }
+        public string modrId { get; set; }
+        public List<ItemList2> itemList { get; set; }
     }
 
     public class ItemList2
     {
-        public int ItemSeq { get; set; }
-        public string ItemCd { get; set; }
-        public string ItemClsCd { get; set; }
-        public string ItemNm { get; set; }
-        public object Bcd { get; set; }
-        public string PkgUnitCd { get; set; }
-        public int Pkg { get; set; }
-        public string QtyUnitCd { get; set; }
-        public int Qty { get; set; }
-        public int Prc { get; set; }
-        public int SplyAmt { get; set; }
-        public int DcRt { get; set; }
-        public int DcAmt { get; set; }
-        public string TaxTyCd { get; set; }
-        public object IplCatCd { get; set; }
-        public object TlCatCd { get; set; }
-        public double TaxblAmt { get; set; }
-        public string VatCatCd { get; set; }
-        public object IplTaxblAmt { get; set; }
-        public object TlTaxblAmt { get; set; }
-        public double TaxAmt { get; set; }
-        public double TotAmt { get; set; }
+        public int itemSeq { get; set; }
+        public string itemCd { get; set; }
+        public string itemClsCd { get; set; }
+        public string itemNm { get; set; }
+        public object bcd { get; set; }
+        public string pkgUnitCd { get; set; }
+        public int pkg { get; set; }
+        public string qtyUnitCd { get; set; }
+        public int qty { get; set; }
+        public int prc { get; set; }
+        public int splyAmt { get; set; }
+        public int dcRt { get; set; }
+        public int dcAmt { get; set; }
+        public string taxTyCd { get; set; }
+        public object iplCatCd { get; set; }
+        public object tlCatCd { get; set; }
+        public double taxblAmt { get; set; }
+        public string vatCatCd { get; set; }
+        public object iplTaxblAmt { get; set; }
+        public object tlTaxblAmt { get; set; }
+        public double taxAmt { get; set; }
+        public double totAmt { get; set; }
     }
 }
