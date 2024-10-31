@@ -34,6 +34,7 @@ namespace VSDCAPI
         public int ItemSeq { get; set; }
         public string ItemCd { get; set; }
         public string ItemClsCd { get; set; }
+        public string itemTyCd {get;set;}
         public string ItemNm { get; set; }
         public string PkgUnitCd { get; set; }
         public string QtyUnitCd { get; set; }
