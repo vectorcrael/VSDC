@@ -220,6 +220,14 @@ namespace VSDCAPI
                 lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
             var response = await _client.GetUnitsOfMeasure(request);
+
+            if (response is null || response!.ResultCd != "000")
+            {
+                _logger.LogInformation("Failed to update Select Codes");
+                _logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
+                return;
+            }
+
             var jsonData = (JObject)response!.Data;
             var zraCodes = jsonData.ToObject<SelectCodes>();
             _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
@@ -234,7 +242,6 @@ namespace VSDCAPI
                     zraClassCode.CdClsNm = codeGroup.cdClsNm;
                     var savedCode = await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
                     _logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
-
                 }
             }
             _logger.LogInformation("Done uploading the Select Codes.");
@@ -272,8 +279,9 @@ namespace VSDCAPI
             var testResp = await _client.TestServerRunning();
             _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
         }
-        private async Task fiscalizePurchases(){
-            var purchases = await _fiscalInfoService.GetAllPurchasesAsync();
+        private async Task fiscalizePurchases()
+        {
+            var purchases = await _fiscalInfoService.GetZraPurchasesAsync();
             foreach (var purchase in purchases)
             {
                 var request = DataMapper.ConvertPurchase(purchase);
@@ -283,7 +291,7 @@ namespace VSDCAPI
 
                 if (response.ResultCd == "000")
                 {
-                    var jsonData = (JObject)response.Data; 
+                    var jsonData = (JObject)response.Data;
                     var sd = jsonData.ToObject<SaveInvoiceData>();
                     var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 

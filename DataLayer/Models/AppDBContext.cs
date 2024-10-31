@@ -24,6 +24,8 @@ public partial class AppDBContext : DbContext
     public virtual DbSet<ZraClassCode> ZraClassCodes { get; set; }
     public virtual DbSet<DeviceInit> DeviceInits { get; set; }
     public virtual DbSet<ZraStockMaster> ZraStockMasters { get; set; }
+    public virtual DbSet<ZraPurchase> ZraPurchases { get; set; }
+    public virtual DbSet<ZraPurchaseItem> ZraPurchaseItems { get; set; }
 
     public virtual DbSet<AccPrev> AccPrevs { get; set; }
 

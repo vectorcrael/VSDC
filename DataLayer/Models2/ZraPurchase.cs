@@ -1,0 +1,28 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+
+namespace DataLayer.Models2;
+
+[Keyless]
+public class ZraPurchase
+{
+    public string Origin { get; set; }
+    public string Id { get; set; }
+    public string InvoiceNumber { get; set; }
+    public string SupplierInvoiceNumber { get; set; }
+    public string OriginalInvoiceNumber { get; set; }
+    public string BranchId { get; set; }
+    public string PaymentTypeCode { get; set; }
+    public string IssuerName { get; set; }
+    public string IssuerId { get; set; }
+    public string CurrencyType { get; set; }
+    public decimal ConversionRate { get; set; }
+    public string CustomerName { get; set; }
+    public string BuyerTaxAccountName { get; set; }
+    public string ReceiptTypeCode { get; set; }
+    public string? CustomerTpin { get; set; }
+    public DateTime SaleDate { get; set; }
+    public string? RefundedReasonCode { get; set; }
+    public List<ZraPurchaseItem>? Items { get; set; } = new List<ZraPurchaseItem>();
+
+}

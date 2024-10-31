@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace DataLayer.Services
 {
@@ -55,9 +56,9 @@ namespace DataLayer.Services
                 .ToListAsync();
         }
 
-        public async Task<List<ZraInvoiceItem>> GetPurchaseItemsAsync(string refId)
+        public async Task<List<ZraPurchaseItem>> GetPurchaseItemsAsync(string refId)
         {
-            return await _context.ZraInvoiceItems
+            return await _context.ZraPurchaseItems
                 .FromSqlRaw("EXEC GetZraPurchaseItem @RefId={0}", refId)
                 .ToListAsync();
         }
@@ -218,6 +219,22 @@ namespace DataLayer.Services
             };
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAImports @taskCd, @dclDe, @itemSeq, @dclNo, @hsCd, @itemNm, @orgnNatCd, @exptNatCd, @pkg, @pkgUnitCd, @qty, @qtyUnitCd, @totWt, @netWt, @spplrNm, @agntNm, @invcFcurAmt, @invcFcurCd, @invcFcurExcrt, @dclRefNum", parameters);
+        }
+
+        public async Task<List<ZraPurchase>> GetZraPurchasesAsync()
+        {
+            var purchases = await _context.ZraPurchases
+              .FromSqlRaw("SELECT * FROM ZraPurchase")
+              .ToListAsync();
+
+            foreach (var purchase in purchases)
+            {
+                var dbPurchase = await GetPurchaseItemsAsync(purchase.Id);
+                if (dbPurchase.Count > 0)
+                    purchase.Items = dbPurchase.ToList();
+            }
+
+            return purchases;
         }
     }
 }

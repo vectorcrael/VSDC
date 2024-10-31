@@ -46,18 +46,18 @@ namespace VSDCAPI
         public string pkgUnitCd { get; set; }
         public int pkg { get; set; }
         public string qtyUnitCd { get; set; }
-        public int qty { get; set; }
-        public int prc { get; set; }
-        public int splyAmt { get; set; }
+        public decimal qty { get; set; }
+        public decimal prc { get; set; }
+        public decimal splyAmt { get; set; }
         public int dcRt { get; set; }
         public int dcAmt { get; set; }
         public string taxTyCd { get; set; }
-        public object iplCatCd { get; set; }
-        public object tlCatCd { get; set; }
+        public string iplCatCd { get; set; }
+        public string tlCatCd { get; set; }
         public double taxblAmt { get; set; }
         public string vatCatCd { get; set; }
-        public object iplTaxblAmt { get; set; }
-        public object tlTaxblAmt { get; set; }
+        public string iplTaxblAmt { get; set; }
+        public string tlTaxblAmt { get; set; }
         public double taxAmt { get; set; }
         public double totAmt { get; set; }
     }

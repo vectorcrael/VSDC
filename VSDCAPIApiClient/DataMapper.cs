@@ -18,52 +18,56 @@ namespace VSDCAPIApiClient
             public static string LastReqDt { get; set; } = "20241025201419";
         }
 
-        public static SavePurchasesRequest ConvertPurchase(PurchaseInfo purchase)
+        public static SavePurchasesRequest ConvertPurchase(ZraPurchase purchase)
         {
             var list = new List<ItemList2>();
-            var listItem = new ItemList2
+            foreach (var item in purchase!.Items)
             {
-                itemSeq = 1,
-                itemCd = "ZM2BGKG0000001",
-                itemClsCd = "50102517",
-                itemNm = "Item Name1",
-                bcd = null,
-                pkgUnitCd = "BG",
-                pkg = 0,
-                qtyUnitCd = "KG",
-                qty = 1,
-                prc = 100,
-                splyAmt = 100,
-                dcRt = 0,
-                dcAmt = 0,
-                taxTyCd = "A",
-                iplCatCd = null,
-                tlCatCd = null,
-                taxblAmt = 86.21,
-                vatCatCd = "A",
-                iplTaxblAmt = null,
-                tlTaxblAmt = null,
-                taxAmt = 13.79,
-                totAmt = 100.00
-            };
+                var listItem = new ItemList2
+                {
+                    itemSeq = item.ItemSequenceNumber,
+                    itemCd = item.ItemCode,
+                    itemClsCd = item.ItemClassificationCode,
+                    itemNm = item.ItemDesc,
+                    bcd = null,
+                    pkgUnitCd = item.PackagingUnitCode,
+                    pkg = 0,
+                    qtyUnitCd = item.QuantityUnitCode,
+                    qty = item.Quantity,
+                    prc = item.UnitPrice,
+                    splyAmt = item.UnitPrice,
+                    dcRt = 0,
+                    dcAmt = 0,
+                    taxTyCd = "A",
+                    iplCatCd = null,
+                    tlCatCd = null,
+                    taxblAmt = 0,
+                    vatCatCd = "D",
+                    iplTaxblAmt = null,
+                    tlTaxblAmt = null,
+                    taxAmt = 0,
+                    totAmt = (double)item.UnitPrice
+                };
+                list.Add(listItem);
+            }
 
             return new SavePurchasesRequest
             {
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
                 invcNo = Convert.ToInt32(purchase.InvoiceNumber),
-                orgInvcNo = 0,
-                spplrTpin = "9999999990",
+                orgInvcNo = Convert.ToInt32(purchase.OriginalInvoiceNumber),
+                spplrTpin = purchase.CustomerTpin ?? "9999999990",
                 spplrBhfId = "000",
-                spplrNm = "Supplier Name1",
-                spplrInvcNo = "INV0001",
+                spplrNm = purchase.IssuerName,
+                spplrInvcNo = purchase.SupplierInvoiceNumber,
                 regTyCd = "M",
                 pchsTyCd = "N",
-                rcptTyCd = "P",
-                pmtTyCd = "01",
+                rcptTyCd =purchase.ReceiptTypeCode,
+                pmtTyCd = purchase.PaymentTypeCode,
                 pchsSttsCd = "02",
-                cfmDt = "20240509210300",
-                pchsDt = "20240509",
+                cfmDt = purchase.SaleDate.ToString("yyyyMMddHHmmss") ?? DateTime.Now.ToString("yyyyMMddHHmmss"),
+                pchsDt = purchase.SaleDate.ToString("yyyyMMdd") ?? DateTime.Today.ToString("yyyyMMdd"),
                 cnclReqDt = "",
                 cnclDt = "",
                 totItemCnt = list.Count,
