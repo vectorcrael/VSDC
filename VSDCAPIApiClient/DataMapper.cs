@@ -175,7 +175,7 @@ namespace VSDCAPIApiClient
             return new UpdateItemRequest
             {
                 itemCd = item.itemCd,
-                itemClsCd = item.itemClsCd,
+                itemClsCd =  item.itemClsCd,
                 itemNm = item.itemNm,
                 pkgUnitCd = item.pkgUnitCd,
                 qtyUnitCd = item.qtyUnitCd,
@@ -183,7 +183,7 @@ namespace VSDCAPIApiClient
                 iplCatCd = item.iplCatCd,
                 tlCatCd = item.tlCatCd,
                 exciseTxCatCd = item.exciseTxCatCd,
-                bcd = item.bcd,
+               // bcd = item.bcd,
                 dftPrc = item.prc,
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
