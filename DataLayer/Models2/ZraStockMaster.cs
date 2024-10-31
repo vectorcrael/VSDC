@@ -16,12 +16,12 @@ namespace DataLayer.Models2
         public decimal Quantity { get; set; }
         public string? TaxLabel { get; set; }
         public string? BranchId { get; set; }
-        public float? Prc { get; set; } = 0f;
-        public float? SplyAmt { get; set; } = 0f;
-        public float? TaxblAmt { get; set; } = 0f;
+        public decimal? Prc { get; set; } = 0;
+        public decimal? SplyAmt { get; set; } = 0;
+        public decimal? TaxblAmt { get; set; } = 0;
         public string? VatCatCd { get; set; } = "";
-        public float? TaxAmt { get; set; } = 0f;
-        public float? TotAmt { get; set; } = 0f;
+        public decimal? TaxAmt { get; set; } = 0;
+        public decimal? TotAmt { get; set; } = 0;
     }
 }
 
