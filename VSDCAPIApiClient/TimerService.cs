@@ -71,7 +71,7 @@ namespace VSDCAPI
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
-                lastReqDt = DataMapper.DeviceDetails.LastReqDt
+                lastReqDt ="20240523000000"// DataMapper.DeviceDetails.LastReqDt
             };
 
             var response = await _client.GetImports(request);
@@ -304,7 +304,7 @@ namespace VSDCAPI
                 var response = await _client.SavePurchases(request);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
-                if (response.ResultCd == "000")
+                if ( !String.IsNullOrWhiteSpace(response!.Data.ToString()) || response.ResultCd == "000" )
                 {
                     var jsonData = (JObject)response.Data;
                     var sd = jsonData.ToObject<SaveInvoiceData>();
