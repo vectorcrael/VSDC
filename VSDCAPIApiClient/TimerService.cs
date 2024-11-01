@@ -69,9 +69,9 @@ namespace VSDCAPI
             _logger.LogInformation("Updating Imports ");
             var request = new GetImportsRequest
             {
-                Tpin = DataMapper.DeviceDetails.Tpin,
-                BhfId = DataMapper.DeviceDetails.BhfId,
-                LastReqDt = DataMapper.DeviceDetails.LastReqDt
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
 
             var response = await _client.GetImports(request);
