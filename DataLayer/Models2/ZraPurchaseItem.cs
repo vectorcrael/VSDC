@@ -18,6 +18,6 @@ public class ZraPurchaseItem
     public decimal DiscountAmount { get; set; }
     public decimal UnitPrice { get; set; }
     public decimal TotalAmount { get; set; }
-    public bool IsTaxInclusive { get; set; }
+    public int IsTaxInclusive { get; set; }
     public decimal RRP { get; set; }
 }
