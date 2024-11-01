@@ -77,6 +77,12 @@ namespace VSDCAPI
             var response = await _client.GetImports(request);
             _logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
 
+            if (response is null || response!.ResultCd != "000")
+            {
+                _logger.LogInformation("Failed to update imports");
+                return;
+            }
+            
             var jsonData = (JObject)response!.Data;
             var imports = jsonData.ToObject<GetImports>();
             foreach (var import in imports!.itemList)
@@ -128,7 +134,7 @@ namespace VSDCAPI
                     itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
                     itemTyCd = item.ItemTypeCode ?? "",
                     itemNm = item.Description ?? "",
-                  //  itemStdNm = item.Description ?? "",
+                    //  itemStdNm = item.Description ?? "",
                     orgnNatCd = item.OriginNationCode ?? "",
                     pkgUnitCd = item.PackagingUnitCode ?? "",
                     qtyUnitCd = item.QuantityUnitCode ?? "",
@@ -137,9 +143,9 @@ namespace VSDCAPI
                     tlCatCd = null,
                     exciseTxCatCd = null,
                     btchNo = null,
-                  // bcd = null,
+                    // bcd = null,
                     dftPrc = (double)(item.Prc ?? 0),
-                   // addInfo = null,
+                    // addInfo = null,
                     //sftyQty = 0,
                     isrcAplcbYn = "N",
                     useYn = "Y",
@@ -258,6 +264,14 @@ namespace VSDCAPI
                 lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
             var response = await _client.GetClassificationCodes(request);
+            
+            if (response is null || response!.ResultCd != "000")
+            {
+                _logger.LogInformation("Failed to update Classification Codes");
+                _logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
+                return;
+            }
+
             var jsonData = (JObject)response!.Data;
             var zraCodes = jsonData.ToObject<ClassificationCodes>();
             _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
