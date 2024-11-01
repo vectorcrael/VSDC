@@ -180,6 +180,7 @@ namespace VSDCAPIApiClient
             {
                 itemCd = item.itemCd,
                 itemClsCd =  item.itemClsCd,
+                //itemTyCd=item.itemTyCd,
                 itemNm = item.itemNm,
                 pkgUnitCd = item.pkgUnitCd,
                 qtyUnitCd = item.qtyUnitCd,

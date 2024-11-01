@@ -174,7 +174,8 @@ namespace VSDCAPI
                 {
                     ItemSeq = ++itemSeq,
                     ItemCd = item.ItemCode ?? "",
-                    ItemClsCd = item.ItemClassificationCode ?? "",
+                    ItemClsCd = Convert.ToString(item.ItemClassificationCode ?? ""),
+                    itemTyCd= item.ItemTypeCode ?? "",
                     ItemNm = item.ItemTypeCode ?? "",
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
