@@ -236,5 +236,17 @@ namespace DataLayer.Services
 
             return purchases;
         }
+
+        public async Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt)
+        {
+                        var parameters = new[]
+            {
+                new SqlParameter("@invcNo", invcNo),
+                new SqlParameter("@message", message),
+                new SqlParameter("@resultDt", resultDt)
+                };
+
+            return await _context.Database.ExecuteSqlRawAsync("insert into  PurchaseInfo ( InvoiceNumber,  Message, CreateDate ) values  ( @invcNo,  @message, @resultDt );", parameters);
+        }
     }
 }

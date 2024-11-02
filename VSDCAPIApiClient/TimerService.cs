@@ -71,7 +71,7 @@ namespace VSDCAPI
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
-                lastReqDt ="20240523000000"// DataMapper.DeviceDetails.LastReqDt
+                lastReqDt = "20240523000000"// DataMapper.DeviceDetails.LastReqDt
             };
 
             var response = await _client.GetImports(request);
@@ -82,7 +82,7 @@ namespace VSDCAPI
                 _logger.LogInformation("Failed to update imports");
                 return;
             }
-            
+
             var jsonData = (JObject)response!.Data;
             var imports = jsonData.ToObject<GetImports>();
             foreach (var import in imports!.itemList)
@@ -175,7 +175,7 @@ namespace VSDCAPI
                     ItemSeq = ++itemSeq,
                     ItemCd = item.ItemCode ?? "",
                     ItemClsCd = Convert.ToString(item.ItemClassificationCode ?? ""),
-                    itemTyCd= item.ItemTypeCode ?? "",
+                    itemTyCd = item.ItemTypeCode ?? "",
                     ItemNm = item.ItemTypeCode ?? "",
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
@@ -265,7 +265,7 @@ namespace VSDCAPI
                 lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
             var response = await _client.GetClassificationCodes(request);
-            
+
             if (response is null || response!.ResultCd != "000")
             {
                 _logger.LogInformation("Failed to update Classification Codes");
@@ -304,20 +304,10 @@ namespace VSDCAPI
                 var response = await _client.SavePurchases(request);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
-                if (response!.Data != null && response.ResultCd == "000" )
+                if (response!.ResultCd == "000")
                 {
-                    var jsonData = (JObject)response.Data;
-                    var sd = jsonData.ToObject<SaveInvoiceData>();
-                    var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
-
-                    var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
-                        signature: qrCode,
-                        internalData: sd.intrlData,
-                        invoiceNumber: request.invcNo.ToString(),
-                        invoiceType: request.rcptTyCd,
-                        invoiceSequence: sd.rcptNo.ToString(),
-                        qrCode: sd.qrCodeUrl,
-                        vsdcDate: sd.vsdcRcptPbctDate);
+                    var dbUpdate = await _fiscalInfoService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
+                    _logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
                 }
             }
         }
