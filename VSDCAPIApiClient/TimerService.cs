@@ -304,7 +304,7 @@ namespace VSDCAPI
                 var response = await _client.SavePurchases(request);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
-                if ( !String.IsNullOrWhiteSpace(response!.Data.ToString()) || response.ResultCd == "000" )
+                if (response!.Data != null && response.ResultCd == "000" )
                 {
                     var jsonData = (JObject)response.Data;
                     var sd = jsonData.ToObject<SaveInvoiceData>();
