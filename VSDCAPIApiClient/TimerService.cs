@@ -296,6 +296,7 @@ namespace VSDCAPI
         }
         private async Task fiscalizePurchases()
         {
+            _logger.LogInformation("Purchases running.");
             var purchases = await _fiscalInfoService.GetZraPurchasesAsync();
             foreach (var purchase in purchases)
             {
