@@ -333,7 +333,7 @@ namespace VSDCAPI
                 var response = await _client.SaveSales(saveInvoices);
                 _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
 
-                if (response.ResultCd == "000")
+                if (response!.Data != null && response.ResultCd == "000")
                 {
                     //once the signature is generated save back to the database
                     var jsonData = (JObject)response.Data; // Cast response.Data to JObject
@@ -371,7 +371,7 @@ namespace VSDCAPI
             var response = await _client.DeviceInitialization(request);
             _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
-            if (response!.ResultCd == "000")
+            if (response!.Data != null && response!.ResultCd == "000")
             {
                 var jsonData = (JObject)response.Data;
                 var deviceInfo = jsonData.ToObject<Device>();
