@@ -34,7 +34,7 @@ namespace VSDCAPIApiClient
                     pkg = 0,
                     qtyUnitCd = item.QuantityUnitCode,
                     qty = item.Quantity,
-                    prc =  Math.Round(item.UnitPrice, 4),
+                    prc = Math.Round(item.UnitPrice, 4),
                     splyAmt = Math.Round(item.UnitPrice, 4),
                     dcRt = 0,
                     dcAmt = 0,
@@ -55,15 +55,15 @@ namespace VSDCAPIApiClient
             {
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
-                invcNo = Convert.ToInt32(purchase.InvoiceNumber),
-                orgInvcNo = Convert.ToInt32(purchase.OriginalInvoiceNumber),
+                invcNo = ParseNumber(purchase.InvoiceNumber),
+                orgInvcNo = ParseNumber(purchase.OriginalInvoiceNumber),
                 //spplrTpin = purchase.CustomerTpin ?? "9999999990",
                 spplrBhfId = "000",
                 spplrNm = purchase.IssuerName,
                 spplrInvcNo = purchase.SupplierInvoiceNumber,
                 regTyCd = "M",
                 pchsTyCd = "N",
-                rcptTyCd =purchase.ReceiptTypeCode,
+                rcptTyCd = purchase.ReceiptTypeCode,
                 pmtTyCd = purchase.PaymentTypeCode,
                 pchsSttsCd = "02",
                 cfmDt = purchase.SaleDate.ToString("yyyyMMddHHmmss") ?? DateTime.Now.ToString("yyyyMMddHHmmss"),
@@ -81,6 +81,16 @@ namespace VSDCAPIApiClient
                 modrId = "ADMIN",
                 itemList = list
             };
+        }
+
+        private static int ParseNumber(string invoiceNumber)
+        {
+            if (string.IsNullOrWhiteSpace(invoiceNumber))
+            {
+                return 0; // Return 0 if the input is null or empty
+            }
+
+            return int.TryParse(invoiceNumber, out int result) ? result : 0; // Return parsed value or 0
         }
 
         public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
@@ -179,7 +189,7 @@ namespace VSDCAPIApiClient
             return new UpdateItemRequest
             {
                 itemCd = item.itemCd,
-                itemClsCd =  item.itemClsCd,
+                itemClsCd = item.itemClsCd,
                 //itemTyCd=item.itemTyCd,
                 itemNm = item.itemNm,
                 pkgUnitCd = item.pkgUnitCd,
@@ -188,7 +198,7 @@ namespace VSDCAPIApiClient
                 iplCatCd = item.iplCatCd,
                 tlCatCd = item.tlCatCd,
                 exciseTxCatCd = item.exciseTxCatCd,
-               // bcd = item.bcd,
+                // bcd = item.bcd,
                 dftPrc = item.prc,
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
