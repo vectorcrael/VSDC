@@ -41,9 +41,9 @@ namespace VSDCAPI
         {
             // Logic to execute on timer event
             _logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
-            // Add your code here to do something every minute
 
-            //await testServerRunning();
+            await testServerRunning();
+            
             if (!deviceInitialized)
                 await initializeDeviceAsync();
 
@@ -87,7 +87,7 @@ namespace VSDCAPI
                         {
                             itemSeq = (int) (import.itemSeq ?? 0),
                             hsCd = import.hsCd,
-                            itemClsCd = import.orgnNatCd,
+                            itemClsCd = "10101504",
                             itemCd = "RW1NTXU0000006",
                             imptItemSttsCd =  import.invcFcurCd,
                             remark = "remark",
@@ -376,12 +376,12 @@ namespace VSDCAPI
                     var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 
                     var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
-                        signature: qrCode, //sd.rcptSign
+                        qrCodeBinary: qrCode, //sd.rcptSign
                         internalData: sd.intrlData,
                         invoiceNumber: saveInvoices.cisInvcNo,
                         invoiceType: saveInvoices.rcptTyCd,
                         invoiceSequence: sd.rcptNo.ToString(),
-                        qrCode: sd.qrCodeUrl,
+                        signature: sd.qrCodeUrl,
                         vsdcDate: sd.vsdcRcptPbctDate);
 
                     var converted = DateTime.TryParse(response.ResultDt, out DateTime resultDt);

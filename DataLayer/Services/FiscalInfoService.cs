@@ -71,16 +71,16 @@ namespace DataLayer.Services
                 .ToListAsync();
         }
 
-        public async Task<int> UpdateFiscalDetailsAsync(byte[] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+        public async Task<int> UpdateFiscalDetailsAsync(byte[] qrCodeBinary, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string signature, string vsdcDate)
         {
             var parameters = new[]
             {
-                new SqlParameter("@Signature", signature),
+                new SqlParameter("@QrCode", qrCodeBinary),
                 new SqlParameter("@InternalData", internalData),
                 new SqlParameter("@InvNumber", invoiceNumber),
                 new SqlParameter("@InvoiceType", invoiceType),
                 new SqlParameter("@InvoiceSequence", invoiceSequence),
-                new SqlParameter("@QrCode", qrCode),
+                new SqlParameter("@Signature", signature),
                 new SqlParameter("@VsdcDate", vsdcDate)
             };
 
