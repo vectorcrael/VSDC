@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using DataLayer.Models2;
 using Microsoft.Identity.Client;
 using DataLayer.Models;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace VSDCAPI
 {
@@ -382,6 +383,17 @@ namespace VSDCAPI
                         invoiceSequence: sd.rcptNo.ToString(),
                         qrCode: sd.qrCodeUrl,
                         vsdcDate: sd.vsdcRcptPbctDate);
+
+                    var converted = DateTime.TryParse(response.ResultDt, out DateTime resultDt);
+
+                    var fiscalInfo = new FiscalInfo
+                    {
+                        InvoiceNumber = saveInvoices.cisInvcNo,
+                        Message = response.ResultMsg,
+                        CreateDate = converted ? resultDt : DateTime.Now
+                    };
+
+                    await _fiscalInfoService.AddFiscalInfoAsync(fiscalInfo);
                 }
 
                 // //No need to save items individually
