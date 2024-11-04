@@ -20,7 +20,7 @@ public class ZraImportData
     public string qtyUnitCd { get; set; }
     public decimal? totWt { get; set; }
     public decimal? netWt { get; set; }
-    public string spplrNm { get; set; }
+    public string? spplrNm { get; set; }
     public string agntNm { get; set; }
     public decimal? invcFcurAmt { get; set; }
     public string invcFcurCd { get; set; }

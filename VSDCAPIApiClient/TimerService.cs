@@ -42,7 +42,7 @@ namespace VSDCAPI
             // Logic to execute on timer event
             _logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
 
-            await testServerRunning();
+            //await testServerRunning();
             
             if (!deviceInitialized)
                 await initializeDeviceAsync();
