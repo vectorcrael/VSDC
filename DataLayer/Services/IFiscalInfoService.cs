@@ -23,6 +23,8 @@ namespace DataLayer.Services
         Task<int> SetZraSelectCodesAsync(ZraSelectCode zraSelectCode);
         Task<int> SetImportsAsync(ZraImportData item);
         Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt);
+        Task<List<ZraImportData>> GetReceivedImportAsync();
+
     }
 }
 

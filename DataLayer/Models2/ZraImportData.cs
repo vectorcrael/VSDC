@@ -1,7 +1,9 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Models2;
 
+[Keyless]
 public class ZraImportData
 {
     public string taskCd { get; set; }

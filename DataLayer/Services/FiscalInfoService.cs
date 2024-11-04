@@ -239,14 +239,21 @@ namespace DataLayer.Services
 
         public async Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt)
         {
-                        var parameters = new[]
+            var parameters = new[]
             {
                 new SqlParameter("@invcNo", invcNo),
                 new SqlParameter("@message", message),
                 new SqlParameter("@resultDt", resultDt)
-                };
+            };
 
             return await _context.Database.ExecuteSqlRawAsync("insert into  PurchaseInfo ( InvoiceNumber,  Message, CreateDate ) values  ( @invcNo,  @message, @resultDt );", parameters);
+        }
+
+        public async Task<List<ZraImportData>> GetReceivedImportAsync()
+        {
+            return await _context.ZraImportDatas
+                .FromSqlRaw("SELECT * FROM RecievedImports")
+                .ToListAsync();
         }
     }
 }

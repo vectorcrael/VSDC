@@ -56,12 +56,55 @@ namespace VSDCAPI
 
             await updateImports();
 
+            await receivedImports();
+
             await fiscalizePurchases();
 
             await fiscalizeInvoices();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task receivedImports()
+        {
+            _logger.LogInformation("Received Imports ");
+
+            var receivedImports = await _fiscalInfoService.GetReceivedImportAsync();
+
+            foreach (var import in receivedImports)
+            {
+                var request = new UpdateImportItemsRequest
+                {
+                    tpin = DataMapper.DeviceDetails.Tpin,
+                    bhfId = DataMapper.DeviceDetails.BhfId,
+                    taskCd = DataMapper.DeviceDetails.LastReqDt,
+                    dclDe = import.dclDe,
+                    importItemList = new List<ImportItem>
+                    {
+                        new ImportItem
+                        {
+                            itemSeq = (int) (import.itemSeq ?? 0),
+                            hsCd = import.hsCd,
+                            itemClsCd = import.orgnNatCd,
+                            itemCd = "RW1NTXU0000006",
+                            imptItemSttsCd =  import.invcFcurCd,
+                            remark = "remark",
+                            modrNm = "Admin",
+                            modrId = "Admin"
+                        }
+                    }
+                };
+
+                var response = await _client.UpdateImportItems(request);
+                _logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
+
+                if (response is null || response!.ResultCd != "000")
+                {
+                    _logger.LogInformation("Failed to update imports");
+                    _logger.LogInformation("Failed Payload: {JsonObject}", JsonConvert.SerializeObject(request));
+                }
+            }
         }
 
         private async Task updateImports()
