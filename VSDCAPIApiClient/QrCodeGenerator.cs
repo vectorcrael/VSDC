@@ -15,9 +15,9 @@ public class QrCodeGenerator
         {
             using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(input, QRCodeGenerator.ECCLevel.Q))
             {
-                using (QRCode qrCode = new QRCode(qrCodeData))
+                using (QRCode qrCodeurl = new QRCode(qrCodeData))
                 {
-                    using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
+                    using (Bitmap qrCodeImage = qrCodeurl.GetGraphic(20))
                     {
                         using (MemoryStream memoryStream = new MemoryStream())
                         {

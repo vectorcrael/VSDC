@@ -35,7 +35,7 @@ namespace VSDCAPIApiClient
                     qtyUnitCd = item.QuantityUnitCode,
                     qty = item.Quantity,
                     prc = Math.Round(item.UnitPrice, 4),
-                    splyAmt = Math.Round(item.UnitPrice, 4),
+                    splyAmt = Math.Round(item.TotalAmount, 4),
                     dcRt = 0,
                     dcAmt = 0,
                     taxTyCd = "A",
@@ -46,7 +46,7 @@ namespace VSDCAPIApiClient
                     iplTaxblAmt = null,
                     tlTaxblAmt = null,
                     taxAmt = 0,
-                    totAmt = (double)item.UnitPrice
+                    totAmt = (double)item.TotalAmount
                 };
                 list.Add(listItem);
             }
@@ -55,11 +55,11 @@ namespace VSDCAPIApiClient
             {
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
-                invcNo = ParseNumber(purchase.InvoiceNumber),
+                invcNo = ParseNumber(purchase.Id),
                 orgInvcNo = ParseNumber(purchase.OriginalInvoiceNumber),
                 //spplrTpin = purchase.CustomerTpin ?? "9999999990",
                 spplrBhfId = "000",
-                spplrNm = purchase.IssuerName,
+                spplrNm = purchase.CustomerName,
                 spplrInvcNo = purchase.SupplierInvoiceNumber,
                 regTyCd = "M",
                 pchsTyCd = "N",
@@ -75,8 +75,8 @@ namespace VSDCAPIApiClient
                 totTaxAmt = list.Sum(item => item.taxAmt),
                 totAmt = list.Sum(item => item.totAmt),
                 remark = "remarks",
-                regrNm = "ADMIN",
-                regrId = "ADMIN",
+                regrNm = purchase.IssuerName,
+                regrId = purchase.IssuerId,
                 modrNm = "ADMIN",
                 modrId = "ADMIN",
                 itemList = list
@@ -103,6 +103,7 @@ namespace VSDCAPIApiClient
 
                 bhfId = DeviceDetails.BhfId,
                 tpin = DeviceDetails.Tpin,
+                orgSdcId="SDC0010001160",//to be automated by Nigel
                 orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
                 cisInvcNo = zraInvoice.InvoiceNumber,
                 custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, //verify this
@@ -116,8 +117,8 @@ namespace VSDCAPIApiClient
                 rfdRsnCd = zraInvoice.RefundReasonCode,
                 taxblAmtA = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
                 taxblAmtD = noVatOnPatent ? (double)zraInvoice.Items.Sum(item => item.VatableAmount) : 0,
-                taxblAmtTot = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-                taxAmtTot = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
+                taxblAmtTot = 0,//noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
+                taxAmtTot = 0,//noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
                 regrNm = "admin",
@@ -132,9 +133,9 @@ namespace VSDCAPIApiClient
                 invcAdjustReason = "",
                 totAmt = (double)zraInvoice.Items.Sum(item => item.TotalAmount),
                 vatTaxblAmt = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-                totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-                totItemCnt = zraInvoice.Items.Count
-
+                totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount) ,
+                totItemCnt = zraInvoice.Items.Count,
+                totTaxAmt =(double)zraInvoice.Items.Sum(item => item.TaxAmount)
             };
 
             invoice.itemList = new List<ItemList3>();
@@ -177,6 +178,17 @@ namespace VSDCAPIApiClient
 
                 });
             };
+
+           invoice.taxAmtA = invoice.itemList
+           .Where(item => item.vatCatCd == "A")
+           .Sum(item => item.vatAmt);
+
+           invoice.taxAmtA = invoice.itemList
+           .Where(item => item.vatCatCd == "A")
+           .Sum(item => item.vatAmt);
+           
+
+
 
             return invoice;
         }

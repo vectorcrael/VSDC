@@ -9,6 +9,7 @@ namespace VSDCAPI
     {
         public string tpin { get; set; }
         public string bhfId { get; set; }
+        public string orgSdcId { get; set; }
         public int orgInvcNo { get; set; }
         public string cisInvcNo { get; set; }
         public string? custTpin { get; set; } 
@@ -57,7 +58,7 @@ namespace VSDCAPI
         public int taxRtEcm { get; set; }= 5;
         public int taxRtExeeg { get; set; }= 3;
         public int taxRtTot { get; set; }= 0;
-        public double taxAmtA { get; set; }= 0;
+        public double taxAmtA { get; set; }=0;
         public double taxAmtB { get; set; }= 0;
         public double taxAmtC1 { get; set; }= 0;
         public double taxAmtC2 { get; set; }= 0;

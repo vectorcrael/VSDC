@@ -21,7 +21,7 @@ namespace VSDCAPI
         private bool deviceInitialized { get; set; } = false;
         private bool selectCodesUpdated { get; set; } = false;
         private bool classificationCodesUpdated { get; set; } = false;
-        private readonly int timeOut = 60000;
+        private readonly int timeOut = 120000;
         private readonly ILogger<TimerService> _logger = logger;
         private System.Timers.Timer? _timer;
         private readonly IFiscalInfoService _fiscalInfoService = fiscalInfoService;
@@ -79,7 +79,7 @@ namespace VSDCAPI
                 {
                     tpin = DataMapper.DeviceDetails.Tpin,
                     bhfId = DataMapper.DeviceDetails.BhfId,
-                    taskCd = DataMapper.DeviceDetails.LastReqDt,
+                    taskCd = import.taskCd,
                     dclDe = import.dclDe,
                     importItemList = new List<ImportItem>
                     {
@@ -88,8 +88,8 @@ namespace VSDCAPI
                             itemSeq = (int) (import.itemSeq ?? 0),
                             hsCd = import.hsCd,
                             itemClsCd = "10101504",
-                            itemCd = "RW1NTXU0000006",
-                            imptItemSttsCd =  import.invcFcurCd,
+                            itemCd = "Chemicals",
+                            imptItemSttsCd =  "3",
                             remark = "remark",
                             modrNm = "Admin",
                             modrId = "Admin"
@@ -115,7 +115,7 @@ namespace VSDCAPI
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
-                lastReqDt = "20240523000000"// DataMapper.DeviceDetails.LastReqDt
+                lastReqDt = "20240910000000"// DataMapper.DeviceDetails.LastReqDt
             };
 
             var response = await _client.GetImports(request);
@@ -223,7 +223,7 @@ namespace VSDCAPI
                     ItemNm = item.ItemTypeCode ?? "",
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
-                    Qty = item.Quantity,
+                   Qty =  item.Quantity  ,
                     Prc = (double)(item.Prc ?? 0),
                     SplyAmt = (double)(item.SplyAmt ?? 0),
                     TaxblAmt = (double)(item.TaxblAmt ?? 0),
@@ -381,7 +381,7 @@ namespace VSDCAPI
                         invoiceNumber: saveInvoices.cisInvcNo,
                         invoiceType: saveInvoices.rcptTyCd,
                         invoiceSequence: sd.rcptNo.ToString(),
-                        signature: sd.qrCodeUrl,
+                        signature: sd.rcptSign,//sd.qrCodeUrl,
                         vsdcDate: sd.vsdcRcptPbctDate);
 
                     var converted = DateTime.TryParse(response.ResultDt, out DateTime resultDt);

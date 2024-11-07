@@ -25,6 +25,7 @@ namespace DataLayer.Models2
         public string? CustomerTpin { get; set; }
         public DateTime SaleDate { get; set; }
         public string? RefundReasonCode { get; set; }
+        //public double ? taxAmtA{get;set;}
 
         public List<ZraInvoiceItem>? Items { get; set; } = new List<ZraInvoiceItem>();
         public double invtottax { get; set; }
