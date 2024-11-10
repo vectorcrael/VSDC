@@ -255,5 +255,63 @@ namespace DataLayer.Services
                 .FromSqlRaw("SELECT * FROM RecievedImports")
                 .ToListAsync();
         }
+
+        public async Task<int> SetSmartInvoiceAsync(SmartPurchase smartPurchase)
+        {
+            if (smartPurchase == null)
+            {
+                throw new ArgumentNullException(nameof(smartPurchase), "SmartPurchase cannot be null.");
+            }
+
+            var parameters = new[]
+            {
+                new SqlParameter("@spplrTpin", (object)smartPurchase.SpplrTpin ?? DBNull.Value),
+                new SqlParameter("@spplrNm", (object)smartPurchase.SpplrNm ?? DBNull.Value),
+                new SqlParameter("@spplrBhfId", (object)smartPurchase.SpplrBhfId ?? DBNull.Value),
+                new SqlParameter("@spplrInvcNo", smartPurchase.SpplrInvcNo.HasValue ? (object)smartPurchase.SpplrInvcNo.Value : DBNull.Value),
+                new SqlParameter("@rcptTyCd", (object)smartPurchase.RcptTyCd ?? DBNull.Value),
+                new SqlParameter("@pmtTyCd", (object)smartPurchase.PmtTyCd ?? DBNull.Value),
+                new SqlParameter("@cfmDt", (object)smartPurchase.CfmDt ?? DBNull.Value),
+                new SqlParameter("@salesDt", (object)smartPurchase.SalesDt ?? DBNull.Value),
+                new SqlParameter("@stockRlsDt", (object)smartPurchase.StockRlsDt ?? DBNull.Value),
+                new SqlParameter("@totItemCnt", smartPurchase.TotItemCnt.HasValue ? (object)smartPurchase.TotItemCnt.Value : DBNull.Value),
+                new SqlParameter("@totTaxblAmt", smartPurchase.TotTaxblAmt.HasValue ? (object)smartPurchase.TotTaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@totTaxAmt", smartPurchase.TotTaxAmt.HasValue ? (object)smartPurchase.TotTaxAmt.Value : DBNull.Value),
+                new SqlParameter("@totAmt", smartPurchase.TotAmt.HasValue ? (object)smartPurchase.TotAmt.Value : DBNull.Value),
+                new SqlParameter("@remark", (object)smartPurchase.Remark ?? DBNull.Value),
+                new SqlParameter("@itemSeq", smartPurchase.ItemSeq.HasValue ? (object)smartPurchase.ItemSeq.Value : DBNull.Value),
+                new SqlParameter("@itemCd", (object)smartPurchase.ItemCd ?? DBNull.Value),
+                new SqlParameter("@itemClsCd", (object)smartPurchase.ItemClsCd ?? DBNull.Value),
+                new SqlParameter("@itemNm", (object)smartPurchase.ItemNm ?? DBNull.Value),
+                new SqlParameter("@bcd", (object)smartPurchase.Bcd ?? DBNull.Value),
+                new SqlParameter("@pkgUnitCd", (object)smartPurchase.PkgUnitCd ?? DBNull.Value),
+                new SqlParameter("@pkg", smartPurchase.Pkg.HasValue ? (object)smartPurchase.Pkg.Value : DBNull.Value),
+                new SqlParameter("@qtyUnitCd", (object)smartPurchase.QtyUnitCd ?? DBNull.Value),
+                new SqlParameter("@qty", smartPurchase.Qty.HasValue ? (object)smartPurchase.Qty.Value : DBNull.Value),
+                new SqlParameter("@prc", smartPurchase.Prc.HasValue ? (object)smartPurchase.Prc.Value : DBNull.Value),
+                new SqlParameter("@splyAmt", smartPurchase.SplyAmt.HasValue ? (object)smartPurchase.SplyAmt.Value : DBNull.Value),
+                new SqlParameter("@dcRt", smartPurchase.DcRt.HasValue ? (object)smartPurchase.DcRt.Value : DBNull.Value),
+                new SqlParameter("@dcAm", smartPurchase.DcAm.HasValue ? (object)smartPurchase.DcAm.Value : DBNull.Value),
+                new SqlParameter("@vatCatCd", (object)smartPurchase.VatCatCd ?? DBNull.Value),
+                new SqlParameter("@iplCatCd", (object)smartPurchase.IplCatCd ?? DBNull.Value),
+                new SqlParameter("@tlCatCd", (object)smartPurchase.TlCatCd ?? DBNull.Value),
+                new SqlParameter("@exciseTxCatC", (object)smartPurchase.ExciseTxCatC ?? DBNull.Value),
+                new SqlParameter("@vatTaxblAmt", smartPurchase.VatTaxblAmt.HasValue ? (object)smartPurchase.VatTaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@exciseTaxblAmt", smartPurchase.ExciseTaxblAmt.HasValue ? (object)smartPurchase.ExciseTaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@iplTaxblAmt", smartPurchase.IplTaxblAmt.HasValue ? (object)smartPurchase.IplTaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@tlTaxblAmt", smartPurchase.TlTaxblAmt.HasValue ? (object)smartPurchase.TlTaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@taxblAmt", smartPurchase.TaxblAmt.HasValue ? (object)smartPurchase.TaxblAmt.Value : DBNull.Value),
+                new SqlParameter("@vatAmt", smartPurchase.VatAmt.HasValue ? (object)smartPurchase.VatAmt.Value : DBNull.Value),
+                new SqlParameter("@iplAmt", smartPurchase.IplAmt.HasValue ? (object)smartPurchase.IplAmt.Value : DBNull.Value),
+                new SqlParameter("@tlAmt", smartPurchase.TlAmt.HasValue ? (object)smartPurchase.TlAmt.Value : DBNull.Value),
+                new SqlParameter("@exciseTxAmt", smartPurchase.ExciseTxAmt.HasValue ? (object)smartPurchase.ExciseTxAmt.Value : DBNull.Value),
+                new SqlParameter("@ttotAmt", smartPurchase.TtotAmt.HasValue ? (object)smartPurchase.TtotAmt.Value : DBNull.Value)
+            };
+
+            return await _context.Database.ExecuteSqlRawAsync(
+                "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, @cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq, @itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, @vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, @taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt",
+                parameters
+            );
+        }
     }
 }

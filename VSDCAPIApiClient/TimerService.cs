@@ -43,7 +43,7 @@ namespace VSDCAPI
             _logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
 
             //await testServerRunning();
-            
+
             if (!deviceInitialized)
                 await initializeDeviceAsync();
 
@@ -63,8 +63,39 @@ namespace VSDCAPI
 
             await fiscalizeInvoices();
 
+            await getPurchases();
+
             //remove this in production
             await StopAsync(CancellationToken.None);
+        }
+
+        private async Task getPurchases()
+        {
+            _logger.LogInformation("Smart Purchases ");
+
+            var request = new CustomersRequest
+            {
+                Tpin = DataMapper.DeviceDetails.Tpin,
+                BhfId = DataMapper.DeviceDetails.BhfId,
+                LastReqDt = DataMapper.DeviceDetails.LastReqDt
+            };
+            var response = await _client.GetPurchases(request);
+
+            if (response is null || response!.ResultCd != "000")
+            {
+                _logger.LogInformation("Failed to get purchases");
+                return;
+            }
+
+            var jsonData = (JObject)response!.Data;
+            var purchases = jsonData.ToObject<SmartPurchases>();
+
+            foreach (var sale in purchases!.saleList)
+            {
+                var saveToSave = DataMapper.MapToSmartPurchase(sale);
+                var saved = _fiscalInfoService.SetSmartInvoiceAsync(saveToSave);
+                _logger.LogInformation("Saved Purchase with code " + saved);
+            }
         }
 
         private async Task receivedImports()
@@ -223,7 +254,7 @@ namespace VSDCAPI
                     ItemNm = item.ItemTypeCode ?? "",
                     PkgUnitCd = item.PackagingUnitCode ?? "",
                     QtyUnitCd = item.QuantityUnitCode ?? "",
-                   Qty =  item.Quantity  ,
+                    Qty = item.Quantity,
                     Prc = (double)(item.Prc ?? 0),
                     SplyAmt = (double)(item.SplyAmt ?? 0),
                     TaxblAmt = (double)(item.TaxblAmt ?? 0),

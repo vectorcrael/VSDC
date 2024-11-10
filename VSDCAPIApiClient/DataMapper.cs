@@ -103,7 +103,7 @@ namespace VSDCAPIApiClient
 
                 bhfId = DeviceDetails.BhfId,
                 tpin = DeviceDetails.Tpin,
-                orgSdcId="SDC0010001160",//to be automated by Nigel
+                orgSdcId = "SDC0010001160",//to be automated by Nigel
                 orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
                 cisInvcNo = zraInvoice.InvoiceNumber,
                 custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, //verify this
@@ -133,9 +133,9 @@ namespace VSDCAPIApiClient
                 invcAdjustReason = "",
                 totAmt = (double)zraInvoice.Items.Sum(item => item.TotalAmount),
                 vatTaxblAmt = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-                totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount) ,
+                totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
                 totItemCnt = zraInvoice.Items.Count,
-                totTaxAmt =(double)zraInvoice.Items.Sum(item => item.TaxAmount)
+                totTaxAmt = (double)zraInvoice.Items.Sum(item => item.TaxAmount)
             };
 
             invoice.itemList = new List<ItemList3>();
@@ -179,14 +179,14 @@ namespace VSDCAPIApiClient
                 });
             };
 
-           invoice.taxAmtA = invoice.itemList
-           .Where(item => item.vatCatCd == "A")
-           .Sum(item => item.vatAmt);
+            invoice.taxAmtA = invoice.itemList
+            .Where(item => item.vatCatCd == "A")
+            .Sum(item => item.vatAmt);
 
-           invoice.taxAmtA = invoice.itemList
-           .Where(item => item.vatCatCd == "A")
-           .Sum(item => item.vatAmt);
-           
+            invoice.taxAmtA = invoice.itemList
+            .Where(item => item.vatCatCd == "A")
+            .Sum(item => item.vatAmt);
+
 
 
 
@@ -281,6 +281,62 @@ namespace VSDCAPIApiClient
                 UseYn = code.useYn
             };
 
+        }
+        public static SmartPurchase MapToSmartPurchase(Sale sale)
+        {
+            if (sale == null)
+            {
+                throw new ArgumentNullException(nameof(sale), "Sale cannot be null.");
+            }
+
+            // Create the SmartPurchase object
+            var smartPurchase = new SmartPurchase
+            {
+                SpplrTpin = sale.spplrTpin,
+                SpplrNm = sale.spplrNm,
+                SpplrBhfId = sale.spplrBhfId,
+                SpplrInvcNo = sale.spplrInvcNo,
+                RcptTyCd = sale.rcptTyCd,
+                PmtTyCd = sale.pmtTyCd,
+                CfmDt = sale.cfmDt,
+                SalesDt = sale.salesDt,
+                StockRlsDt = sale.stockRlsDt,
+                TotItemCnt = sale.totItemCnt,
+                TotTaxblAmt = sale.totTaxblAmt,
+                TotTaxAmt = sale.totTaxAmt,
+                TotAmt = sale.totAmt,
+                Remark = sale.remark,
+                // Assuming you want to map the first item in itemList to SmartPurchase
+                ItemSeq = sale.itemList?.FirstOrDefault()?.itemSeq,
+                ItemCd = sale.itemList?.FirstOrDefault()?.itemCd,
+                ItemClsCd = sale.itemList?.FirstOrDefault()?.itemClsCd,
+                ItemNm = sale.itemList?.FirstOrDefault()?.itemNm,
+                Bcd = sale.itemList?.FirstOrDefault()?.bcd,
+                PkgUnitCd = sale.itemList?.FirstOrDefault()?.pkgUnitCd,
+                Pkg = sale.itemList?.FirstOrDefault()?.pkg,
+                QtyUnitCd = sale.itemList?.FirstOrDefault()?.qtyUnitCd,
+                Qty = sale.itemList?.FirstOrDefault()?.qty,
+                Prc = sale.itemList?.FirstOrDefault()?.prc,
+                SplyAmt = sale.itemList?.FirstOrDefault()?.splyAmt,
+                DcRt = sale.itemList?.FirstOrDefault()?.dcRt,
+                DcAm = sale.itemList?.FirstOrDefault()?.dcAmt,
+                VatCatCd = sale.itemList?.FirstOrDefault()?.vatCatCd,
+                IplCatCd = sale.itemList?.FirstOrDefault()?.iplCatCd,
+                TlCatCd = sale.itemList?.FirstOrDefault()?.tlCatCd,
+                ExciseTxCatC = sale.itemList?.FirstOrDefault()?.exciseTxCatCd,
+                VatTaxblAmt = sale.itemList?.FirstOrDefault()?.vatTaxblAmt,
+                ExciseTaxblAmt = sale.itemList?.FirstOrDefault()?.exciseTaxblAmt,
+                IplTaxblAmt = sale.itemList?.FirstOrDefault()?.iplTaxblAmt,
+                TlTaxblAmt = sale.itemList?.FirstOrDefault()?.tlTaxblAmt,
+                TaxblAmt = sale.itemList?.FirstOrDefault()?.taxblAmt,
+                VatAmt = sale.itemList?.FirstOrDefault()?.vatAmt,
+                IplAmt = sale.itemList?.FirstOrDefault()?.iplAmt,
+                TlAmt = sale.itemList?.FirstOrDefault()?.tlAmt,
+                ExciseTxAmt = sale.itemList?.FirstOrDefault()?.exciseTxAmt,
+                TtotAmt = sale.itemList?.FirstOrDefault()?.totAmt
+            };
+
+            return smartPurchase;
         }
     }
 }
