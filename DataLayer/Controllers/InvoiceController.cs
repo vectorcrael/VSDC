@@ -64,13 +64,26 @@ namespace DataLayer.Controllers
             return NoContent();
         }
 
-        [HttpGet("update-purchase-item/{refId}")]
-        public async Task<IActionResult> UpdatePurchaseItems(string refId)
+        [HttpGet("purchases/{refId}")]
+        public async Task<IActionResult> GetPurchase(string refId)
         {
-            var item = await _fiscalInfoService.GetPurchaseItemsAsync(refId);
+            var purchase = await _fiscalInfoService.GetZraSinglePurchaseAsync(refId);
+            return Ok(purchase);
+        }
 
-
-            return Ok(item);
+        [HttpGet("purchases-update/{refId}")]
+        public async Task<IActionResult> UpdatePurchaseTegTcd(string refId)
+        {
+            var status = 2;
+            var purchase = await _fiscalInfoService.GetZraSinglePurchaseAsync(refId);
+            if (purchase != null)
+            {
+                status = await _fiscalInfoService.UpdateZraPurchaseRegTcdAsync(refId);
+            }
+            if (status == 2)
+                return NotFound(refId);
+            else
+                return Ok(purchase);
         }
 
         [HttpGet("stock-masters")]

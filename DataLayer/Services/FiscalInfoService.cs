@@ -313,5 +313,22 @@ namespace DataLayer.Services
                 parameters
             );
         }
+
+        public async Task<ZraPurchase?> GetZraSinglePurchaseAsync(string refId)
+        {
+             return await _context.ZraPurchases
+              .FromSqlRaw("SELECT * FROM ZraPurchase WHERE InvoiceNumber =  {0} ", refId)
+              .FirstOrDefaultAsync();
+        }
+
+        public Task<int> UpdateZraPurchaseAsync(ZraPurchase zraPurchase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> UpdateZraPurchaseRegTcdAsync(string refId)
+        {
+            return await _context.Database.ExecuteSqlRawAsync("UPDATE Inv SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
+        }
     }
 }
