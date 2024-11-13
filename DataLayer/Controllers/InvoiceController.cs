@@ -64,6 +64,15 @@ namespace DataLayer.Controllers
             return NoContent();
         }
 
+        [HttpGet("update-purchase-item/{refId}")]
+        public async Task<IActionResult> UpdatePurchaseItems(string refId)
+        {
+            var item = await _fiscalInfoService.GetPurchaseItemsAsync(refId);
+
+
+            return Ok(item);
+        }
+
         [HttpGet("stock-masters")]
         public async Task<IActionResult> GetStockMasters()
         {
