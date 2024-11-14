@@ -4,13 +4,34 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using VSDCAPI;
+using VSDCAPIApiClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")),  ServiceLifetime.Transient);
+builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IFiscalInfoService, FiscalInfoService>();
-builder.Services.AddScoped<HttpClient, HttpClient>();
-builder.Services.AddScoped<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
-builder.Services.AddHostedService<TimerService>(); //do not start up the Timer service
+builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
+builder.Services.AddSingleton<HttpClient, HttpClient>();
+builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
+builder.Services.AddSingleton<IFiscalService, FiscalService>();
+
+//builder.Services.AddHostedService<TimerService>(); //do not start up the Timer service MOVE TO BACKGROUND SERVICE
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
 app.Run();

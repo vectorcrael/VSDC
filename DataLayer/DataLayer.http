@@ -1,7 +1,0 @@
-﻿@DataLayer_HostAddress = http://localhost:5181
-
-GET {{DataLayer_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
