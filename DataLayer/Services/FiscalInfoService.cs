@@ -328,7 +328,7 @@ namespace DataLayer.Services
 
         public async Task<int> UpdateZraPurchaseRegTcdAsync(string refId)
         {
-            return await _context.Database.ExecuteSqlRawAsync("UPDATE Inv SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
+            return await _context.Database.ExecuteSqlRawAsync("UPDATE InvNum SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
         }
 
         public void Dispose()

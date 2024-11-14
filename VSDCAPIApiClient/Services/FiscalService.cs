@@ -32,9 +32,9 @@ namespace VSDCAPI
 
             var request = new CustomersRequest
             {
-                Tpin = DataMapper.DeviceDetails.Tpin,
-                BhfId = DataMapper.DeviceDetails.BhfId,
-                LastReqDt = DataMapper.DeviceDetails.LastReqDt
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                lastReqDt = "20240923000000"//DataMapper.DeviceDetails.LastReqDt
             };
             var response = await _client.GetPurchases(request);
 
