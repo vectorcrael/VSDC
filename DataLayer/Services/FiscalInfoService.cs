@@ -11,7 +11,7 @@ using Microsoft.VisualBasic;
 namespace DataLayer.Services
 {
 
-    public class FiscalInfoService : IFiscalInfoService
+    public class FiscalInfoService : IFiscalInfoService, IDisposable
     {
         private readonly AppDBContext _context;
 
@@ -329,6 +329,11 @@ namespace DataLayer.Services
         public async Task<int> UpdateZraPurchaseRegTcdAsync(string refId)
         {
             return await _context.Database.ExecuteSqlRawAsync("UPDATE Inv SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

@@ -1,4 +1,4 @@
--- Active: 1729772099477@@127.0.0.1@1433@EVO-CHEM
+-- Active: 1729772099477@@127.0.0.1@1433@EVO-CHEMF
 create view ZRASTockAdjustments as
 select 
 case when s.Module='AR' then (select c.Tax_Number from Client c where c.Account=s.Account)
@@ -9,7 +9,7 @@ case when s.Module='AR' then (select c.Name from Client c where c.Account=s.Acco
 else
 case when s.Module='AP' then (select c.Name from Vendor c where c.Account=s.Account)
 else null end end as 'custNm',
-case when s.Module='AP' then (select c.ulAPSmart from Vendor c where c.Account=s.Account)
+case when s.Module='AP' then (select c.Name from Vendor c where c.Account=s.Account)
 else 'M' end as 'regTyCd',
 case when s.Module not in ('AP','AR') and QtyIn>0 then '06' else '16' end as 'sarTyCd',
 'totItemCnt'=1,
@@ -22,9 +22,9 @@ else
 format(cast (TxDate as date ), 'yyyyMMdd') as 'ocrnDt',
 'itemSeq'=1,
 (select t.Code from StkItem t where t.StockLink=s.AccountLink) as 'itemCd',
-(select coalesce(t.ucIIUNSPSC,'1017160000') from StkItem t where t.StockLink=s.AccountLink) as 'itemClsCd',
+(select coalesce(t.AccountLink,'1017160000') from StkItem t where t.StockLink=s.AccountLink) as 'itemClsCd',
 (select t.Description_1 from StkItem t where t.StockLink=s.AccountLink) as 'itemNm',
-(select coalesce(t.ulIIQuantityUnitCode,'EA') from StkItem t where t.StockLink=s.AccountLink) as 'pkgUnitCd',
+(select coalesce(t.AccountLink,'EA') from StkItem t where t.StockLink=s.AccountLink) as 'pkgUnitCd',
 'pkg'=0,
 (select coalesce(t.ulIIQuantityUnitCode,'EA') from StkItem t where t.StockLink=s.AccountLink) as 'qtyUnitCd', Quantity  as 'qty',
  (case when iCurrencyID<>0 then (fForeignDebit+fForeignCredit) else (Debit+Credit) end)/nullif(Quantity,0) as 'prc',

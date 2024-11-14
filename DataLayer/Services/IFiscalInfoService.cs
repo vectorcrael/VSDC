@@ -4,7 +4,7 @@ using DataLayer.Models2;
 
 namespace DataLayer.Services
 {
-    public interface IFiscalInfoService
+    public interface IFiscalInfoService: IDisposable
     {
         Task<List<FiscalInfo>> GetAllFiscalInfosAsync();
         Task AddFiscalInfoAsync(FiscalInfo fiscalInfo);

@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Controllers
+﻿namespace VSDCAPI.Controllers
 {
     public class ServerStatus
     {

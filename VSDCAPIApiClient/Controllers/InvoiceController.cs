@@ -4,7 +4,7 @@ using DataLayer.Models2;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DataLayer.Controllers
+namespace VSDCAPI.Controllers
 {
     public class InvoiceController : ControllerBase
     {
