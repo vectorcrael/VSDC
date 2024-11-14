@@ -1,20 +1,8 @@
 ﻿using System;
 using System.Timers;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using DataLayer.Services;
-using VSDCAPIApiClient;
-using Newtonsoft.Json;
-using VSDCAPIApiClient.DTOs;
-using Newtonsoft.Json.Linq;
-using DataLayer.Models2;
-using Microsoft.Identity.Client;
-using DataLayer.Models;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using VSDCAPI;
 
-namespace VSDCAPI
+namespace BackgroundWorkerService
 {
     public class TimerService(ILogger<TimerService> logger, IFiscalService fiscalService) : IHostedService, IDisposable
     {

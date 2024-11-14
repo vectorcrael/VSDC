@@ -16,8 +16,6 @@ builder.Services.AddSingleton<HttpClient, HttpClient>();
 builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
 builder.Services.AddSingleton<IFiscalService, FiscalService>();
 
-//builder.Services.AddHostedService<TimerService>(); //do not start up the Timer service MOVE TO BACKGROUND SERVICE
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
