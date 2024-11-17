@@ -1,9 +1,11 @@
+using VSDCAPIApiClient.DTOs;
+
 namespace VSDCAPI
 {
     public interface IFiscalService
     {
         Task testServerRunning();
-        Task initializeDeviceAsync();
+        Task<ZraResponse> initializeDeviceAsync();
         Task updateSelectCodes();
         Task updateClassificationCodes();
         Task updateStockMaster();

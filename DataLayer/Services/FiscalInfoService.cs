@@ -11,11 +11,11 @@ using Microsoft.VisualBasic;
 namespace DataLayer.Services
 {
 
-    public class FiscalInfoService : IFiscalInfoService, IDisposable
+    public class DataService : IDataService, IDisposable
     {
         private readonly AppDBContext _context;
 
-        public FiscalInfoService(AppDBContext context)
+        public DataService(AppDBContext context)
         {
             _context = context;
         }

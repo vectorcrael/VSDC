@@ -417,10 +417,14 @@ namespace VSDCAPI
                 }
             }
         }
-        public async Task initializeDeviceAsync()
+        public async Task<ZraResponse> initializeDeviceAsync()
         {
+            ZraResponse? response = new ZraResponse{
+                ResultMsg = "Device already initialized"
+            };
+
             if (deviceInitialized)
-                return;
+                return response;
 
             var request = new DeviceInitializationRequest
             {
@@ -429,7 +433,7 @@ namespace VSDCAPI
                 dvcSrlNo = DataMapper.DeviceDetails.DvcSrlNo
             };
 
-            var response = await _client.DeviceInitialization(request);
+            response = await _client.DeviceInitialization(request);
             _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
             
             using (var _fiscalInfoService = _fiscalInfoServiceFactory.Create())
@@ -463,6 +467,7 @@ namespace VSDCAPI
                 }
             }
             deviceInitialized = true;
+            return response;
         }
     }
 }

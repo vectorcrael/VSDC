@@ -8,9 +8,9 @@ namespace VSDCAPI.Controllers
 {
     public class InvoiceController : ControllerBase
     {
-        private readonly IFiscalInfoService _fiscalInfoService;
+        private readonly IDataService _fiscalInfoService;
 
-        public InvoiceController(IFiscalInfoService fiscalInfoService)
+        public InvoiceController(IDataService fiscalInfoService)
         {
             _fiscalInfoService = fiscalInfoService;
         }

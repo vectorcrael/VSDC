@@ -5,7 +5,7 @@ namespace VSDCAPIApiClient.Services;
 
 public interface IFiscalInfoServiceFactory
 {
-    IFiscalInfoService Create();
+    IDataService Create();
 }
 
 public class FiscalInfoServiceFactory : IFiscalInfoServiceFactory
@@ -17,8 +17,8 @@ public class FiscalInfoServiceFactory : IFiscalInfoServiceFactory
         _serviceProvider = serviceProvider;
     }
 
-    public IFiscalInfoService Create()
+    public IDataService Create()
     {
-        return _serviceProvider.GetRequiredService<IFiscalInfoService>();
+        return _serviceProvider.GetRequiredService<IDataService>();
     }
 }
