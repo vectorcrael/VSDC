@@ -19,6 +19,9 @@ public class FiscalInfoServiceFactory : IFiscalInfoServiceFactory
 
     public IDataService Create()
     {
-        return _serviceProvider.GetRequiredService<IDataService>();
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            return scope.ServiceProvider.GetRequiredService<IDataService>();
+        }
     }
 }

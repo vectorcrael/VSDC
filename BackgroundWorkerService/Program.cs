@@ -7,8 +7,8 @@ using VSDCAPIApiClient.Services;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IDataService, DataService>(); 
+builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
 builder.Services.AddSingleton<HttpClient, HttpClient>();
 builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
 builder.Services.AddHostedService<Worker>();
