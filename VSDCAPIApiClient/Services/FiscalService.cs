@@ -450,6 +450,7 @@ namespace VSDCAPI
 
                     var dbUpdate = await _fiscalInfoService.SetDeviceInitsAsync(deviceInit);
                     _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
+                    deviceInitialized = true;
                 }
                 else if (response!.ResultCd == "902")
                 {
@@ -460,13 +461,16 @@ namespace VSDCAPI
                     {
                         _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(device));
                     }
+                    deviceInitialized = true;
                 }
                 else
                 {
-                    throw new Exception("Cannot work with a device that is not initialized");
+                    response.ResultMsg ="Cannot work with a device that is not initialized";
+                    deviceInitialized = false;
+                    //throw new Exception("Cannot work with a device that is not initialized");
                 }
             }
-            deviceInitialized = true;
+            
             return response;
         }
     }

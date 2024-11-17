@@ -4,7 +4,7 @@ using VSDCAPI;
 
 namespace VSDCAPIApiClient.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FiscalizationController (IFiscalService fiscalService) : ControllerBase
     {
@@ -14,6 +14,7 @@ namespace VSDCAPIApiClient.Controllers
         public async Task<IActionResult> InitializeDevice()
         {
             var response = await _fiscalInfoService.initializeDeviceAsync();
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
             return Ok(response);
         }
 
