@@ -1,7 +1,8 @@
 using System;
 using DataLayer.Services;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace VSDCAPIApiClient.Services;
+namespace ServicesLayer.Services;
 
 public interface IFiscalInfoServiceFactory
 {

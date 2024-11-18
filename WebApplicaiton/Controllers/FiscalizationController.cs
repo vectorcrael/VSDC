@@ -2,18 +2,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VSDCAPI;
 
-namespace VSDCAPIApiClient.Controllers
+namespace WebApplicaiton.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class FiscalizationController (IFiscalService fiscalService) : ControllerBase
     {
-         private readonly IFiscalService _fiscalInfoService = fiscalService;
-
         [HttpGet("initialize-device")]
         public async Task<IActionResult> InitializeDevice()
         {
-            var response = await _fiscalInfoService.initializeDeviceAsync();
+            var response = await fiscalService.initializeDeviceAsync();
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
             return Ok(response);
         }
@@ -21,7 +19,7 @@ namespace VSDCAPIApiClient.Controllers
         [HttpGet("update-select-codes")]
         public async Task<IActionResult> UpdateSelectCodes()
         {
-            await _fiscalInfoService.updateSelectCodes();
+            await fiscalService.updateSelectCodes();
             return Ok("Select Coded Updated");
         }
 

@@ -1,4 +1,4 @@
-using VSDCAPIApiClient.DTOs;
+using ServicesLayer.DTOs;
 
 namespace VSDCAPI
 {

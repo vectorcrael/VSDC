@@ -3,7 +3,7 @@ using DataLayer.Models;
 using DataLayer.Services;
 using Microsoft.EntityFrameworkCore;
 using VSDCAPI;
-using VSDCAPIApiClient.Services;
+using ServicesLayer.Services;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

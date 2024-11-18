@@ -1,6 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
-using VSDCAPIApiClient.DTOs;
+using ServicesLayer.DTOs;
 
 namespace VSDCAPI
 {

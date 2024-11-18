@@ -1,12 +1,12 @@
-﻿using DataLayer.Models;
+using DataLayer.Models;
 using DataLayer.Services;
 using Microsoft.EntityFrameworkCore;
+using ServicesLayer.Services;
 using VSDCAPI;
-using VSDCAPIApiClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("DefaultConnection"));
 
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
@@ -14,7 +14,7 @@ builder.Services.AddSingleton<HttpClient, HttpClient>();
 builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
 builder.Services.AddScoped<IFiscalService, FiscalService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -26,8 +26,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.UseHttpsRedirection();
-app.UseAuthorization();
+app.UseAuthentication(); 
 app.MapControllers();
-
 app.Run();
+

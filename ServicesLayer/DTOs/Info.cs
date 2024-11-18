@@ -1,6 +1,6 @@
 using System;
 
-namespace VSDCAPIApiClient.DTOs;
+namespace ServicesLayer.DTOs;
 public class Device{
     public Info info { get; set; }
     public class Info

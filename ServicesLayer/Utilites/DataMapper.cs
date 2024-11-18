@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO.Compression;
 using DataLayer.Models2;
+using ServicesLayer.DTOs;
 using VSDCAPI;
-using VSDCAPIApiClient.DTOs;
 
-namespace VSDCAPIApiClient
+namespace ServicesLayer
 {
     public class DataMapper
     {

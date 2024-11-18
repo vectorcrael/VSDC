@@ -4,70 +4,63 @@ using DataLayer.Models2;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace VSDCAPI.Controllers
+namespace WebApplicaiton.Controllers
 {
-    public class InvoiceController : ControllerBase
+    public class InvoiceController(IDataService fiscalInfoService) : ControllerBase
     {
-        private readonly IDataService _fiscalInfoService;
-
-        public InvoiceController(IDataService fiscalInfoService)
-        {
-            _fiscalInfoService = fiscalInfoService;
-        }
-
         [HttpGet("fiscal-info")]
         public async Task<IActionResult> GetFiscalInfos()
         {
-            var fiscalInfos = await _fiscalInfoService.GetAllFiscalInfosAsync();
+            var fiscalInfos = await fiscalInfoService.GetAllFiscalInfosAsync();
             return Ok(fiscalInfos);
         }
 
         [HttpPost("fiscal-info")]
         public async Task<IActionResult> AddFiscalInfo([FromBody] FiscalInfo fiscalInfo)
         {
-            await _fiscalInfoService.AddFiscalInfoAsync(fiscalInfo);
+            await fiscalInfoService.AddFiscalInfoAsync(fiscalInfo);
             return CreatedAtAction(nameof(GetFiscalInfos), new { id = fiscalInfo.Id }, fiscalInfo);
         }
 
         [HttpGet("invoices")]
         public async Task<IActionResult> GetInvoices()
         {
-            var invoices = await _fiscalInfoService.GetZraInvoicesAsync();
+            var invoices = await fiscalInfoService.GetZraInvoicesAsync();
             return Ok(invoices);
         }
 
         [HttpGet("invoice-items/{refId}")]
         public async Task<IActionResult> GetInvoiceItems(string refId)
         {
-            var items = await _fiscalInfoService.GetInvoiceItemsAsync(refId);
+            var items = await fiscalInfoService.GetInvoiceItemsAsync(refId);
             return Ok(items);
         }
 
         [HttpGet("purchases")]
         public async Task<IActionResult> GetPurchases()
         {
-            var purchases = await _fiscalInfoService.GetAllPurchasesAsync();
+            var purchases = await fiscalInfoService.GetAllPurchasesAsync();
             return Ok(purchases);
         }
 
         [HttpGet("purchase-items/{refId}")]
         public async Task<IActionResult> GetPurchaseItems(string refId)
         {
-            var items = await _fiscalInfoService.GetPurchaseItemsAsync(refId);
+            var items = await fiscalInfoService.GetPurchaseItemsAsync(refId);
             return Ok(items);
         }
 
         [HttpPost("update-fiscal-details")]
         public async Task<IActionResult> UpdateFiscalDetails(byte[] signature, string internalData, string invoiceNumber, string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
         {
-            await _fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType, invoiceSequence, qrCode, vsdcDate);
+            await fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType, invoiceSequence, qrCode, vsdcDate);
             return NoContent();
         }
 
         [HttpGet("purchases/{refId}")]
         public async Task<IActionResult> GetPurchase(string refId)
         {
-            var purchase = await _fiscalInfoService.GetZraSinglePurchaseAsync(refId);
+            var purchase = await fiscalInfoService.GetZraSinglePurchaseAsync(refId);
             return Ok(purchase);
         }
 
@@ -75,10 +68,10 @@ namespace VSDCAPI.Controllers
         public async Task<IActionResult> UpdatePurchaseTegTcd(string refId)
         {
             var status = 2;
-            var purchase = await _fiscalInfoService.GetZraSinglePurchaseAsync(refId);
+            var purchase = await fiscalInfoService.GetZraSinglePurchaseAsync(refId);
             if (purchase != null)
             {
-                status = await _fiscalInfoService.UpdateZraPurchaseRegTcdAsync(refId);
+                status = await fiscalInfoService.UpdateZraPurchaseRegTcdAsync(refId);
             }
             if (status == 2)
                 return NotFound(refId);
@@ -89,49 +82,49 @@ namespace VSDCAPI.Controllers
         [HttpGet("stock-masters")]
         public async Task<IActionResult> GetStockMasters()
         {
-            var stockMasters = await _fiscalInfoService.GetStockMastersAsync();
+            var stockMasters = await fiscalInfoService.GetStockMastersAsync();
             return Ok(stockMasters);
         }
 
         [HttpGet("device-init")]
         public async Task<IActionResult> GetDeviceInitInfo()
         {
-            var deviceInits = await _fiscalInfoService.GetAllDeviceInitsAsync();
+            var deviceInits = await fiscalInfoService.GetAllDeviceInitsAsync();
             return Ok(deviceInits);
         }
 
         [HttpPost("device-init")]
         public async Task<IActionResult> UpdateDeviceInitInfo([FromBody] DeviceInit deviceInit)
         {
-            await _fiscalInfoService.SetDeviceInitsAsync(deviceInit);
+            await fiscalInfoService.SetDeviceInitsAsync(deviceInit);
             return NoContent();
         }
 
         [HttpGet("classification-codes")]
         public async Task<IActionResult> GetZraClassCodes()
         {
-            var codes = await _fiscalInfoService.GetAllZraClassCodesAsync();
+            var codes = await fiscalInfoService.GetAllZraClassCodesAsync();
             return Ok(codes);
         }
 
         [HttpPost("classification-codes")]
         public async Task<IActionResult> UpdateClassificationCodes([FromBody] ZraClassCode zraClassCode)
         {
-            await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
+            await fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
             return NoContent();
         }
 
         [HttpGet("selected-codes")]
         public async Task<IActionResult> GetZraSelectCodes()
         {
-            var codes = await _fiscalInfoService.GetAllZraSelectCodesAsync();
+            var codes = await fiscalInfoService.GetAllZraSelectCodesAsync();
             return Ok(codes);
         }
 
         [HttpPost("selected-codes")]
         public async Task<IActionResult> UpdateSelectedCodes([FromBody] ZraSelectCode zraClassCode)
         {
-            await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
+            await fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
             return NoContent();
         }
     }

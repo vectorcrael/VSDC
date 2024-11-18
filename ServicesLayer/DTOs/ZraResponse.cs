@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace VSDCAPIApiClient.DTOs
+namespace ServicesLayer.DTOs
 {
 	public class ZraResponse
 	{

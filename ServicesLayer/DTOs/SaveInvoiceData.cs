@@ -1,6 +1,6 @@
 using System;
 
-namespace VSDCAPIApiClient.DTOs;
+namespace ServicesLayer.DTOs;
 
 public class SaveInvoiceData
 {

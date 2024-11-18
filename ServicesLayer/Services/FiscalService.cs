@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DataLayer.Services;
-using VSDCAPIApiClient;
+using ServicesLayer;
 using Newtonsoft.Json;
-using VSDCAPIApiClient.DTOs;
+using ServicesLayer.DTOs;
 using Newtonsoft.Json.Linq;
 using DataLayer.Models2;
 using Microsoft.Identity.Client;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using VSDCAPIApiClient.Services;
+using ServicesLayer.Services;
 
 namespace VSDCAPI
 {
