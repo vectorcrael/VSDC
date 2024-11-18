@@ -12,8 +12,7 @@ namespace WebApplicaiton.Controllers
         public async Task<IActionResult> InitializeDevice()
         {
             var response = await fiscalService.initializeDeviceAsync();
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
-            return Ok(response);
+            return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(response));
         }
 
         [HttpGet("update-select-codes")]
