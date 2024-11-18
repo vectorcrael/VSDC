@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO.Compression;
-using DataLayer.Models2;
+using DataLayer.Models;
 using ServicesLayer.DTOs;
 using VSDCAPI;
 

@@ -1,4 +1,4 @@
-using DataLayer.Models;
+using DataLayer.Data;
 using DataLayer.Services;
 using Microsoft.EntityFrameworkCore;
 using ServicesLayer.Services;
@@ -6,7 +6,7 @@ using VSDCAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
-builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
 builder.Services.AddSingleton<HttpClient, HttpClient>();

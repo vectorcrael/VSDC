@@ -1,7 +1,6 @@
 ﻿using System;
 using DataLayer.Models;
-using DataLayer.Models2;
-using DataLayer.Services;
+using DataLayer.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -11,31 +10,23 @@ using Microsoft.VisualBasic;
 namespace DataLayer.Services
 {
 
-    public class DataService : IDataService
+    public class DataService (AppDbContext context) : IDataService
     {
-        private readonly AppDBContext _context;
-
-        public DataService(AppDBContext context)
-        {
-            _context = context;
-        }
-
-        // Methods for FiscalInfo
         public async Task<List<FiscalInfo>> GetAllFiscalInfosAsync()
         {
-            return await _context.FiscalInfos.ToListAsync();
+            return await context.FiscalInfos.ToListAsync();
         }
 
         public async Task AddFiscalInfoAsync(FiscalInfo fiscalInfo)
         {
-            _context.FiscalInfos.Add(fiscalInfo);
-            await _context.SaveChangesAsync();
+            context.FiscalInfos.Add(fiscalInfo);
+            await context.SaveChangesAsync();
         }
 
         // Methods for ZraInvoice
         public async Task<List<ZraInvoice>> GetZraInvoicesAsync()
         {
-            var invoices = await _context.ZraInvoices
+            var invoices = await context.ZraInvoices
                 .FromSqlRaw("SELECT * FROM ZraInvoice")
                 .ToListAsync();
 
@@ -51,14 +42,14 @@ namespace DataLayer.Services
 
         public async Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(string refId)
         {
-            return await _context.ZraInvoiceItems
+            return await context.ZraInvoiceItems
                 .FromSqlRaw("EXEC GetZraInvoiceItem @RefId={0}", refId)
                 .ToListAsync();
         }
 
         public async Task<List<ZraPurchaseItem>> GetPurchaseItemsAsync(string refId)
         {
-            return await _context.ZraPurchaseItems
+            return await context.ZraPurchaseItems
                 .FromSqlRaw("EXEC GetZraPurchaseItem @RefId={0}", refId)
                 .ToListAsync();
         }
@@ -66,7 +57,7 @@ namespace DataLayer.Services
         // Methods for PurchaseInfo
         public async Task<List<PurchaseInfo>> GetAllPurchasesAsync()
         {
-            return await _context.PurchaseInfos
+            return await context.PurchaseInfos
                 .FromSqlRaw("SELECT * FROM PurchaseInfo")
                 .ToListAsync();
         }
@@ -84,12 +75,12 @@ namespace DataLayer.Services
                 new SqlParameter("@VsdcDate", vsdcDate)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
+            return await context.Database.ExecuteSqlRawAsync("EXEC UpdateFiscalDetails @Signature, @InternalData, @InvNumber, @InvoiceType, @InvoiceSequence, @QrCode, @VsdcDate", parameters);
         }
 
         public async Task<List<ZraStockMaster>> GetStockMastersAsync()
         {
-            var masters = await _context.ZraStockMasters
+            var masters = await context.ZraStockMasters
                 .FromSqlRaw("SELECT * FROM ZraStockMaster")
                 .ToListAsync();
 
@@ -105,7 +96,7 @@ namespace DataLayer.Services
 
         public async Task<List<DeviceInit>> GetAllDeviceInitsAsync()
         {
-            var deviceInits = await _context.DeviceInits
+            var deviceInits = await context.DeviceInits
                 .FromSqlRaw("SELECT * FROM DeviceInit")
                 .ToListAsync();
             return deviceInits;
@@ -142,12 +133,12 @@ namespace DataLayer.Services
                 new SqlParameter("@lastCopyInvcNo", deviceInit.LastCopyInvcNo.HasValue ? (object)deviceInit.LastCopyInvcNo.Value : DBNull.Value)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateDeviceDetails @resultCd, @resultMsg, @resultDt, @tpin, @taxprNm, @bsnsActv, @bhfId, @bhfNm, @bhfOpenDt, @prvncNm, @dstrtNm, @sctrNm, @locDesc, @hqYn, @mgrNm, @mgrTelNo, @mgrEmail, @sdicId, @mrcNo, @lastSaleInvcNo, @lastPchsInvcNo, @lastSaleRcptNo, @lastInvcNo, @lastTrainInvcNo, @lastProfrmInvcNo, @lastCopyInvcNo", parameters);
+            return await context.Database.ExecuteSqlRawAsync("EXEC UpdateDeviceDetails @resultCd, @resultMsg, @resultDt, @tpin, @taxprNm, @bsnsActv, @bhfId, @bhfNm, @bhfOpenDt, @prvncNm, @dstrtNm, @sctrNm, @locDesc, @hqYn, @mgrNm, @mgrTelNo, @mgrEmail, @sdicId, @mrcNo, @lastSaleInvcNo, @lastPchsInvcNo, @lastSaleRcptNo, @lastInvcNo, @lastTrainInvcNo, @lastProfrmInvcNo, @lastCopyInvcNo", parameters);
         }
 
         public async Task<List<ZraSelectCode>> GetAllZraSelectCodesAsync()
         {
-            var zraCodes = await _context.ZraSelectCodes
+            var zraCodes = await context.ZraSelectCodes
                 .FromSqlRaw("SELECT * FROM ZRAStandardCodes")
                 .ToListAsync();
             return zraCodes;
@@ -165,12 +156,12 @@ namespace DataLayer.Services
                 new SqlParameter("@userDfnNm1", string.IsNullOrEmpty(zraSelectCode.UserDfnNm1) ? "": zraSelectCode.UserDfnNm1)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAStandardCodes @resultDt, @cdCls, @cdClsNm, @cd, @cdNm, @userDfnNm1", parameters);
+            return await context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAStandardCodes @resultDt, @cdCls, @cdClsNm, @cd, @cdNm, @userDfnNm1", parameters);
         }
 
         public async Task<List<ZraClassCode>> GetAllZraClassCodesAsync()
         {
-            var zraCodes = await _context.ZraClassCodes
+            var zraCodes = await context.ZraClassCodes
                 .FromSqlRaw("SELECT * FROM ZRAClassCodes")
                 .ToListAsync();
             return zraCodes;
@@ -189,7 +180,7 @@ namespace DataLayer.Services
                 new SqlParameter("@useYn", zraClassCodes.UseYn ?? (object)DBNull.Value)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAClassCodes @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
+            return await context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAClassCodes @resultDt, @temClsCd, @itemClsNm, @itemClsLvl, @taxTyCd, @mjrTgYn, @useYn", parameters);
         }
 
         public async Task<int> SetImportsAsync(ZraImportData item)
@@ -218,12 +209,12 @@ namespace DataLayer.Services
                 new SqlParameter("@dclRefNum", item.dclRefNum)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAImports @taskCd, @dclDe, @itemSeq, @dclNo, @hsCd, @itemNm, @orgnNatCd, @exptNatCd, @pkg, @pkgUnitCd, @qty, @qtyUnitCd, @totWt, @netWt, @spplrNm, @agntNm, @invcFcurAmt, @invcFcurCd, @invcFcurExcrt, @dclRefNum", parameters);
+            return await context.Database.ExecuteSqlRawAsync("EXEC UpdateZRAImports @taskCd, @dclDe, @itemSeq, @dclNo, @hsCd, @itemNm, @orgnNatCd, @exptNatCd, @pkg, @pkgUnitCd, @qty, @qtyUnitCd, @totWt, @netWt, @spplrNm, @agntNm, @invcFcurAmt, @invcFcurCd, @invcFcurExcrt, @dclRefNum", parameters);
         }
 
         public async Task<List<ZraPurchase>> GetZraPurchasesAsync()
         {
-            var purchases = await _context.ZraPurchases
+            var purchases = await context.ZraPurchases
               .FromSqlRaw("SELECT * FROM ZraPurchase")
               .ToListAsync();
 
@@ -246,12 +237,12 @@ namespace DataLayer.Services
                 new SqlParameter("@resultDt", resultDt)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("insert into  PurchaseInfo ( InvoiceNumber,  Message, CreateDate ) values  ( @invcNo,  @message, @resultDt );", parameters);
+            return await context.Database.ExecuteSqlRawAsync("insert into  PurchaseInfo ( InvoiceNumber,  Message, CreateDate ) values  ( @invcNo,  @message, @resultDt );", parameters);
         }
 
         public async Task<List<ZraImportData>> GetReceivedImportAsync()
         {
-            return await _context.ZraImportDatas
+            return await context.ZraImportDatas
                 .FromSqlRaw("SELECT * FROM RecievedImports")
                 .ToListAsync();
         }
@@ -308,7 +299,7 @@ namespace DataLayer.Services
                 new SqlParameter("@ttotAmt", smartPurchase.TtotAmt.HasValue ? (object)smartPurchase.TtotAmt.Value : DBNull.Value)
             };
 
-            return await _context.Database.ExecuteSqlRawAsync(
+            return await context.Database.ExecuteSqlRawAsync(
                 "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, @cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq, @itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, @vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, @taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt",
                 parameters
             );
@@ -316,7 +307,7 @@ namespace DataLayer.Services
 
         public async Task<ZraPurchase?> GetZraSinglePurchaseAsync(string refId)
         {
-             return await _context.ZraPurchases
+             return await context.ZraPurchases
               .FromSqlRaw("SELECT * FROM ZraPurchase WHERE InvoiceNumber =  {0} ", refId)
               .FirstOrDefaultAsync();
         }
@@ -328,7 +319,7 @@ namespace DataLayer.Services
 
         public async Task<int> UpdateZraPurchaseRegTcdAsync(string refId)
         {
-            return await _context.Database.ExecuteSqlRawAsync("UPDATE InvNum SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
+            return await context.Database.ExecuteSqlRawAsync("UPDATE InvNum SET RegTcd = 'A' WHERE InvoiceNumber = {0};", refId);
         }
 
         public void Dispose()

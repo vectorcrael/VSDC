@@ -9,7 +9,6 @@ using ServicesLayer;
 using Newtonsoft.Json;
 using ServicesLayer.DTOs;
 using Newtonsoft.Json.Linq;
-using DataLayer.Models2;
 using Microsoft.Identity.Client;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
@@ -55,12 +54,13 @@ namespace VSDCAPI
             }
 
         }
-        public async Task receivedImports()
+        public async Task<List<ZraResponse>> receivedImports()
         {
-            _logger.LogInformation("Received Imports ");
-
+            _logger.LogInformation("Received Imports "); 
+            var updatedImports = new List<ZraResponse>();
+            
             var receivedImports = await _fiscalInfoService.GetReceivedImportAsync();
-
+            
             foreach (var import in receivedImports)
             {
                 var request = new UpdateImportItemsRequest
@@ -93,8 +93,12 @@ namespace VSDCAPI
                     _logger.LogInformation("Failed to update imports");
                     _logger.LogInformation("Failed Payload: {JsonObject}", JsonConvert.SerializeObject(request));
                 }
+                else
+                {
+                    updatedImports.Add(response);
+                }
             }
-
+            return updatedImports;
         }
         public async Task updateImports()
         {
@@ -146,15 +150,11 @@ namespace VSDCAPI
                 _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var saveResponse = await _fiscalInfoService.SetImportsAsync(item);
                 _logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
-
             }
-
         }
         public async Task updateStockMaster()
         {
-
             _logger.LogInformation("Updating Stock Master");
-
             var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
 
             foreach (var item in stockMasterItems)
@@ -191,9 +191,7 @@ namespace VSDCAPI
                 _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var response = await _client.SaveItems(request);
                 _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
-
             }
-
         }
         public async Task updateStockAdjustments()
         {

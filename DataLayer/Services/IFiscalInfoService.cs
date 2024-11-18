@@ -1,6 +1,5 @@
 ﻿using System;
 using DataLayer.Models;
-using DataLayer.Models2;
 
 namespace DataLayer.Services
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using DataLayer.Models;
-using DataLayer.Models2;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayer.Models2;
+namespace DataLayer.Models;
 
 [Keyless]
 public class ZraSelectCode

@@ -10,7 +10,7 @@ namespace VSDCAPI
         Task updateClassificationCodes();
         Task updateStockMaster();
         Task updateImports();
-        Task receivedImports();
+        Task <List<ZraResponse>>receivedImports();
         Task fiscalizePurchases();
         Task fiscalizeInvoices();
         Task getPurchases();

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using DataLayer.Models2;
+﻿
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayer.Models;
+namespace DataLayer.Data;
 
-public partial class AppDBContext : DbContext
+public partial class AppDbContext : DbContext
 {
-    public AppDBContext(Func<object, object> value, DbContextOptions<AppDBContext> options)
+    public AppDbContext(Func<object, object> value, DbContextOptions<AppDbContext> options)
     {
     }
 
-    public AppDBContext(DbContextOptions<AppDBContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
@@ -31,7 +30,6 @@ public partial class AppDBContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AS");
-        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -1,12 +1,12 @@
 using BackgroundWorkerService;
-using DataLayer.Models;
+using DataLayer.Data;
 using DataLayer.Services;
 using Microsoft.EntityFrameworkCore;
 using VSDCAPI;
 using ServicesLayer.Services;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IDataService, DataService>(); 
 builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
 builder.Services.AddSingleton<HttpClient, HttpClient>();

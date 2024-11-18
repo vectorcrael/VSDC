@@ -19,24 +19,46 @@ namespace WebApplicaiton.Controllers
         public async Task<IActionResult> UpdateSelectCodes()
         {
             await fiscalService.updateSelectCodes();
-            return Ok("Select Coded Updated");
+            return Ok("Select Codes Updated");
+        }
+
+        [HttpGet("update-classification-codes")]
+        public async Task<IActionResult> UpdateClassificationCodes()
+        {
+            await fiscalService.updateClassificationCodes();
+            return Ok("Classification Codes Updated");
+        }
+        
+        [HttpGet("update-stock-master")]
+        public async Task<IActionResult> UpdateStockMaster()
+        {
+            await fiscalService.updateStockMaster();
+            return Ok("Stock Master Updated");
+        }
+
+        [HttpGet("update-imports")]
+        public async Task<IActionResult> UpdateImports()
+        {
+            await fiscalService.updateImports();
+            return Ok("Imports Updated");
+        }
+        
+        [HttpGet("received-imports")]
+        public async Task<IActionResult> ReceivedImports()
+        {
+            await fiscalService.receivedImports();
+            return Ok("Received Imports Updated");
         }
 
             // 
 
-            // await _fiscalInfoService.updateClassificationCodes();
+            // 
 
-            // await _fiscalInfoService.updateStockMaster();
+            // await fiscalService.fiscalizePurchases();
 
-            // await _fiscalInfoService.updateImports();
+            // await fiscalService.fiscalizeInvoices();
 
-            // await _fiscalInfoService.receivedImports();
-
-            // await _fiscalInfoService.fiscalizePurchases();
-
-            // await _fiscalInfoService.fiscalizeInvoices();
-
-            // await _fiscalInfoService.getPurchases();
+            // await fiscalService.getPurchases();
 
 
     }
