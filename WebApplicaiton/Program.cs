@@ -5,21 +5,18 @@ using ServicesLayer.Services;
 using VSDCAPI;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("DefaultConnection"));
-
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>(); 
 builder.Services.AddSingleton<HttpClient, HttpClient>();
-builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
+builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPIApiClient>();
 builder.Services.AddScoped<IFiscalService, FiscalService>();
-
 builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
