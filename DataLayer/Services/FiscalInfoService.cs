@@ -11,7 +11,7 @@ using Microsoft.VisualBasic;
 namespace DataLayer.Services
 {
 
-    public class DataService : IDataService, IDisposable
+    public class DataService : IDataService
     {
         private readonly AppDBContext _context;
 
@@ -333,7 +333,7 @@ namespace DataLayer.Services
 
         public void Dispose()
         {
-            _context?.Dispose();
+            //_context?.Dispose();
         }
     }
 }

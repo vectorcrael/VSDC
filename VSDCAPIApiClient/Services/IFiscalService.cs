@@ -5,7 +5,7 @@ namespace VSDCAPI
     public interface IFiscalService
     {
         Task testServerRunning();
-        Task<ZraResponse?> initializeDeviceAsync();
+        Task<ZraResponse> initializeDeviceAsync();
         Task updateSelectCodes();
         Task updateClassificationCodes();
         Task updateStockMaster();
