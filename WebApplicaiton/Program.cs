@@ -12,6 +12,17 @@ builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactor
 builder.Services.AddSingleton<HttpClient, HttpClient>();
 builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPIApiClient>();
 builder.Services.AddScoped<IFiscalService, FiscalService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin() 
+            .AllowAnyMethod() 
+            .AllowAnyHeader(); 
+    });
+});
+
 builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,7 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAllOrigins"); 
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseAuthentication(); 
