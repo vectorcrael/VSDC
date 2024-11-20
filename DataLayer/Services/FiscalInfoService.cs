@@ -298,11 +298,23 @@ namespace DataLayer.Services
                 new SqlParameter("@exciseTxAmt", smartPurchase.ExciseTxAmt.HasValue ? (object)smartPurchase.ExciseTxAmt.Value : DBNull.Value),
                 new SqlParameter("@ttotAmt", smartPurchase.TtotAmt.HasValue ? (object)smartPurchase.TtotAmt.Value : DBNull.Value)
             };
+            
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var result = await context.Database.ExecuteSqlRawAsync(
+                        "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, @cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq, @itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, @vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, @taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt", parameters);
+                    await transaction.CommitAsync();
 
-            return await context.Database.ExecuteSqlRawAsync(
-                "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, @cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq, @itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, @vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, @taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt",
-                parameters
-            );
+                    return result;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw; // Rethrow the exception after rolling back
+                }
+            }
         }
 
         public async Task<ZraPurchase?> GetZraSinglePurchaseAsync(string refId)
