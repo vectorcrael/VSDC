@@ -60,6 +60,12 @@ namespace WebApplicaiton.Controllers
 
             // await fiscalService.getPurchases();
 
+            [HttpGet("get-smart-purchases")]
+            public async Task<IActionResult> GetSmartPurchases()
+            {
+                var purchases = await fiscalService.getPurchases();
+                return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(purchases));
+            }
 
     }
 }

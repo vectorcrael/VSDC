@@ -13,7 +13,7 @@ namespace VSDCAPI
         Task <List<ZraResponse>>receivedImports();
         Task fiscalizePurchases();
         Task fiscalizeInvoices();
-        Task getPurchases();
+        Task<SmartPurchases> getPurchases();
         Task updateStockAdjustments();
     }
 

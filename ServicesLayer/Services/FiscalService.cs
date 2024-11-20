@@ -21,45 +21,44 @@ namespace VSDCAPI
         private bool deviceInitialized { get; set; } = false;
         private bool selectCodesUpdated { get; set; } = false;
         private bool classificationCodesUpdated { get; set; } = false;
-        private readonly ILogger<FiscalService> _logger = logger;
-        private readonly IDataService _fiscalInfoService = dataService;
-        private readonly IVSDCAPIApiClient _client = vSDCAPIApiClient;
-        public async Task getPurchases()
-        {
-            _logger.LogInformation("Smart Purchases ");
 
+        public async Task<SmartPurchases> getPurchases()
+        {
+            logger.LogInformation("Smart Purchases ");
+            SmartPurchases purchases = new SmartPurchases();
+            
             var request = new CustomersRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
                 lastReqDt = "20240923000000"//DataMapper.DeviceDetails.LastReqDt
             };
-            var response = await _client.GetPurchases(request);
+            var response = await vSDCAPIApiClient.GetPurchases(request);
 
             if (response is null || response!.ResultCd != "000")
             {
-                _logger.LogInformation("Failed to get purchases");
-                return;
+                logger.LogInformation("Failed to get purchases");
+                return purchases;
             }
 
             var jsonData = (JObject)response!.Data;
-            var purchases = jsonData.ToObject<SmartPurchases>();
+            purchases = jsonData.ToObject<SmartPurchases>();
 
 
             foreach (var sale in purchases!.saleList)
             {
                 var saveToSave = DataMapper.MapToSmartPurchase(sale);
-                var saved = _fiscalInfoService.SetSmartInvoiceAsync(saveToSave);
-                _logger.LogInformation("Saved Purchase with code " + saved);
+                var saved = dataService.SetSmartInvoiceAsync(saveToSave);
+                logger.LogInformation("Saved Purchase with code " + saved);
             }
-
+            return purchases;
         }
         public async Task<List<ZraResponse>> receivedImports()
         {
-            _logger.LogInformation("Received Imports "); 
+            logger.LogInformation("Received Imports "); 
             var updatedImports = new List<ZraResponse>();
             
-            var receivedImports = await _fiscalInfoService.GetReceivedImportAsync();
+            var receivedImports = await dataService.GetReceivedImportAsync();
             
             foreach (var import in receivedImports)
             {
@@ -85,13 +84,13 @@ namespace VSDCAPI
                     }
                 };
 
-                var response = await _client.UpdateImportItems(request);
-                _logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
+                var response = await vSDCAPIApiClient.UpdateImportItems(request);
+                logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
 
                 if (response is null || response!.ResultCd != "000")
                 {
-                    _logger.LogInformation("Failed to update imports");
-                    _logger.LogInformation("Failed Payload: {JsonObject}", JsonConvert.SerializeObject(request));
+                    logger.LogInformation("Failed to update imports");
+                    logger.LogInformation("Failed Payload: {JsonObject}", JsonConvert.SerializeObject(request));
                 }
                 else
                 {
@@ -102,7 +101,7 @@ namespace VSDCAPI
         }
         public async Task updateImports()
         {
-            _logger.LogInformation("Updating Imports ");
+            logger.LogInformation("Updating Imports ");
             var request = new GetImportsRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
@@ -110,12 +109,12 @@ namespace VSDCAPI
                 lastReqDt = "20240910000000"// DataMapper.DeviceDetails.LastReqDt
             };
 
-            var response = await _client.GetImports(request);
-            _logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
+            var response = await vSDCAPIApiClient.GetImports(request);
+            logger.LogInformation("Updated Imports: {JsonObject}", JsonConvert.SerializeObject(response));
 
             if (response is null || response!.ResultCd != "000")
             {
-                _logger.LogInformation("Failed to update imports");
+                logger.LogInformation("Failed to update imports");
                 return;
             }
 
@@ -147,15 +146,15 @@ namespace VSDCAPI
                     invcFcurExcrt = import.invcFcurExcrt,
                     dclRefNum = import.dclRefNum,
                 };
-                _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                var saveResponse = await _fiscalInfoService.SetImportsAsync(item);
-                _logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
+                logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var saveResponse = await dataService.SetImportsAsync(item);
+                logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
             }
         }
         public async Task updateStockMaster()
         {
-            _logger.LogInformation("Updating Stock Master");
-            var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
+            logger.LogInformation("Updating Stock Master");
+            var stockMasterItems = await dataService.GetStockMastersAsync();
 
             foreach (var item in stockMasterItems)
             {
@@ -188,16 +187,16 @@ namespace VSDCAPI
                     modrNm = "ADMIN",
                     modrId = "ADMIN"
                 };
-                _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                var response = await _client.SaveItems(request);
-                _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+                logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var response = await vSDCAPIApiClient.SaveItems(request);
+                logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
             }
         }
         public async Task updateStockAdjustments()
         {
-            _logger.LogInformation("Updating Stock Master");
+            logger.LogInformation("Updating Stock Master");
 
-            var stockMasterItems = await _fiscalInfoService.GetStockMastersAsync();
+            var stockMasterItems = await dataService.GetStockMastersAsync();
             List<ItemList> ItemList = new List<ItemList>();
             var itemSeq = 0;
             foreach (var item in stockMasterItems)
@@ -244,9 +243,9 @@ namespace VSDCAPI
                 ModrId = "",
                 ItemList = ItemList
             };
-            _logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-            var response = await _client.SaveStockItem(request);
-            _logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await vSDCAPIApiClient.SaveStockItem(request);
+            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
 
         }
         public async Task updateSelectCodes()
@@ -254,25 +253,25 @@ namespace VSDCAPI
             if (selectCodesUpdated)
                 return;
 
-            _logger.LogInformation("Updating Select Codes");
+            logger.LogInformation("Updating Select Codes");
             var request = new RequestParameters
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
                 lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
-            var response = await _client.GetUnitsOfMeasure(request);
+            var response = await vSDCAPIApiClient.GetUnitsOfMeasure(request);
 
             if (response is null || response!.ResultCd != "000")
             {
-                _logger.LogInformation("Failed to update Select Codes");
-                _logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
+                logger.LogInformation("Failed to update Select Codes");
+                logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
                 return;
             }
 
             var jsonData = (JObject)response!.Data;
             var zraCodes = jsonData.ToObject<SelectCodes>();
-            _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
+            logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
             //save the data back to the database
 
             foreach (var codeGroup in zraCodes!.clsList)
@@ -283,12 +282,12 @@ namespace VSDCAPI
                     zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
                     zraClassCode.CdCls = codeGroup.cdCls;
                     zraClassCode.CdClsNm = codeGroup.cdClsNm;
-                    var savedCode = await _fiscalInfoService.SetZraSelectCodesAsync(zraClassCode);
-                    _logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
+                    var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
+                    logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
                 }
             }
 
-            _logger.LogInformation("Done uploading the Select Codes.");
+            logger.LogInformation("Done uploading the Select Codes.");
             selectCodesUpdated = true;
         }
         public async Task updateClassificationCodes()
@@ -296,61 +295,61 @@ namespace VSDCAPI
             if (classificationCodesUpdated)
                 return;
 
-            _logger.LogInformation("Updating Classification Codes");
+            logger.LogInformation("Updating Classification Codes");
             var request = new RequestParameters
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
                 lastReqDt = DataMapper.DeviceDetails.LastReqDt
             };
-            var response = await _client.GetClassificationCodes(request);
+            var response = await vSDCAPIApiClient.GetClassificationCodes(request);
 
             if (response is null || response!.ResultCd != "000")
             {
-                _logger.LogInformation("Failed to update Classification Codes");
-                _logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
+                logger.LogInformation("Failed to update Classification Codes");
+                logger.LogInformation("API response is: {JsonObject}", JsonConvert.SerializeObject(response));
                 return;
             }
 
             var jsonData = (JObject)response!.Data;
             var zraCodes = jsonData.ToObject<ClassificationCodes>();
-            _logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
+            logger.LogInformation("Logging Zra Codest: {JsonObject}", JsonConvert.SerializeObject(zraCodes));
             //save the data back to the database
 
             foreach (var itemClass in zraCodes!.itemClsList)
             {
 
                 ZraClassCode zraClassCode = DataMapper.MapClassCode(itemClass);
-                var savedCode = await _fiscalInfoService.SetZraClassCodeAsync(zraClassCode);
-                _logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
+                var savedCode = await dataService.SetZraClassCodeAsync(zraClassCode);
+                logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
 
             }
 
-            _logger.LogInformation("Done uploading the Classification Codes.");
+            logger.LogInformation("Done uploading the Classification Codes.");
             classificationCodesUpdated = true;
         }
         public async Task testServerRunning()
         {
-            _logger.LogInformation("Running the Test Server call!");
-            var testResp = await _client.TestServerRunning();
-            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
+            logger.LogInformation("Running the Test Server call!");
+            var testResp = await vSDCAPIApiClient.TestServerRunning();
+            logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
         }
         public async Task fiscalizePurchases()
         {
-            _logger.LogInformation("Purchases running.");
+            logger.LogInformation("Purchases running.");
 
-            var purchases = await _fiscalInfoService.GetZraPurchasesAsync();
+            var purchases = await dataService.GetZraPurchasesAsync();
             foreach (var purchase in purchases)
             {
                 var request = DataMapper.ConvertPurchase(purchase);
-                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(request));
-                var response = await _client.SavePurchases(request);
-                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
+                logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var response = await vSDCAPIApiClient.SavePurchases(request);
+                logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
                 if (response!.ResultCd == "000")
                 {
-                    var dbUpdate = await _fiscalInfoService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
-                    _logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
+                    var dbUpdate = await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
+                    logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
                 }
             }
 
@@ -359,13 +358,13 @@ namespace VSDCAPI
         {
 
             //steps to fiscalise invoices
-            var invoices = await _fiscalInfoService.GetZraInvoicesAsync();
+            var invoices = await dataService.GetZraInvoicesAsync();
 
             foreach (var invoice in invoices)
             {
                 var saveInvoices = DataMapper.ConvertInvoice(invoice);
-                var response = await _client.SaveSales(saveInvoices);
-                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
+                var response = await vSDCAPIApiClient.SaveSales(saveInvoices);
+                logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
 
                 if (response!.Data != null && response.ResultCd == "000")
                 {
@@ -374,7 +373,7 @@ namespace VSDCAPI
                     var sd = jsonData.ToObject<SaveInvoiceData>();
                     var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 
-                    var dbUpdate = await _fiscalInfoService.UpdateFiscalDetailsAsync(
+                    var dbUpdate = await dataService.UpdateFiscalDetailsAsync(
                         qrCodeBinary: qrCode, //sd.rcptSign
                         internalData: sd.intrlData,
                         invoiceNumber: saveInvoices.cisInvcNo,
@@ -392,7 +391,7 @@ namespace VSDCAPI
                         CreateDate = converted ? resultDt : DateTime.Now
                     };
 
-                    await _fiscalInfoService.AddFiscalInfoAsync(fiscalInfo);
+                    await dataService.AddFiscalInfoAsync(fiscalInfo);
                 }
 
                 // //No need to save items individually
@@ -422,8 +421,8 @@ namespace VSDCAPI
                 dvcSrlNo = DataMapper.DeviceDetails.DvcSrlNo
             };
 
-            response = await _client.DeviceInitialization(request);
-            _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
+            response = await vSDCAPIApiClient.DeviceInitialization(request);
+            logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
 
             if (response!.Data != null && response!.ResultCd == "000")
@@ -436,18 +435,18 @@ namespace VSDCAPI
                 deviceInit.ResultDt = response!.ResultDt;
                 deviceInit.ResultMsg = response!.ResultMsg;
 
-                var dbUpdate = await _fiscalInfoService.SetDeviceInitsAsync(deviceInit);
-                _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
+                var dbUpdate = await dataService.SetDeviceInitsAsync(deviceInit);
+                logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
                 deviceInitialized = true;
             }
             else if (response!.ResultCd == "902")
             {
                 // continue work
-                var deviceInit = await _fiscalInfoService.GetAllDeviceInitsAsync();
+                var deviceInit = await dataService.GetAllDeviceInitsAsync();
 
                 foreach (var device in deviceInit)
                 {
-                    _logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(device));
+                    logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(device));
                 }
                 deviceInitialized = true;
             }
