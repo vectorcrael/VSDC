@@ -38,12 +38,11 @@ namespace VSDCAPI
             if (response is null || response!.ResultCd != "000")
             {
                 logger.LogInformation("Failed to get purchases");
-                return purchases;
+                throw new ApplicationException("Failed to get purchases\n" + JsonConvert.SerializeObject(response));
             }
 
             var jsonData = (JObject)response!.Data;
             purchases = jsonData.ToObject<SmartPurchases>();
-
 
             foreach (var sale in purchases!.saleList)
             {

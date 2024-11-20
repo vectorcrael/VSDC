@@ -49,23 +49,26 @@ namespace WebApplicaiton.Controllers
             await fiscalService.receivedImports();
             return Ok("Received Imports Updated");
         }
-
-            // 
-
-            // 
-
-            // await fiscalService.fiscalizePurchases();
-
-            // await fiscalService.fiscalizeInvoices();
-
-            // await fiscalService.getPurchases();
-
-            [HttpGet("get-smart-purchases")]
-            public async Task<IActionResult> GetSmartPurchases()
-            {
-                var purchases = await fiscalService.getPurchases();
-                return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(purchases));
-            }
-
+        
+        [HttpGet("fiscalise-purchases")]
+        public async Task<IActionResult> FiscalisePurchases()
+        {
+            await fiscalService.fiscalizePurchases();
+            return Ok("Purchases Fiscalised");
+        }
+        
+        [HttpGet("fiscalise-invoices")]
+        public async Task<IActionResult> FiscaliseInvoices()
+        {
+            await fiscalService.fiscalizeInvoices();
+            return Ok("Invoices Fiscalised");
+        }
+        
+        [HttpGet("get-smart-purchases")]
+        public async Task<IActionResult> GetSmartPurchases()
+        {
+            var purchases = await fiscalService.getPurchases();
+            return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(purchases));
+        }
     }
 }
