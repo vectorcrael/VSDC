@@ -8,13 +8,13 @@ namespace VSDCAPI
         Task<ZraResponse> initializeDeviceAsync();
         Task updateSelectCodes();
         Task updateClassificationCodes();
-        Task updateStockMaster();
+        Task<List<ZraResponse?>> updateStockMaster();
         Task updateImports();
         Task <List<ZraResponse>>receivedImports();
         Task fiscalizePurchases();
         Task fiscalizeInvoices();
         Task<SmartPurchases> getPurchases();
-        Task updateStockAdjustments();
+        Task UpdateStockAdjustments();
     }
 
 }

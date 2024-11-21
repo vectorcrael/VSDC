@@ -1,0 +1,32 @@
+{
+  "resultCd": "000",
+  "resultMsg": "It is succeeded",
+  "resultDt": "20241121134143",
+  "data": {
+    "info": {
+      "tin": "1002546945",
+      "taxprNm": "CHC CHEMICALS LIMITED",
+      "bsnsActv": null,
+      "bhfId": "000",
+      "bhfNm": "Headquarter",
+      "bhfOpenDt": "20240723",
+      "prvncNm": "LUSAKA PROVINCE",
+      "dstrtNm": null,
+      "sctrNm": "Lusaka",
+      "locDesc": "FARM NO SUB, OFF GREAT NORTH, Lusaka",
+      "hqYn": "Y",
+      "mgrNm": "CHC CHEMICALS LIMITED",
+      "mgrTelNo": "0963554062",
+      "mgrEmail": "val.siddle@chc.com.zm",
+      "sdcId": "SDC0010001160",
+      "mrcNo": "WIS00001862  ",
+      "lastPchsInvcNo": 34577118,
+      "lastSaleRcptNo": 133,
+      "lastInvcNo": null,
+      "lastSaleInvcNo": 133,
+      "lastTrainInvcNo": null,
+      "lastProfrmInvcNo": null,
+      "lastCopyInvcNo": null
+    }
+  }
+}

@@ -32,8 +32,8 @@ namespace WebApplicaiton.Controllers
         [HttpGet("update-stock-master")]
         public async Task<IActionResult> UpdateStockMaster()
         {
-            await fiscalService.updateStockMaster();
-            return Ok("Stock Master Updated");
+            var response = await fiscalService.updateStockMaster();
+            return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(response));
         }
 
         [HttpGet("update-imports")]

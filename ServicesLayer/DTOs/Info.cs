@@ -21,12 +21,12 @@ public class Device{
         public string mgrEmail { get; set; }
         public string sdcId { get; set; }
         public string mrcNo { get; set; }
-        public int lastPchsInvcNo { get; set; }
-        public int lastSaleRcptNo { get; set; }
-        public int lastInvcNo { get; set; }
-        public int lastSaleInvcNo { get; set; }
-        public int lastTrainInvcNo { get; set; }
-        public int lastProfrmInvcNo { get; set; }
-        public int lastCopyInvcNo { get; set; }
+        public int? lastPchsInvcNo { get; set; }
+        public int? lastSaleRcptNo { get; set; }
+        public int? lastInvcNo { get; set; }
+        public int? lastSaleInvcNo { get; set; }
+        public int? lastTrainInvcNo { get; set; }
+        public int? lastProfrmInvcNo { get; set; }
+        public int? lastCopyInvcNo { get; set; }
     }
 }

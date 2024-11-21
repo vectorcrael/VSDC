@@ -150,16 +150,16 @@ namespace VSDCAPI
                 logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
             }
         }
-        public async Task updateStockMaster()
+        public async Task<List<ZraResponse?>> updateStockMaster()
         {
             logger.LogInformation("Updating Stock Master");
             var stockMasterItems = await dataService.GetStockMastersAsync();
-
+            var stockMasters = new List<ZraResponse?>();
+            
             foreach (var item in stockMasterItems)
             {
                 var request = new UpdateItemRequest
                 {
-
                     tpin = DataMapper.DeviceDetails.Tpin,
                     bhfId = DataMapper.DeviceDetails.BhfId,
                     itemCd = item.ItemCode ?? "",
@@ -188,10 +188,13 @@ namespace VSDCAPI
                 };
                 logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var response = await vSDCAPIApiClient.SaveItems(request);
+                stockMasters.Add(response);
                 logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
             }
+
+            return stockMasters;
         }
-        public async Task updateStockAdjustments()
+        public async Task UpdateStockAdjustments()
         {
             logger.LogInformation("Updating Stock Master");
 
