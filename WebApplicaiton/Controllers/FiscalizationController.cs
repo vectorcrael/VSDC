@@ -54,14 +54,17 @@ namespace WebApplicaiton.Controllers
         public async Task<IActionResult> FiscalisePurchases()
         {
             await fiscalService.fiscalizePurchases();
-            return Ok("Purchases Fiscalised");
+            await fiscalService.adjustStockMaster();
+            return Ok("Purchases Fiscalised and Stocks Updated");
         }
         
         [HttpGet("fiscalise-invoices")]
         public async Task<IActionResult> FiscaliseInvoices()
         {
-            await fiscalService.fiscalizeInvoices();
-            return Ok("Invoices Fiscalised");
+            var responses = await fiscalService.fiscalizeInvoices();
+            await fiscalService.adjustStockMaster();
+            Console.Write("Invoices Fiscalised and Stocks Adjusted");
+            return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(responses));
         }
         
         [HttpGet("get-smart-purchases")]

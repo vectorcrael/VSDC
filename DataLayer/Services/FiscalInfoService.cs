@@ -93,6 +93,14 @@ namespace DataLayer.Services
 
             return masters;
         }
+        
+        public async Task<List<ZraStockMaster>> GetStockAdjustmentsAsync()
+        {
+            var masters = await context.ZraStockMasters
+                .FromSqlRaw("SELECT * FROM ZRASTockAdjustments")
+                .ToListAsync();
+            return masters;
+        }
 
         public async Task<List<DeviceInit>> GetAllDeviceInitsAsync()
         {
