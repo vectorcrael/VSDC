@@ -7,43 +7,43 @@ namespace VSDCAPI
 {
     public class SaveStockItemRequest
     {
-        public string Tpin { get; set; }
-        public string BhfId { get; set; }
-        public int SarNo { get; set; }
-        public int OrgSarNo { get; set; }
-        public string RegTyCd { get; set; }
-        public object CustTpin { get; set; }
-        public object CustNm { get; set; }
-        public object CustBhfId { get; set; }
-        public string SarTyCd { get; set; }
-        public string OcrnDt { get; set; }
-        public int TotItemCnt { get; set; }
-        public double TotTaxblAmt { get; set; }
-        public double TotTaxAmt { get; set; }
-        public double TotAmt { get; set; }
-        public string Remark { get; set; }
-        public string RegrId { get; set; }
-        public string RegrNm { get; set; }
-        public string ModrNm { get; set; }
-        public string ModrId { get; set; }
-        public List<ItemList> ItemList { get; set; }
+        public string tpin { get; set; }
+        public string bhfId { get; set; }
+        public int sarNo { get; set; }
+        public int orgSarNo { get; set; }
+        public string regTyCd { get; set; }
+        public object custTpin { get; set; }
+        public object custNm { get; set; }
+        public object custBhfId { get; set; }
+        public string sarTyCd { get; set; }
+        public string ocrnDt { get; set; }
+        public int totItemCnt { get; set; }
+        public double totTaxblAmt { get; set; }
+        public double totTaxAmt { get; set; }
+        public double totAmt { get; set; }
+        public string remark { get; set; }
+        public string regrId { get; set; }
+        public string regrNm { get; set; }
+        public string modrNm { get; set; }
+        public string modrId { get; set; }
+        public List<ItemList> itemList { get; set; }
     }
 
     public class ItemList
     {
-        public int ItemSeq { get; set; }
-        public string ItemCd { get; set; }
-        public string ItemClsCd { get; set; }
+        public int itemSeq { get; set; }
+        public string itemCd { get; set; }
+        public string itemClsCd { get; set; }
         public string itemTyCd {get;set;}
-        public string ItemNm { get; set; }
-        public string PkgUnitCd { get; set; }
-        public string QtyUnitCd { get; set; }
-        public decimal Qty { get; set; }
-        public double Prc { get; set; }
-        public double SplyAmt { get; set; }
-        public double TaxblAmt { get; set; }
-        public string VatCatCd { get; set; }
-        public double TaxAmt { get; set; }
-        public double TotAmt { get; set; }
+        public string itemNm { get; set; }
+        public string pkgUnitCd { get; set; }
+        public string qtyUnitCd { get; set; }
+        public decimal qty { get; set; }
+        public double prc { get; set; }
+        public double splyAmt { get; set; }
+        public double taxblAmt { get; set; }
+        public string vatCatCd { get; set; }
+        public double taxAmt { get; set; }
+        public double totAmt { get; set; }
     }
 }

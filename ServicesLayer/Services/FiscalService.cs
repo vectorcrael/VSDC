@@ -16,7 +16,10 @@ using ServicesLayer.Services;
 
 namespace VSDCAPI
 {
-    public class FiscalService(ILogger<FiscalService> logger, IDataService dataService, IVSDCAPIApiClient vSDCAPIApiClient) : IFiscalService
+    public class FiscalService(
+        ILogger<FiscalService> logger,
+        IDataService dataService,
+        IVSDCAPIApiClient vSDCAPIApiClient) : IFiscalService
     {
         private bool deviceInitialized { get; set; } = false;
         private bool selectCodesUpdated { get; set; } = false;
@@ -26,12 +29,12 @@ namespace VSDCAPI
         {
             logger.LogInformation("Smart Purchases ");
             SmartPurchases purchases = new SmartPurchases();
-            
+
             var request = new CustomersRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
-                lastReqDt = "20240923000000"//DataMapper.DeviceDetails.LastReqDt
+                lastReqDt = "20240923000000" //DataMapper.DeviceDetails.LastReqDt
             };
             var response = await vSDCAPIApiClient.GetPurchases(request);
 
@@ -50,15 +53,17 @@ namespace VSDCAPI
                 var saved = dataService.SetSmartInvoiceAsync(saveToSave);
                 logger.LogInformation("Saved Purchase with code " + saved);
             }
+
             return purchases;
         }
+
         public async Task<List<ZraResponse>> receivedImports()
         {
-            logger.LogInformation("Received Imports "); 
+            logger.LogInformation("Received Imports ");
             var updatedImports = new List<ZraResponse>();
-            
+
             var receivedImports = await dataService.GetReceivedImportAsync();
-            
+
             foreach (var import in receivedImports)
             {
                 var request = new UpdateImportItemsRequest
@@ -71,11 +76,11 @@ namespace VSDCAPI
                     {
                         new ImportItem
                         {
-                            itemSeq = (int) (import.itemSeq ?? 0),
+                            itemSeq = (int)(import.itemSeq ?? 0),
                             hsCd = import.hsCd,
                             itemClsCd = "10101504",
                             itemCd = "Chemicals",
-                            imptItemSttsCd =  "3",
+                            imptItemSttsCd = "3",
                             remark = "remark",
                             modrNm = "Admin",
                             modrId = "Admin"
@@ -96,8 +101,10 @@ namespace VSDCAPI
                     updatedImports.Add(response);
                 }
             }
+
             return updatedImports;
         }
+
         public async Task updateImports()
         {
             logger.LogInformation("Updating Imports ");
@@ -105,7 +112,7 @@ namespace VSDCAPI
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
                 bhfId = DataMapper.DeviceDetails.BhfId,
-                lastReqDt = "20240910000000"// DataMapper.DeviceDetails.LastReqDt
+                lastReqDt = "20240910000000" // DataMapper.DeviceDetails.LastReqDt
             };
 
             var response = await vSDCAPIApiClient.GetImports(request);
@@ -150,12 +157,13 @@ namespace VSDCAPI
                 logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
             }
         }
+
         public async Task<List<ZraResponse?>> updateStockMaster()
         {
             logger.LogInformation("Updating Stock Master");
             var stockMasterItems = await dataService.GetStockMastersAsync();
             var stockMasters = new List<ZraResponse?>();
-            
+
             foreach (var item in stockMasterItems)
             {
                 var request = new UpdateItemRequest
@@ -194,14 +202,63 @@ namespace VSDCAPI
 
             return stockMasters;
         }
-        
-                
+
+        public async Task<List<ZraResponse?>> saveItemFromInvoices(List<ZraInvoice> invoices)
+        {
+            logger.LogInformation("Save Invoice Items to stocks");
+            var stockMasters = new List<ZraResponse?>();
+
+            foreach (var invoice in invoices)
+            {
+                //No need to save items individually
+                //if response is OK THEN save items
+                foreach (var item in invoice.Items)
+                {
+                    var request = new UpdateItemRequest
+                    {
+                        tpin = DataMapper.DeviceDetails.Tpin,
+                        bhfId = DataMapper.DeviceDetails.BhfId,
+                        itemCd = item.ItemCode ?? "",
+                        itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
+                        itemTyCd = item.ItemDesc ?? "",
+                        itemNm = item.ItemSequenceNumber.ToString() ?? "",
+                        //  itemStdNm = item.Description ?? "",
+                        orgnNatCd = item.ItemCode ?? "",
+                        pkgUnitCd = item.PackagingUnitCode ?? "",
+                        qtyUnitCd = item.QuantityUnitCode ?? "",
+                        vatCatCd = item.TaxLabel ?? "",
+                        iplCatCd = null,
+                        tlCatCd = null,
+                        exciseTxCatCd = null,
+                        btchNo = null,
+                        // bcd = null,
+                        dftPrc =  (double)item.UnitPrice,
+                        // addInfo = null,
+                        //sftyQty = 0,
+                        isrcAplcbYn = "N",
+                        useYn = "Y",
+                        regrNm = "ADMIN",
+                        regrId = "ADMIN",
+                        modrNm = "ADMIN",
+                        modrId = "ADMIN"
+                    };
+
+                    logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                    var response = await vSDCAPIApiClient.SaveItems(request);
+                    stockMasters.Add(response);
+                    logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+                }
+            }
+
+            return stockMasters;
+        }
+
         public async Task<List<ZraResponse?>> adjustStockMaster()
         {
             logger.LogInformation("Adjusting Stock Master");
             var stockMasterItems = await dataService.GetStockAdjustmentsAsync();
             var stockMasters = new List<ZraResponse?>();
-            
+
             foreach (var item in stockMasterItems)
             {
                 var request = new UpdateItemRequest
@@ -240,7 +297,7 @@ namespace VSDCAPI
 
             return stockMasters;
         }
-        
+
         public async Task UpdateStockAdjustments()
         {
             logger.LogInformation("Updating Stock Master");
@@ -252,51 +309,51 @@ namespace VSDCAPI
             {
                 ItemList.Add(new VSDCAPI.ItemList
                 {
-                    ItemSeq = ++itemSeq,
-                    ItemCd = item.ItemCode ?? "",
-                    ItemClsCd = Convert.ToString(item.ItemClassificationCode ?? ""),
+                    itemSeq = ++itemSeq,
+                    itemCd = item.ItemCode ?? "",
+                    itemClsCd = Convert.ToString(item.ItemClassificationCode ?? ""),
                     itemTyCd = item.ItemTypeCode ?? "",
-                    ItemNm = item.ItemTypeCode ?? "",
-                    PkgUnitCd = item.PackagingUnitCode ?? "",
-                    QtyUnitCd = item.QuantityUnitCode ?? "",
-                    Qty = item.Quantity,
-                    Prc = (double)(item.Prc ?? 0),
-                    SplyAmt = (double)(item.SplyAmt ?? 0),
-                    TaxblAmt = (double)(item.TaxblAmt ?? 0),
-                    VatCatCd = item.TaxLabel ?? "",
-                    TaxAmt = (double)(item.TaxAmt ?? 0),
-                    TotAmt = (double)(item.TotAmt ?? 0)
+                    itemNm = item.ItemTypeCode ?? "",
+                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    qty = item.Quantity,
+                    prc = (double)(item.Prc ?? 0),
+                    splyAmt = (double)(item.SplyAmt ?? 0),
+                    taxblAmt = (double)(item.TaxblAmt ?? 0),
+                    vatCatCd = item.TaxLabel ?? "",
+                    taxAmt = (double)(item.TaxAmt ?? 0),
+                    totAmt = (double)(item.TotAmt ?? 0)
                 });
             }
 
             var request = new SaveStockItemRequest
             {
-                Tpin = DataMapper.DeviceDetails.Tpin,
-                BhfId = DataMapper.DeviceDetails.BhfId,
-                SarNo = 0,
-                OrgSarNo = 0,
-                RegTyCd = "",
-                CustTpin = "",
-                CustNm = "",
-                CustBhfId = "",
-                SarTyCd = "",
-                OcrnDt = "",
-                TotItemCnt = ItemList.Count,
-                TotTaxblAmt = ItemList.Sum(item => item.TaxblAmt),
-                TotTaxAmt = ItemList.Sum(item => item.TaxAmt),
-                TotAmt = ItemList.Sum(item => item.TotAmt),
-                Remark = "",
-                RegrId = "",
-                RegrNm = "",
-                ModrNm = "",
-                ModrId = "",
-                ItemList = ItemList
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                sarNo = 0,
+                orgSarNo = 0,
+                regTyCd = "",
+                custTpin = "",
+                custNm = "",
+                custBhfId = "",
+                sarTyCd = "",
+                ocrnDt = "",
+                totItemCnt = ItemList.Count,
+                totTaxblAmt = ItemList.Sum(item => item.taxblAmt),
+                totTaxAmt = ItemList.Sum(item => item.taxAmt),
+                totAmt = ItemList.Sum(item => item.totAmt),
+                remark = "",
+                regrId = "",
+                regrNm = "",
+                modrNm = "",
+                modrId = "",
+                itemList = ItemList
             };
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await vSDCAPIApiClient.SaveStockItem(request);
             logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
-
         }
+
         public async Task updateSelectCodes()
         {
             if (selectCodesUpdated)
@@ -332,13 +389,15 @@ namespace VSDCAPI
                     zraClassCode.CdCls = codeGroup.cdCls;
                     zraClassCode.CdClsNm = codeGroup.cdClsNm;
                     var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
-                    logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
+                    logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
+                        JsonConvert.SerializeObject(zraClassCode));
                 }
             }
 
             logger.LogInformation("Done uploading the Select Codes.");
             selectCodesUpdated = true;
         }
+
         public async Task updateClassificationCodes()
         {
             if (classificationCodesUpdated)
@@ -367,22 +426,23 @@ namespace VSDCAPI
 
             foreach (var itemClass in zraCodes!.itemClsList)
             {
-
                 ZraClassCode zraClassCode = DataMapper.MapClassCode(itemClass);
                 var savedCode = await dataService.SetZraClassCodeAsync(zraClassCode);
-                logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode, JsonConvert.SerializeObject(zraClassCode));
-
+                logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
+                    JsonConvert.SerializeObject(zraClassCode));
             }
 
             logger.LogInformation("Done uploading the Classification Codes.");
             classificationCodesUpdated = true;
         }
+
         public async Task testServerRunning()
         {
             logger.LogInformation("Running the Test Server call!");
             var testResp = await vSDCAPIApiClient.TestServerRunning();
             logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
         }
+
         public async Task fiscalizePurchases()
         {
             logger.LogInformation("Purchases running.");
@@ -397,12 +457,13 @@ namespace VSDCAPI
 
                 if (response!.ResultCd == "000")
                 {
-                    var dbUpdate = await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
+                    var dbUpdate =
+                        await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
                     logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
                 }
             }
-
         }
+
         public async Task<List<ZraResponse>> fiscalizeInvoices()
         {
             var responses = new List<ZraResponse>();
@@ -416,7 +477,7 @@ namespace VSDCAPI
                 var response = await vSDCAPIApiClient.SaveSales(saveInvoices);
                 logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(saveInvoices));
                 responses.Add(response);
-                
+
                 if (response!.Data != null && response.ResultCd == "000")
                 {
                     //once the signature is generated save back to the database
@@ -430,7 +491,7 @@ namespace VSDCAPI
                         invoiceNumber: saveInvoices.cisInvcNo,
                         invoiceType: saveInvoices.rcptTyCd,
                         invoiceSequence: sd.rcptNo.ToString(),
-                        signature: sd.rcptSign,//sd.qrCodeUrl,
+                        signature: sd.rcptSign, //sd.qrCodeUrl,
                         vsdcDate: sd.vsdcRcptPbctDate);
 
                     var converted = DateTime.TryParse(response.ResultDt, out DateTime resultDt);
@@ -445,17 +506,13 @@ namespace VSDCAPI
                     await dataService.AddFiscalInfoAsync(fiscalInfo);
                 }
 
-                // //No need to save items individually
-                // //if response is OK THEN save items
-                // foreach (var item in saveInvoices.itemList)
-                // {
-                //     var updateRequest = DataMapper.MapToUpdateItemRequest(item);
-                //     var itemResponse = await _client.SaveItems(updateRequest);
-                // }
+                var stockSave = await saveItemFromInvoices(invoices);
+                responses.AddRange(stockSave);
             }
-            
+
             return responses;
         }
+
         public async Task<ZraResponse> initializeDeviceAsync()
         {
             ZraResponse? response = new ZraResponse
@@ -500,6 +557,7 @@ namespace VSDCAPI
                 {
                     logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(device));
                 }
+
                 deviceInitialized = true;
             }
             else
@@ -513,4 +571,3 @@ namespace VSDCAPI
         }
     }
 }
-
