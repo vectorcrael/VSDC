@@ -202,7 +202,57 @@ namespace VSDCAPI
 
             return stockMasters;
         }
+        
+        public async Task<List<ZraResponse?>> saveItemFromPurchases(List<ZraPurchase> purchases)
+        {
+            logger.LogInformation("Save Invoice Items to stocks");
+            var stockMasters = new List<ZraResponse?>();
 
+            foreach (var purchase in purchases)
+            {
+                //No need to save items individually
+                //if response is OK THEN save items
+                foreach (var item in purchase.Items)
+                {
+                    var request = new UpdateItemRequest
+                    {
+                        tpin = DataMapper.DeviceDetails.Tpin,
+                        bhfId = DataMapper.DeviceDetails.BhfId,
+                        itemCd = item.ItemCode ?? "",
+                        itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
+                        itemTyCd = item.ItemDesc ?? "",
+                        itemNm = item.ItemSequenceNumber.ToString() ?? "",
+                        //  itemStdNm = item.Description ?? "",
+                        orgnNatCd = item.ItemCode ?? "",
+                        pkgUnitCd = item.PackagingUnitCode ?? "",
+                        qtyUnitCd = item.QuantityUnitCode ?? "",
+                        vatCatCd = item.TaxLabel ?? "",
+                        iplCatCd = null,
+                        tlCatCd = null,
+                        exciseTxCatCd = null,
+                        btchNo = null,
+                        // bcd = null,
+                        dftPrc =  (double)item.UnitPrice,
+                        // addInfo = null,
+                        //sftyQty = 0,
+                        isrcAplcbYn = "N",
+                        useYn = "Y",
+                        regrNm = "ADMIN",
+                        regrId = "ADMIN",
+                        modrNm = "ADMIN",
+                        modrId = "ADMIN"
+                    };
+
+                    logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                    var response = await vSDCAPIApiClient.SaveItems(request);
+                    stockMasters.Add(response);
+                    logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+                }
+            }
+
+            return stockMasters;
+        }
+        
         public async Task<List<ZraResponse?>> saveItemFromInvoices(List<ZraInvoice> invoices)
         {
             logger.LogInformation("Save Invoice Items to stocks");
@@ -457,11 +507,11 @@ namespace VSDCAPI
 
                 if (response!.ResultCd == "000")
                 {
-                    var dbUpdate =
-                        await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
+                    var dbUpdate = await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
                     logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
                 }
             }
+            await saveItemFromPurchases(purchases);
         }
 
         public async Task<List<ZraResponse>> fiscalizeInvoices()
@@ -502,14 +552,11 @@ namespace VSDCAPI
                         Message = response.ResultMsg,
                         CreateDate = converted ? resultDt : DateTime.Now
                     };
-
                     await dataService.AddFiscalInfoAsync(fiscalInfo);
                 }
-
-                var stockSave = await saveItemFromInvoices(invoices);
-                responses.AddRange(stockSave);
             }
-
+            var stockSave = await saveItemFromInvoices(invoices);
+            responses.AddRange(stockSave!);
             return responses;
         }
 
