@@ -311,36 +311,40 @@ namespace VSDCAPI
 
             foreach (var item in stockMasterItems)
             {
-                var request = new UpdateItemRequest
+                var request = new SaveStockItemRequest
                 {
                     tpin = DataMapper.DeviceDetails.Tpin,
-                    bhfId = DataMapper.DeviceDetails.BhfId,
-                    itemCd = item.ItemCode ?? "",
-                    itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
-                    itemTyCd = item.ItemTypeCode ?? "",
-                    itemNm = item.Description ?? "",
-                    //  itemStdNm = item.Description ?? "",
-                    orgnNatCd = item.OriginNationCode ?? "",
-                    pkgUnitCd = item.PackagingUnitCode ?? "",
-                    qtyUnitCd = item.QuantityUnitCode ?? "",
-                    vatCatCd = item.VatCatCd ?? "",
-                    iplCatCd = null,
-                    tlCatCd = null,
-                    exciseTxCatCd = null,
-                    btchNo = null,
-                    // bcd = null,
-                    dftPrc = (double)(item.Prc ?? 0),
-                    // addInfo = null,
-                    //sftyQty = 0,
-                    isrcAplcbYn = "N",
-                    useYn = "Y",
+                    bhfId = item.BranchId ?? "",
                     regrNm = "ADMIN",
                     regrId = "ADMIN",
                     modrNm = "ADMIN",
                     modrId = "ADMIN"
                 };
+
+                request.itemList = new List<ItemList>();
+                var itemSeq = 1;
+                request.itemList.Add(
+                    new ItemList()
+                    {
+                        itemSeq = itemSeq,
+                        itemCd = item.ItemCode ?? "",
+                        itemClsCd = item.ItemClassificationCode ?? "",
+                        itemTyCd = item.ItemTypeCode?? "",
+                        itemNm = item.OriginNationCode?? "",
+                        pkgUnitCd = item.PackagingUnitCode ?? "",
+                        qtyUnitCd = item.QuantityUnitCode ?? "",
+                        qty = item.Quantity,
+                        prc =  item.Prc ?? 0,
+                        splyAmt = item.SplyAmt ?? 0,
+                        vatCatCd = item.VatCatCd ?? "",
+                        taxblAmt = (double) (item.TaxblAmt ?? 0),
+                        taxAmt =(double)( item.TaxAmt?? 0),
+                        totAmt =(double)(item.TotAmt ??0)
+                    }
+                    );
+
                 logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                var response = await vSDCAPIApiClient.SaveItems(request);
+                var response = await vSDCAPIApiClient.SaveStockItem(request);
                 stockMasters.Add(response);
                 logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
             }
