@@ -1,28 +1,20 @@
 using System;
 using DataLayer.Services;
 using Microsoft.Extensions.DependencyInjection;
+using VSDCAPI;
 
 namespace ServicesLayer.Services;
 
 public interface IFiscalInfoServiceFactory
 {
-    IDataService Create();
+    IFiscalService Create();
 }
 
-public class FiscalInfoServiceFactory : IFiscalInfoServiceFactory
+public class FiscalInfoServiceFactory(IServiceProvider serviceProvider) : IFiscalInfoServiceFactory
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public FiscalInfoServiceFactory(IServiceProvider serviceProvider)
+    public IFiscalService Create()
     {
-        _serviceProvider = serviceProvider;
-    }
-
-    public IDataService Create()
-    {
-        using (var scope = _serviceProvider.CreateScope())
-        {
-            return scope.ServiceProvider.GetRequiredService<IDataService>();
-        }
+        using var scope = serviceProvider.CreateScope();
+        return scope.ServiceProvider.GetRequiredService<IFiscalService>();
     }
 }

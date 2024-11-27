@@ -1,18 +1,11 @@
 using Newtonsoft.Json;
+using ServicesLayer.Services;
 using VSDCAPI;
 
 namespace BackgroundWorkerService;
 
-public class Worker : BackgroundService
+public class Worker (ILogger<Worker> _logger, IFiscalInfoServiceFactory fiscalServicefactory ) : BackgroundService 
 {
-    private readonly ILogger<Worker> _logger;
-    private readonly IFiscalService _fiscalService;
-
-    public Worker(ILogger<Worker> logger, IFiscalService fiscalService )
-    {
-        _logger = logger;
-        _fiscalService = fiscalService;
-    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

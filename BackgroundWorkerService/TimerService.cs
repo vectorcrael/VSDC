@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Timers;
+using ServicesLayer.Services;
 using VSDCAPI;
 
 namespace BackgroundWorkerService
 {
-    public class TimerService(ILogger<TimerService> logger, IFiscalService fiscalService) : IHostedService, IDisposable
+    public class TimerService(ILogger<TimerService> logger, IFiscalInfoServiceFactory fiscalServiceFactory) : IHostedService, IDisposable
     {
-
-        private readonly int timeOut = 120000;
-        private readonly ILogger<TimerService> _logger = logger;
+        private const int TimeOut = 120000;
         private System.Timers.Timer? _timer;
-        private readonly IFiscalService _fiscalInfoService = fiscalService;
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Timer Service is starting.");
-            _timer = new System.Timers.Timer(timeOut);
+            logger.LogInformation("Timer Service is starting.");
+            _timer = new System.Timers.Timer(TimeOut);
             _timer.Elapsed += OnTimedEventAsync!;
             _timer.AutoReset = true;
             _timer.Enabled = true;
@@ -25,27 +23,29 @@ namespace BackgroundWorkerService
         private async void OnTimedEventAsync(object source, ElapsedEventArgs e)
         {
             // Logic to execute on timer event
-            _logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
-
+            logger.LogInformation("Timer event triggered at: {time}", e.SignalTime);
+            
+            var fiscalInfoService = fiscalServiceFactory.Create();
+            
             //await _fiscalInfoService.testServerRunning();
 
-            await _fiscalInfoService.initializeDeviceAsync();
+            await fiscalInfoService.initializeDeviceAsync();
 
-            await _fiscalInfoService.updateSelectCodes();
+            await fiscalInfoService.updateSelectCodes();
 
-            await _fiscalInfoService.updateClassificationCodes();
+            await fiscalInfoService.updateClassificationCodes();
 
-            await _fiscalInfoService.updateStockMaster();
+            await fiscalInfoService.updateStockMaster();
 
-            await _fiscalInfoService.updateImports();
+            await fiscalInfoService.updateImports();
 
-            await _fiscalInfoService.receivedImports();
+            await fiscalInfoService.receivedImports();
 
-            await _fiscalInfoService.fiscalizePurchases();
+            await fiscalInfoService.fiscalizePurchases();
 
-            await _fiscalInfoService.fiscalizeInvoices();
+            await fiscalInfoService.fiscalizeInvoices();
 
-            await _fiscalInfoService.getPurchases();
+            await fiscalInfoService.getPurchases();
 
             //remove this in production
             await StopAsync(CancellationToken.None);
@@ -53,7 +53,7 @@ namespace BackgroundWorkerService
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Timer Service is stopping.");
+            logger.LogInformation("Timer Service is stopping.");
             _timer?.Stop();
             return Task.CompletedTask;
         }
