@@ -14,6 +14,6 @@ builder.Services.AddSingleton<IVSDCAPIApiClient, VSDCAPI.VSDCAPIApiClient>();
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<TimerService>();
 builder.Services.AddSingleton<IFiscalInfoServiceFactory, FiscalInfoServiceFactory>();
-builder.Services.AddSingleton<IFiscalService, FiscalService>(); 
+builder.Services.AddScoped<IFiscalService, FiscalService>(); 
 var host = builder.Build();
 host.Run();
