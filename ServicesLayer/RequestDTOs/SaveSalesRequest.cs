@@ -100,6 +100,7 @@ namespace VSDCAPI
         public string itemCd { get; set; }
         public int itemClsCd { get; set; } = 0;
         public string itemNm { get; set; }
+        public string itemTyCd { get; set; }
         public string bcd { get; set; }
         public string pkgUnitCd { get; set; }
         public double pkg { get; set; }

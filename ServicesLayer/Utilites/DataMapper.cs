@@ -202,7 +202,7 @@ namespace ServicesLayer
             {
                 itemCd = item.itemCd,
                 itemClsCd = item.itemClsCd,
-                //itemTyCd=item.itemTyCd,
+                itemTyCd=item.itemTyCd,
                 itemNm = item.itemNm,
                 pkgUnitCd = item.pkgUnitCd,
                 qtyUnitCd = item.qtyUnitCd,
@@ -214,7 +214,7 @@ namespace ServicesLayer
                 dftPrc = item.prc,
                 tpin = DeviceDetails.Tpin,
                 bhfId = DeviceDetails.BhfId,
-                itemTyCd = null,
+               // itemTyCd = null,
                 itemStdNm = null,
                 orgnNatCd = null,
                 btchNo = null,
