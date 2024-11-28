@@ -464,4 +464,22 @@ public class FiscalService(
 
         return stockMasters;
     }
+    
+    public async Task<List<ZraResponse?>> saveItemFromStockAdjustments()
+    {
+        logger.LogInformation("Save items from stocks");
+        var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
+        var stockMasters = new List<ZraResponse?>();
+        
+        foreach (var item in stocks)
+        {
+            var request = DataMapper.MapData(item);
+            logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await apiClient.SaveItems(request);
+            stockMasters.Add(response);
+            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
+
+        return stockMasters;
+    }
 }

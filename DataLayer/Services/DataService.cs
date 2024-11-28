@@ -41,6 +41,13 @@ public class DataService(AppDbContext context) : IDataService
             .FromSqlRaw("EXEC GetZraInvoiceItem @RefId={0}", refId)
             .ToListAsync();
     }
+    
+    public async Task<List<ZRASTockAdjustment>> GetOtherSrockAdjustmentsAsync()
+    {
+        return await context.ZRASTockAdjustments
+            .FromSqlRaw("Select * from ZRASTockAdjustment")
+            .ToListAsync();
+    }
 
     public async Task<List<ZraPurchaseItem>> GetPurchaseItemsAsync(string refId)
     {

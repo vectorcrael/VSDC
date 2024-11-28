@@ -16,4 +16,5 @@ public interface IFiscalService
     Task<List<ZraResponse>> FiscalizeInvoices();
     Task<SmartPurchases> GetPurchases();
     Task UpdateStockAdjustments();
+    Task<List<ZraResponse?>> saveItemFromStockAdjustments();
 }

@@ -71,4 +71,11 @@ public class FiscalizationController(IFiscalService fiscalService) : ControllerB
         var purchases = await fiscalService.GetPurchases();
         return Ok(JsonConvert.SerializeObject(purchases));
     }
+    
+    [HttpGet("other-stock-adjustments")]
+    public async Task<IActionResult> OtherStockAdjustments()
+    {
+        var stocks = await fiscalService.saveItemFromStockAdjustments();
+        return Ok(JsonConvert.SerializeObject(stocks));
+    }
 }

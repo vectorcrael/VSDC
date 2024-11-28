@@ -25,6 +25,34 @@ public static class DataMapper
             taxAmt = (double)(import.TaxAmt ?? 0),
             totAmt = import.TotAmt ?? 0
         };
+    } 
+
+    public static UpdateItemRequest MapData(ZRASTockAdjustment import)
+    {
+        return new UpdateItemRequest
+        {
+            tpin = DeviceDetails.Tpin,
+            bhfId = DeviceDetails.BhfId,
+            itemCd = import.ItemClsCd ?? "", 
+            itemClsCd = Convert.ToInt32(import.ItemClsCd ?? "0"),
+            itemTyCd = import.RegTyCd,
+            itemNm = import.ItemNm ?? "",
+            orgnNatCd = "ZM",
+            pkgUnitCd = import.PkgUnitCd ?? "",
+            qtyUnitCd = import.QtyUnitCd ?? "",
+            vatCatCd = import.VatCatCd ?? "",
+            iplCatCd = null,
+            tlCatCd = null,
+            exciseTxCatCd = null,
+            btchNo = null,
+            dftPrc = (double) (import.SplyAmt ?? 0),
+            isrcAplcbYn = "N",
+            useYn = "Y",
+            regrNm = DeviceDetails.regrNm,
+            regrId = DeviceDetails.regrId,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId
+        };
     }
 
     public static UpdateItemRequest MapData(ZraInvoiceItem import)

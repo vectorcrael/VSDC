@@ -30,4 +30,5 @@ public interface IDataService
     Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt);
     Task<List<ZraImportData>> GetReceivedImportAsync();
     Task<int> SetSmartInvoiceAsync(SmartPurchase smartPurchase);
+    Task<List<ZRASTockAdjustment>> GetOtherSrockAdjustmentsAsync();
 }

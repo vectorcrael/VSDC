@@ -15,6 +15,7 @@ public partial class AppDbContext : DbContext
     }
 
     public virtual DbSet<FiscalInfo> FiscalInfos { get; set; }
+    public virtual DbSet<ZRASTockAdjustment> ZRASTockAdjustments { get; set; }
     public virtual DbSet<ZraInvoice> ZraInvoices { get; set; }
     public virtual DbSet<ZraInvoiceItem> ZraInvoiceItems { get; set; }
     public virtual DbSet<PurchaseInfo> PurchaseInfos { get; set; }
