@@ -23,4 +23,6 @@ public class ZraPurchaseItem
     public decimal RRP { get; set; }
     public decimal taxAmt { get; set; }
     public decimal taxblAmt { get; set; }
+    
+    public int itemTyCd { get; set; }
 }

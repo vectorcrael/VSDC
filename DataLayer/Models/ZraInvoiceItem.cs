@@ -26,6 +26,10 @@ namespace DataLayer.Models
         public double fQuantityLineTotExcl { get; set; }
         public decimal VatableAmount {get;set; }
          public decimal TaxAmount {get;set; }
+         
+         public string vatCatCd { get; set; }
+         public int itemTyCd { get; set; }
+         
     }
 }
 
