@@ -272,7 +272,7 @@ namespace VSDCAPI
                         itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
                         itemTyCd = item.itemTyCd.ToString(),
                         itemNm = item.ItemSequenceNumber.ToString() ?? "",
-                        orgnNatCd = item.ItemCode ?? "",
+                        orgnNatCd = "ZM",
                         pkgUnitCd = item.PackagingUnitCode ?? "",
                         qtyUnitCd = item.QuantityUnitCode ?? "",
                         vatCatCd = item.vatCatCd ?? "",
