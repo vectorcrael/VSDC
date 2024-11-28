@@ -13,6 +13,7 @@ using Microsoft.Identity.Client;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using ServicesLayer.Services;
+using ServicesLayer.Utilites;
 
 namespace VSDCAPI
 {
@@ -129,29 +130,7 @@ namespace VSDCAPI
 
             foreach (var import in imports!.itemList)
             {
-                var item = new ZraImportData
-                {
-                    taskCd = import.taskCd,
-                    dclDe = import.dclDe,
-                    itemSeq = import.itemSeq,
-                    dclNo = import.dclNo,
-                    hsCd = import.hsCd,
-                    itemNm = import.itemNm,
-                    orgnNatCd = import.orgnNatCd,
-                    exptNatCd = import.exptNatCd,
-                    pkg = import.pkg,
-                    pkgUnitCd = import.pkgUnitCd,
-                    qty = import.qty,
-                    qtyUnitCd = import.qtyUnitCd,
-                    totWt = import.totWt,
-                    netWt = import.netWt,
-                    spplrNm = import.spplrNm,
-                    agntNm = import.agntNm,
-                    invcFcurAmt = import.invcFcurAmt,
-                    invcFcurCd = import.invcFcurCd,
-                    invcFcurExcrt = import.invcFcurExcrt,
-                    dclRefNum = import.dclRefNum,
-                };
+                var item = DataMapper.MapData(import);
                 logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var saveResponse = await dataService.SetImportsAsync(item);
                 logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
@@ -166,34 +145,7 @@ namespace VSDCAPI
 
             foreach (var item in stockMasterItems)
             {
-                var request = new UpdateItemRequest
-                {
-                    tpin = DataMapper.DeviceDetails.Tpin,
-                    bhfId = DataMapper.DeviceDetails.BhfId,
-                    itemCd = item.ItemCode ?? "",
-                    itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
-                    itemTyCd = item.ItemTypeCode ?? "",
-                    itemNm = item.Description ?? "",
-                    //  itemStdNm = item.Description ?? "",
-                    orgnNatCd = item.OriginNationCode ?? "",
-                    pkgUnitCd = item.PackagingUnitCode ?? "",
-                    qtyUnitCd = item.QuantityUnitCode ?? "",
-                    vatCatCd = item.VatCatCd ?? "",
-                    iplCatCd = null,
-                    tlCatCd = null,
-                    exciseTxCatCd = null,
-                    btchNo = null,
-                    // bcd = null,
-                    dftPrc = (double)(item.Prc ?? 0),
-                    // addInfo = null,
-                    //sftyQty = 0,
-                    isrcAplcbYn = "N",
-                    useYn = "Y",
-                    regrNm = "ADMIN",
-                    regrId = "ADMIN",
-                    modrNm = "ADMIN",
-                    modrId = "ADMIN"
-                };
+                var request = DataMapper.MapData(item);
                 logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var response = await vSDCAPIApiClient.SaveItems(request);
                 stockMasters.Add(response);
@@ -212,42 +164,16 @@ namespace VSDCAPI
             {
                 //No need to save items individually
                 //if response is OK THEN save items
-                foreach (var item in purchase.Items)
-                {
-                    var request = new UpdateItemRequest
+                if (purchase.Items != null)
+                    foreach (var item in purchase.Items)
                     {
-                        tpin = DataMapper.DeviceDetails.Tpin,
-                        bhfId = DataMapper.DeviceDetails.BhfId,
-                        itemCd = item.ItemCode ?? "",
-                        itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
-                        itemTyCd = item.ItemDesc ?? "",
-                        itemNm = item.ItemSequenceNumber.ToString() ?? "",
-                        //  itemStdNm = item.Description ?? "",
-                        orgnNatCd = item.ItemCode ?? "",
-                        pkgUnitCd = item.PackagingUnitCode ?? "",
-                        qtyUnitCd = item.QuantityUnitCode ?? "",
-                        vatCatCd = item.TaxLabel ?? "",
-                        iplCatCd = null,
-                        tlCatCd = null,
-                        exciseTxCatCd = null,
-                        btchNo = null,
-                        // bcd = null,
-                        dftPrc =  (double)item.UnitPrice,
-                        // addInfo = null,
-                        //sftyQty = 0,
-                        isrcAplcbYn = "N",
-                        useYn = "Y",
-                        regrNm = "ADMIN",
-                        regrId = "ADMIN",
-                        modrNm = "ADMIN",
-                        modrId = "ADMIN"
-                    };
-
-                    logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                    var response = await vSDCAPIApiClient.SaveItems(request);
-                    stockMasters.Add(response);
-                    logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
-                }
+                        var request = DataMapper.MapData(item);
+                        logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                        var response = await vSDCAPIApiClient.SaveItems(request);
+                        stockMasters.Add(response);
+                        logger.LogInformation("Updated Stock Items: {JsonObject}",
+                            JsonConvert.SerializeObject(response));
+                    }
             }
 
             return stockMasters;
@@ -264,31 +190,7 @@ namespace VSDCAPI
                 //if response is OK THEN save items
                 foreach (var item in invoice.Items)
                 {
-                    var request = new UpdateItemRequest
-                    {
-                        tpin = DataMapper.DeviceDetails.Tpin,
-                        bhfId = DataMapper.DeviceDetails.BhfId,
-                        itemCd = item.ItemCode ?? "",
-                        itemClsCd = Convert.ToInt32(item.ItemClassificationCode ?? "0"),
-                        itemTyCd = item.itemTyCd.ToString(),
-                        itemNm = item.ItemSequenceNumber.ToString() ?? "",
-                        orgnNatCd = "ZM",
-                        pkgUnitCd = item.PackagingUnitCode ?? "",
-                        qtyUnitCd = item.QuantityUnitCode ?? "",
-                        vatCatCd = item.vatCatCd ?? "",
-                        iplCatCd = null,
-                        tlCatCd = null,
-                        exciseTxCatCd = null,
-                        btchNo = null,
-                        dftPrc =  (double)item.UnitPrice,
-                        isrcAplcbYn = "N",
-                        useYn = "Y",
-                        regrNm = "ADMIN",
-                        regrId = "ADMIN",
-                        modrNm = "ADMIN",
-                        modrId = "ADMIN"
-                    };
-
+                    var request = DataMapper.MapData(item);
                     logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                     var response = await vSDCAPIApiClient.SaveItems(request);
                     stockMasters.Add(response);
@@ -311,33 +213,15 @@ namespace VSDCAPI
                 {
                     tpin = DataMapper.DeviceDetails.Tpin,
                     bhfId = item.BranchId ?? "",
-                    regrNm = "ADMIN",
-                    regrId = "ADMIN",
-                    modrNm = "ADMIN",
-                    modrId = "ADMIN"
+                    regrNm = DataMapper.DeviceDetails.regrNm,
+                    regrId = DataMapper.DeviceDetails.regrId,
+                    modrNm = DataMapper.DeviceDetails.modrNm,
+                    modrId = DataMapper.DeviceDetails.modrId
                 };
 
                 request.itemList = new List<ItemList>();
                 var itemSeq = 1;
-                request.itemList.Add(
-                    new ItemList()
-                    {
-                        itemSeq = itemSeq,
-                        itemCd = item.ItemCode ?? "",
-                        itemClsCd = item.ItemClassificationCode ?? "",
-                        itemTyCd = item.ItemTypeCode?? "",
-                        itemNm = item.OriginNationCode?? "",
-                        pkgUnitCd = item.PackagingUnitCode ?? "",
-                        qtyUnitCd = item.QuantityUnitCode ?? "",
-                        qty = item.Quantity,
-                        prc =  item.Prc ?? 0,
-                        splyAmt = item.SplyAmt ?? 0,
-                        vatCatCd = item.VatCatCd ?? "",
-                        taxblAmt = (double) (item.TaxblAmt ?? 0),
-                        taxAmt =(double)( item.TaxAmt?? 0),
-                        totAmt =(double)(item.TotAmt ??0)
-                    }
-                    );
+                request.itemList.Add(DataMapper.MapDataItem(item, itemSeq));
 
                 logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                 var response = await vSDCAPIApiClient.SaveStockItem(request);

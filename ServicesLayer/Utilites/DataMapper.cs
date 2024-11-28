@@ -1,23 +1,151 @@
-﻿using System;
-using System.IO.Compression;
-using DataLayer.Models;
+﻿using DataLayer.Models;
 using ServicesLayer.DTOs;
 using VSDCAPI;
 
-namespace ServicesLayer
+namespace ServicesLayer.Utilites
 {
-    public class DataMapper
+    public static class DataMapper
     {
-
-
         public static class DeviceDetails
         {
             public static string Tpin { get; set; } = "1002546945";
             public static string BhfId { get; set; } = "000";
             public static string DvcSrlNo { get; set; } = "CHC-EVO";
             public static string LastReqDt { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");
+            public static string regrNm { get; set; } = "ADMIN";
+            public static string regrId { get; set; } = "ADMIN";
+            public static string modrNm { get; set; } = "ADMIN";
+            public static string modrId { get; set; } = "ADMIN";
         }
 
+        public static ItemList MapDataItem(ZraStockMaster import, int itemSeq)
+        {
+            return new ItemList()
+            {
+                itemSeq = itemSeq,
+                itemCd = import.ItemCode ?? "",
+                itemClsCd = import.ItemClassificationCode ?? "",
+                itemTyCd = import.ItemTypeCode ?? "",
+                itemNm = import.OriginNationCode ?? "",
+                pkgUnitCd = import.PackagingUnitCode ?? "",
+                qtyUnitCd = import.QuantityUnitCode ?? "",
+                qty = import.Quantity,
+                prc = import.Prc ?? 0,
+                splyAmt = import.SplyAmt ?? 0,
+                vatCatCd = import.VatCatCd ?? "",
+                taxblAmt = (double)(import.TaxblAmt ?? 0),
+                taxAmt = (double)(import.TaxAmt ?? 0),
+                totAmt = (double)(import.TotAmt ?? 0)
+            };
+        }
+
+        public static UpdateItemRequest MapData(ZraInvoiceItem import)
+        {
+            return new UpdateItemRequest()
+            {
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                itemCd = import.ItemCode ?? "",
+                itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
+                itemTyCd = import.itemTyCd.ToString(),
+                itemNm = import.ItemSequenceNumber.ToString() ?? "",
+                orgnNatCd = "ZM",
+                pkgUnitCd = import.PackagingUnitCode ?? "",
+                qtyUnitCd = import.QuantityUnitCode ?? "",
+                vatCatCd = import.vatCatCd ?? "",
+                iplCatCd = null,
+                tlCatCd = null,
+                exciseTxCatCd = null,
+                btchNo = null,
+                dftPrc =  (double)import.UnitPrice,
+                isrcAplcbYn = "N",
+                useYn = "Y",
+                regrNm = DeviceDetails.regrNm,
+                regrId = DeviceDetails.regrId,
+                modrNm = DeviceDetails.modrNm,
+                modrId = DeviceDetails.modrId
+            };
+        }
+        public static UpdateItemRequest MapData(ZraPurchaseItem import)
+        {
+            return new UpdateItemRequest()
+            {
+                tpin = DeviceDetails.Tpin,
+                bhfId = DeviceDetails.BhfId,
+                itemCd = import.ItemCode ?? "",
+                itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
+                itemTyCd = import.ItemDesc ?? "",
+                itemNm = import.ItemSequenceNumber.ToString() ?? "",
+                orgnNatCd = import.ItemCode ?? "",
+                pkgUnitCd = import.PackagingUnitCode ?? "",
+                qtyUnitCd = import.QuantityUnitCode ?? "",
+                vatCatCd = import.TaxLabel ?? "",
+                iplCatCd = null,
+                tlCatCd = null,
+                exciseTxCatCd = null,
+                btchNo = null,
+                dftPrc =  (double)import.UnitPrice,
+                isrcAplcbYn = "N",
+                useYn = "Y",
+                regrNm = DeviceDetails.regrNm,
+                regrId = DeviceDetails.regrId,
+                modrNm = DeviceDetails.modrNm,
+                modrId = DeviceDetails.modrId
+            };
+        }
+        public static UpdateItemRequest MapData(ZraStockMaster import)
+        {
+            return new UpdateItemRequest()
+            {
+                tpin = DataMapper.DeviceDetails.Tpin,
+                bhfId = DataMapper.DeviceDetails.BhfId,
+                itemCd = import.ItemCode ?? "",
+                itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
+                itemTyCd = import.ItemTypeCode ?? "",
+                itemNm = import.Description ?? "",
+                orgnNatCd = import.OriginNationCode ?? "",
+                pkgUnitCd = import.PackagingUnitCode ?? "",
+                qtyUnitCd = import.QuantityUnitCode ?? "",
+                vatCatCd = import.VatCatCd ?? "",
+                iplCatCd = null,
+                tlCatCd = null,
+                exciseTxCatCd = null,
+                btchNo = null,
+                dftPrc = import.Prc ?? 0d,
+                isrcAplcbYn = "N",
+                useYn = "Y",
+                regrNm = DeviceDetails.regrNm,
+                regrId = DeviceDetails.regrId,
+                modrNm = DeviceDetails.modrNm,
+                modrId = DeviceDetails.modrId
+            };
+        }
+        public static ZraImportData MapData(ServicesLayer.DTOs.Item import)
+        {
+            return new ZraImportData()
+            {
+                taskCd = import.taskCd,
+                dclDe = import.dclDe,
+                itemSeq = import.itemSeq,
+                dclNo = import.dclNo,
+                hsCd = import.hsCd,
+                itemNm = import.itemNm,
+                orgnNatCd = import.orgnNatCd,
+                exptNatCd = import.exptNatCd,
+                pkg = import.pkg,
+                pkgUnitCd = import.pkgUnitCd,
+                qty = import.qty,
+                qtyUnitCd = import.qtyUnitCd,
+                totWt = import.totWt,
+                netWt = import.netWt,
+                spplrNm = import.spplrNm,
+                agntNm = import.agntNm,
+                invcFcurAmt = import.invcFcurAmt,
+                invcFcurCd = import.invcFcurCd,
+                invcFcurExcrt = import.invcFcurExcrt,
+                dclRefNum = import.dclRefNum,
+            };
+        }
         public static SavePurchasesRequest ConvertPurchase(ZraPurchase purchase)
         {
             var list = new List<ItemList2>();
@@ -77,8 +205,8 @@ namespace ServicesLayer
                 remark = "remarks",
                 regrNm = purchase.IssuerName,
                 regrId = purchase.IssuerId,
-                modrNm = "ADMIN",
-                modrId = "ADMIN",
+                modrNm = DeviceDetails.modrNm,
+                modrId = DeviceDetails.modrId,
                 itemList = list
             };
         }
@@ -89,7 +217,6 @@ namespace ServicesLayer
             {
                 return 0; // Return 0 if the input is null or empty
             }
-
             return int.TryParse(invoiceNumber, out int result) ? result : 0; // Return parsed value or 0
         }
 
@@ -121,9 +248,9 @@ namespace ServicesLayer
                 taxAmtTot = 0,//noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
                 prchrAcptcYn = "N",
                 //regrId = zraInvoice.RefundReasonCode,
-                regrNm = "admin",
-                modrId = "admin",
-                modrNm = "admin",
+                regrNm = DeviceDetails.regrNm,
+                modrId = DeviceDetails.modrId,
+                modrNm = DeviceDetails.modrNm,
                 saleCtyCd = "1",
                 lpoNumber = zraInvoice.LocalPurchaseOrder,
                 currencyTyCd = zraInvoice.CurrencyType,
@@ -186,10 +313,7 @@ namespace ServicesLayer
             invoice.taxAmtA = invoice.itemList
             .Where(item => item.vatCatCd == "A")
             .Sum(item => item.vatAmt);
-
-
-
-
+            
             return invoice;
         }
 
