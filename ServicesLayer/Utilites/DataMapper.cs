@@ -202,7 +202,7 @@ namespace ServicesLayer
             {
                 itemCd = item.itemCd,
                 itemClsCd = item.itemClsCd,
-                itemTyCd=item.itemTyCd,
+                itemTyCd = item.itemTyCd,
                 itemNm = item.itemNm,
                 pkgUnitCd = item.pkgUnitCd,
                 qtyUnitCd = item.qtyUnitCd,

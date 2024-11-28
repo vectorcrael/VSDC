@@ -306,22 +306,37 @@ namespace DataLayer.Services
                 new SqlParameter("@exciseTxAmt", smartPurchase.ExciseTxAmt.HasValue ? (object)smartPurchase.ExciseTxAmt.Value : DBNull.Value),
                 new SqlParameter("@ttotAmt", smartPurchase.TtotAmt.HasValue ? (object)smartPurchase.TtotAmt.Value : DBNull.Value)
             };
-            
-            using (var transaction = await context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    var result = await context.Database.ExecuteSqlRawAsync(
-                        "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, @cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq, @itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, @vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, @taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt", parameters);
-                    await transaction.CommitAsync();
+            // Create a CancellationTokenSource
+            var cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
 
-                    return result;
-                }
-                catch
-                {
-                    await transaction.RollbackAsync();
-                    throw; // Rethrow the exception after rolling back
-                }
+            await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                await context.Database.OpenConnectionAsync(cancellationToken);
+                var result = await context.Database.ExecuteSqlRawAsync(
+                    "EXEC dbo.UpdateZRASmartInvoices @spplrTpin, @spplrNm, @spplrBhfId, @spplrInvcNo, @rcptTyCd, @pmtTyCd, "+
+                    "@cfmDt, @salesDt, @stockRlsDt, @totItemCnt, @totTaxblAmt, @totTaxAmt, @totAmt, @remark, @itemSeq,  "+
+                    "@itemCd, @itemClsCd, @itemNm, @bcd, @pkgUnitCd, @pkg, @qtyUnitCd, @qty, @prc, @splyAmt, @dcRt, @dcAm, "+ 
+                    "@vatCatCd, @iplCatCd, @tlCatCd, @exciseTxCatC, @vatTaxblAmt, @exciseTaxblAmt, @iplTaxblAmt, @tlTaxblAmt, "+ 
+                    "@taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt", parameters, cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+                return result;
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle cancellation gracefully
+                Console.WriteLine("Operation was canceled.");
+                await transaction.RollbackAsync(cancellationToken); // Ensure rollback on cancellation
+                throw; // Rethrow the exception to indicate cancellation
+            }
+            catch (Exception ex)
+            {
+                // Handle other types of exceptions
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                await transaction.RollbackAsync(cancellationToken); // Rollback on failure
+                throw; // Rethrow the exception after rolling back
             }
         }
 
