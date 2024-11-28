@@ -237,27 +237,11 @@ namespace VSDCAPI
             logger.LogInformation("Updating Stock Master");
 
             var stockMasterItems = await dataService.GetStockMastersAsync();
-            List<ItemList> ItemList = new List<ItemList>();
+            var itemList = new List<ItemList>();
             var itemSeq = 0;
             foreach (var item in stockMasterItems)
             {
-                ItemList.Add(new VSDCAPI.ItemList
-                {
-                    itemSeq = ++itemSeq,
-                    itemCd = item.ItemCode ?? "",
-                    itemClsCd = Convert.ToString(item.ItemClassificationCode ?? ""),
-                    itemTyCd = item.ItemTypeCode ?? "",
-                    itemNm = item.ItemTypeCode ?? "",
-                    pkgUnitCd = item.PackagingUnitCode ?? "",
-                    qtyUnitCd = item.QuantityUnitCode ?? "",
-                    qty = item.Quantity,
-                    prc = (double)(item.Prc ?? 0),
-                    splyAmt = (double)(item.SplyAmt ?? 0),
-                    taxblAmt = (double)(item.TaxblAmt ?? 0),
-                    vatCatCd = item.TaxLabel ?? "",
-                    taxAmt = (double)(item.TaxAmt ?? 0),
-                    totAmt = (double)(item.TotAmt ?? 0)
-                });
+                itemList.Add(DataMapper.MapDataItem(item, ++itemSeq));
             }
 
             var request = new SaveStockItemRequest
@@ -272,16 +256,16 @@ namespace VSDCAPI
                 custBhfId = "",
                 sarTyCd = "",
                 ocrnDt = "",
-                totItemCnt = ItemList.Count,
-                totTaxblAmt = ItemList.Sum(item => item.taxblAmt),
-                totTaxAmt = ItemList.Sum(item => item.taxAmt),
-                totAmt = ItemList.Sum(item => item.totAmt),
+                totItemCnt = itemList.Count,
+                totTaxblAmt = itemList.Sum(item => item.taxblAmt),
+                totTaxAmt = itemList.Sum(item => item.taxAmt),
+                totAmt = itemList.Sum(item => item.totAmt),
                 remark = "",
                 regrId = "",
                 regrNm = "",
                 modrNm = "",
                 modrId = "",
-                itemList = ItemList
+                itemList = itemList
             };
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await vSDCAPIApiClient.SaveStockItem(request);
