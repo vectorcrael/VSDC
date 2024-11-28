@@ -50,7 +50,7 @@ namespace VSDCAPI
             foreach (var sale in purchases!.saleList)
             {
                 var saveToSave = DataMapper.MapToSmartPurchase(sale);
-                var saved = dataService.SetSmartInvoiceAsync(saveToSave);
+                var saved = await dataService.SetSmartInvoiceAsync(saveToSave);
                 logger.LogInformation("Saved Purchase with code " + saved);
             }
 
