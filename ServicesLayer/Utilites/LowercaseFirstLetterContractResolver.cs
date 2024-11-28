@@ -1,24 +1,15 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Serialization;
 
-namespace ServicesLayer
+namespace ServicesLayer;
+
+public class LowercaseFirstLetterContractResolver : DefaultContractResolver
 {
-    public class LowercaseFirstLetterContractResolver : DefaultContractResolver
+    protected override string ResolvePropertyName(string propertyName)
     {
-        protected override string ResolvePropertyName(string propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-                return propertyName;
+        if (string.IsNullOrEmpty(propertyName))
+            return propertyName;
 
-            // Convert only the first letter to lowercase
-            return char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
-        }
+        // Convert only the first letter to lowercase
+        return char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
     }
 }
-
-
-
-
-
-

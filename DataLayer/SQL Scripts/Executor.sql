@@ -1,5 +1,7 @@
-DECLARE @RC int
-DECLARE @RefId varchar(50)
+DECLARE
+@RC int
+DECLARE
+@RefId varchar(50)
 
 -- TODO: Set parameter values here.
 

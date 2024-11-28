@@ -1,13 +1,20 @@
 ﻿----------------------------------------------------
 --FiscalInfo table to track fiscalised invoices
 ----------------------------------------------------
-CREATE TABLE FiscalInfo(
-       Id INT IDENTITY (1, 1) NOT NULL,
-       InvoiceNumber nvarchar(50),
-       Message nvarchar(max),
-	   [CreateDate] DATETIME2 NULL DEFAULT (getdate()),
-       PRIMARY KEY (Id)
-);
+CREATE TABLE FiscalInfo
+(
+    Id            INT IDENTITY (1, 1) NOT NULL,
+    InvoiceNumber nvarchar(50),
+    Message       nvarchar(max), [
+    CreateDate]
+    DATETIME2
+    NULL
+    DEFAULT (
+    getdate
+(
+)),
+    PRIMARY KEY (Id)
+    );
 CREATE INDEX idx_FiscalInfo_InvoiceNumber ON FiscalInfo (InvoiceNumber);
 
 
@@ -15,16 +22,18 @@ CREATE INDEX idx_FiscalInfo_InvoiceNumber ON FiscalInfo (InvoiceNumber);
 -----------------------------------------------------------
 --ZraInvoice view to extract invoices for fiscalization
 -----------------------------------------------------------
-CREATE VIEW [dbo].[ZraInvoice] 
+CREATE VIEW [dbo
+].[ZraInvoice
+]
 AS
- 
-SELECT TOP 5
-	CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
+
+SELECT TOP 5 CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
 	Inv.InvNumber AS InvoiceNumber,
 	CASE 
         WHEN Inv.DocType = 1 THEN COALESCE(OrigInv.cDSMExtOrderNum, '0')
         ELSE '0'
-    END AS OriginalInvoiceNumber,
+END
+AS OriginalInvoiceNumber,
 	COALESCE(NULLIF(RTRIM(OrigInv2.ulIDSOrdDestinationCountryCode), ''), NULLIF(RTRIM(OrigInv2.ulIDInvDestinationCountryCode), ''), null) AS DestinationCountryCode,
 	COALESCE(NULLIF(RTRIM(OrigInv2.ucIDSOrdZRALOCALPURCHASEORDER), ''), NULLIF(RTRIM(OrigInv2.ucIDInvZRALOCALPURCHASEORDER), ''), null) AS LocalPurchaseOrder,
 	'000' AS BranchId,
@@ -37,7 +46,8 @@ SELECT TOP 5
 		WHEN Curr.CurrencyLink = 2 THEN 'EUR'
 		WHEN Curr.CurrencyLink = 3 THEN 'ZAR'
 		ELSE 'ZMW'
-	END AS CurrencyType,
+END
+AS CurrencyType,
 	CAST(Inv.fExchangeRate AS DECIMAL(8,4)) AS "ConversionRate",
     Inv.cAccountName AS CustomerName,
     Inv.cAccountName AS "BuyerTaxAccountName",
@@ -45,13 +55,15 @@ SELECT TOP 5
 		WHEN Inv.DocType = 0 THEN 'S'
 		WHEN Inv.DocType = 4 THEN 'S'
 		WHEN inv.DocType = 1 THEN 'R'
-	END AS ReceiptTypeCode,
+END
+AS ReceiptTypeCode,
     Inv.cTaxNumber AS CustomerTpin,
 	Inv.InvDate AS SaleDate,
     CASE
 		WHEN Inv.DocType = 1 THEN '06'
 		ELSE NULL
-	END AS RefundReasonCode
+END
+AS RefundReasonCode
 FROM [InvNum] as Inv
 WITH (NOLOCK)
 left JOIN Currency Curr on Curr.CurrencyLink = Inv.ForeignCurrencyID
@@ -95,46 +107,48 @@ GO
 --GetZraInvoiceItem view to extract invoice line items
 -----------------------------------------------------------
 CREATE PROCEDURE GetZraInvoiceItem(@RefId VARCHAR(50))
-AS
+    AS
 BEGIN
-SET NOCOUNT ON
-SELECT 
-	CAST(iInvoiceID AS VARCHAR(50)) AS RefId,
-	iLineID AS ItemSequenceNumber, 
-	cDescription AS ItemDesc, 
-	COALESCE(st.ucIIUNSPSC, '10101504') AS ItemClassificationCode,
-	CASE 
-		WHEN (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID) IS NULL THEN 'URI'
-		ELSE (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID)
-		END AS ItemCode,
-	CAST(fQtyProcessed AS DECIMAL(20,4)) AS Quantity,
-	Tr.cFiscalTaxLabel AS TaxLabel,
-	COALESCE(st.uliiPackagingUnitCode, 'NT') AS PackagingUnitCode,
-	COALESCE(st.ulIIQuantityUnitCode, 'NO') AS QuantityUnitCode,
-	0.0 AS DiscountAmount,
-	CASE 
-		WHEN fQuantity IS NULL OR fQtyProcessed = 0 THEN 0
-		ELSE CAST(
-			CASE 
-				WHEN fQtyProcessedLineTotInclForeign IS NULL OR fQtyProcessedLineTotInclForeign = 0 THEN fQtyprocessedLineTotIncl 
-				ELSE fQtyProcessedLineTotInclForeign 
-			END / fQtyProcessed AS DECIMAL(20, 4)
-		)
-	END AS "UnitPrice", 
-	--CASE
-	--WHEN fQuantity = 0 THEN 0
-	--ELSE CAST(fQuantityLineTotIncl/fQuantity AS DECIMAL(20,4)) END AS UnitPrice,
-	CASE 
-		WHEN fQtyProcessedLineTotInclForeign != 0 THEN  CAST(fQtyProcessedLineTotInclForeign AS DECIMAL(20, 4))
-		ELSE CAST(fQtyprocessedLineTotIncl AS DECIMAL(20, 4)) 
-	END as "TotalAmount", 
-	--CAST(fQuantityLineTotIncl AS DECIMAL(20, 4))  AS TotalAmount,
-	1 as isTaxInclusive,
-	COALESCE(CAST(fRecommendedRetailPrice AS DECIMAL(20,4)), 0.0) AS RRP
+SET
+NOCOUNT ON
+SELECT CAST(iInvoiceID AS VARCHAR(50))                                AS RefId,
+       iLineID                                                        AS ItemSequenceNumber,
+       cDescription                                                   AS ItemDesc,
+       COALESCE(st.ucIIUNSPSC, '10101504')                            AS ItemClassificationCode,
+       CASE
+           WHEN (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID) IS NULL THEN 'URI'
+           ELSE (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID)
+           END                                                        AS ItemCode,
+       CAST(fQtyProcessed AS DECIMAL(20, 4))                          AS Quantity,
+       Tr.cFiscalTaxLabel                                             AS TaxLabel,
+       COALESCE(st.uliiPackagingUnitCode, 'NT')                       AS PackagingUnitCode,
+       COALESCE(st.ulIIQuantityUnitCode, 'NO')                        AS QuantityUnitCode,
+       0.0                                                            AS DiscountAmount,
+       CASE
+           WHEN fQuantity IS NULL OR fQtyProcessed = 0 THEN 0
+           ELSE CAST(
+                   CASE
+                       WHEN fQtyProcessedLineTotInclForeign IS NULL OR fQtyProcessedLineTotInclForeign = 0
+                           THEN fQtyprocessedLineTotIncl
+                       ELSE fQtyProcessedLineTotInclForeign
+                       END / fQtyProcessed AS DECIMAL(20, 4)
+                )
+           END                                                        AS "UnitPrice",
+       --CASE
+       --WHEN fQuantity = 0 THEN 0
+       --ELSE CAST(fQuantityLineTotIncl/fQuantity AS DECIMAL(20,4)) END AS UnitPrice,
+       CASE
+           WHEN fQtyProcessedLineTotInclForeign != 0 THEN CAST(fQtyProcessedLineTotInclForeign AS DECIMAL(20, 4))
+           ELSE CAST(fQtyprocessedLineTotIncl AS DECIMAL(20, 4))
+           END                                                        as "TotalAmount",
+       --CAST(fQuantityLineTotIncl AS DECIMAL(20, 4))  AS TotalAmount,
+       1                                                              as isTaxInclusive,
+       COALESCE(CAST(fRecommendedRetailPrice AS DECIMAL(20, 4)), 0.0) AS RRP
 from [_btblInvoiceLines] It
 WITH (NOLOCK)
-LEFT JOIN _bvStockFull st ON st.StockID = It.iStockCodeID
-LEFT JOIN TaxRate Tr ON Tr.idTaxRate = It.iTaxTypeID
+    LEFT JOIN _bvStockFull st
+ON st.StockID = It.iStockCodeID
+    LEFT JOIN TaxRate Tr ON Tr.idTaxRate = It.iTaxTypeID
 WHERE iInvoiceID = @RefId AND It.iOrigLineID = 0 AND fQtyProcessed != 0
 END
 
@@ -143,28 +157,29 @@ END
 -----------------------------------------------------------
 --ZraStockMaster view to extract inventory items
 -----------------------------------------------------------
-CREATE VIEW [dbo].[ZraStockMaster] AS
-SELECT 
-	St.Code AS ITEMCODE,
-	COALESCE(St.ucIIUNSPSC, '10101504') AS ItemClassificationCode,
-	COALESCE(st.uliiPackagingUnitCode, 'NT') AS PackagingUnitCode,
-	COALESCE(st.ulIIQuantityUnitCode, 'NO') AS QuantityUnitCode,
-	CASE 
-		WHEN St.ServiceItem = 1 THEN '3'
-		ELSE '2'
-	END AS ItemTypeCode,
-	COALESCE(St.ulIIOriginCountryCode, 'CN') AS OriginNationCode,
-	St.Description_1 AS Description,
-	CASE 
-		WHEN QtyInStock IS NULL THEN 0
-		ELSE CAST(QtyInStock AS DECIMAL(18,4))
-	END AS Quantity,
-	Tr.cFiscalTaxLabel AS TaxLabel,
-	'000' AS BranchId
-FROM _bvStockFull St
-WITH (NOLOCK)
-LEFT JOIN TaxRate Tr ON Tr.idTaxRate = St.TTInvID
-GO
+CREATE VIEW [dbo
+].[ZraStockMaster
+] AS
+SELECT St.Code                                  AS ITEMCODE,
+       COALESCE(St.ucIIUNSPSC, '10101504')      AS ItemClassificationCode,
+       COALESCE(st.uliiPackagingUnitCode, 'NT') AS PackagingUnitCode,
+       COALESCE(st.ulIIQuantityUnitCode, 'NO')  AS QuantityUnitCode,
+       CASE
+           WHEN St.ServiceItem = 1 THEN '3'
+           ELSE '2'
+           END                                  AS ItemTypeCode,
+       COALESCE(St.ulIIOriginCountryCode, 'CN') AS OriginNationCode,
+       St.Description_1                         AS Description,
+       CASE
+           WHEN QtyInStock IS NULL THEN 0
+           ELSE CAST(QtyInStock AS DECIMAL(18, 4))
+           END                                  AS Quantity,
+       Tr.cFiscalTaxLabel                       AS TaxLabel,
+       '000'                                    AS BranchId
+FROM _bvStockFull St WITH (NOLOCK)
+LEFT JOIN TaxRate Tr
+ON Tr.idTaxRate = St.TTInvID
+    GO
 
 
 -----------------------------------------------------------
@@ -180,9 +195,11 @@ CREATE PROCEDURE [dbo].[UpdateFiscalDetails]
 	@VsdcDate NVARCHAR(255)
 AS
 BEGIN
-    UPDATE InvNum
-    SET cDPOrdServiceTaskNo = @Signature, cDSOrdServiceTaskNo = @InternalData, cDSMExtOrderNum = @InvoiceSequence
-    WHERE InvNumber = @InvNumber;
+UPDATE InvNum
+SET cDPOrdServiceTaskNo = @Signature,
+    cDSOrdServiceTaskNo = @InternalData,
+    cDSMExtOrderNum     = @InvoiceSequence
+WHERE InvNumber = @InvNumber;
 END;
 
 
@@ -190,23 +207,45 @@ END;
 -----------------------------------------------------------
 ----PurchaseInfo table to track fiscalised invoices
 -----------------------------------------------------------
-CREATE TABLE [dbo].[PurchaseInfo](
-		[Id] [int] IDENTITY(1,1) NOT NULL,
-		[InvoiceNumber] [nvarchar](50) NULL,
-		[Message] [varchar](max) NULL,
-		[CreateDate] DATETIME2 NULL DEFAULT (getdate()),
-		PRIMARY KEY (Id)
-		);
+CREATE TABLE [dbo].[PurchaseInfo]
+(
+    [
+    Id] [
+    int]
+    IDENTITY
+(
+    1,
+    1
+) NOT NULL,
+    [InvoiceNumber] [nvarchar]
+(
+    50
+) NULL,
+    [Message] [varchar]
+(
+    max
+) NULL,
+    [CreateDate] DATETIME2 NULL DEFAULT
+(
+    getdate
+(
+)),
+    PRIMARY KEY
+(
+    Id
+)
+    );
 CREATE INDEX idx_PurchaseInfo_InvoiceNumber ON FiscalInfo (InvoiceNumber);
 
 
 -----------------------------------------------------------
 ----ZraPurchase view to extract purchases
 -----------------------------------------------------------
-CREATE VIEW [dbo].[ZraPurchase] 
+CREATE VIEW [dbo
+].[ZraPurchase
+]
 AS
-SELECT TOP 5
-	COALESCE(AP.ulidpordOrigin, AP.ulIDGrvOrigin, null) AS Origin,
+SELECT TOP 5 COALESCE(AP.ulidpordOrigin, AP.ulIDGrvOrigin, null) AS Origin,
 	CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
 	COALESCE(NULLIF(Inv.InvNumber, ''), Inv.GrvNumber) AS InvoiceNumber,
 	COALESCE(NULLIF(Inv.InvNumber, ''), Inv.GrvNumber) AS SupplierInvoiceNumber,
@@ -221,20 +260,23 @@ SELECT TOP 5
 		WHEN Curr.CurrencyLink = 2 THEN 'ZAR'
 		WHEN Curr.CurrencyLink = 3 THEN 'EUR'
 		ELSE 'ZMW'
-	END AS CurrencyType,
+END
+AS CurrencyType,
 	CAST(Inv.fExchangeRate AS DECIMAL(8,4)) AS "ConversionRate",
     Inv.cAccountName AS CustomerName,
     Inv.cAccountName AS "BuyerTaxAccountName",
     CASE -- Check the invoice type mapping and update accordingly
 		WHEN Inv.DocType IN (2,5) THEN 'S'
 		ELSE 'R'
-	END AS ReceiptTypeCode,
+END
+AS ReceiptTypeCode,
     Inv.cTaxNumber AS CustomerTpin,
 	Inv.InvDate AS SaleDate,
     CASE
 		WHEN Inv.DocType = 1 THEN '06'
 		ELSE NULL
-	END AS RefundedReasonCode
+END
+AS RefundedReasonCode
 FROM [InvNum] as Inv
 WITH (NOLOCK) 
 Left join _bvInvNumAPFull AS AP ON Inv.AutoIndex = AP.AutoIndex
@@ -250,42 +292,44 @@ GO
 --GetZraPurchaseItem view to extract purchase line items
 -----------------------------------------------------------
 CREATE PROCEDURE GetZraPurchaseItem(@RefId VARCHAR(50))
-AS
+    AS
 BEGIN
-SET NOCOUNT ON
-SELECT
-	CAST(iInvoiceID AS VARCHAR(50)) AS RefId,
-	iLineID AS ItemSequenceNumber, 
-	cDescription AS ItemDesc, 
-	COALESCE(st.ucIIUNSPSC, '10101504') AS ItemClassificationCode,
-	CASE 
-		WHEN (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID) IS NULL THEN 'URI'
-		ELSE (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID)
-	END AS ItemCode,
-	CAST(fQtyProcessed AS DECIMAL(20,4)) AS Quantity,
-	Tr.cFiscalTaxLabel AS TaxLabel,
-	COALESCE(st.uliiPackagingUnitCode, 'NT') AS PackagingUnitCode,
-	COALESCE(st.ulIIQuantityUnitCode, 'NO') AS QuantityUnitCode,
-	0.0 AS DiscountAmount,
-	CASE 
-		WHEN fQuantity IS NULL OR fQtyProcessed = 0 THEN 0
-		ELSE CAST(
-			CASE 
-				WHEN fQtyProcessedLineTotInclForeign IS NULL OR fQtyProcessedLineTotInclForeign = 0 THEN fQtyprocessedLineTotIncl 
-				ELSE fQtyProcessedLineTotInclForeign 
-			END / fQtyProcessed AS DECIMAL(20, 4)
-		)
-	END AS "UnitPrice",  
-	CASE 
-		WHEN fQtyProcessedLineTotInclForeign != 0 THEN  CAST(fQtyProcessedLineTotInclForeign AS DECIMAL(20, 4))
-		ELSE CAST(fQtyprocessedLineTotIncl AS DECIMAL(20, 4)) 
-	END as "TotalAmount", 
-	1 as isTaxInclusive,
-	CAST(fRecommendedRetailPrice AS DECIMAL(20,4)) AS RRP
+SET
+NOCOUNT ON
+SELECT CAST(iInvoiceID AS VARCHAR(50))                 AS RefId,
+       iLineID                                         AS ItemSequenceNumber,
+       cDescription                                    AS ItemDesc,
+       COALESCE(st.ucIIUNSPSC, '10101504')             AS ItemClassificationCode,
+       CASE
+           WHEN (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID) IS NULL THEN 'URI'
+           ELSE (SELECT st.Code FROM _bvStockFull AS st WHERE st.StockID = It.iStockCodeID)
+           END                                         AS ItemCode,
+       CAST(fQtyProcessed AS DECIMAL(20, 4))           AS Quantity,
+       Tr.cFiscalTaxLabel                              AS TaxLabel,
+       COALESCE(st.uliiPackagingUnitCode, 'NT')        AS PackagingUnitCode,
+       COALESCE(st.ulIIQuantityUnitCode, 'NO')         AS QuantityUnitCode,
+       0.0                                             AS DiscountAmount,
+       CASE
+           WHEN fQuantity IS NULL OR fQtyProcessed = 0 THEN 0
+           ELSE CAST(
+                   CASE
+                       WHEN fQtyProcessedLineTotInclForeign IS NULL OR fQtyProcessedLineTotInclForeign = 0
+                           THEN fQtyprocessedLineTotIncl
+                       ELSE fQtyProcessedLineTotInclForeign
+                       END / fQtyProcessed AS DECIMAL(20, 4)
+                )
+           END                                         AS "UnitPrice",
+       CASE
+           WHEN fQtyProcessedLineTotInclForeign != 0 THEN CAST(fQtyProcessedLineTotInclForeign AS DECIMAL(20, 4))
+           ELSE CAST(fQtyprocessedLineTotIncl AS DECIMAL(20, 4))
+           END                                         as "TotalAmount",
+       1                                               as isTaxInclusive,
+       CAST(fRecommendedRetailPrice AS DECIMAL(20, 4)) AS RRP
 from [_btblInvoiceLines] It
 WITH (NOLOCK)
-LEFT JOIN _bvStockFull st ON st.StockID = It.iStockCodeID
-LEFT JOIN TaxRate Tr ON Tr.idTaxRate = It.iTaxTypeID
+    LEFT JOIN _bvStockFull st
+ON st.StockID = It.iStockCodeID
+    LEFT JOIN TaxRate Tr ON Tr.idTaxRate = It.iTaxTypeID
 WHERE iInvoiceID = @RefId AND It.iGrvLineID != 0
 END
 GO

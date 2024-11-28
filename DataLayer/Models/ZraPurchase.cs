@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Models;
@@ -20,10 +19,9 @@ public class ZraPurchase
     public string CustomerName { get; set; }
     public string BuyerTaxAccountName { get; set; }
     public string ReceiptTypeCode { get; set; }
-    public string regTyCd {get;set;}
+    public string regTyCd { get; set; }
     public string? CustomerTpin { get; set; }
     public DateTime SaleDate { get; set; }
     public string? RefundedReasonCode { get; set; }
-    public List<ZraPurchaseItem>? Items { get; set; } = new List<ZraPurchaseItem>();
-
+    public List<ZraPurchaseItem>? Items { get; set; } = new();
 }

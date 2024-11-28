@@ -1,5 +1,3 @@
-using System;
-
 namespace ServicesLayer.DTOs;
 
 public class SaveInvoiceData
@@ -11,5 +9,4 @@ public class SaveInvoiceData
     public string sdcId { get; set; }
     public string mrcNo { get; set; }
     public string qrCodeUrl { get; set; }
-
 }

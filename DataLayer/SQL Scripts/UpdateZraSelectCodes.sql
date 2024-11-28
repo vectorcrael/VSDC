@@ -1,7 +1,9 @@
-USE [EVO-CHEM]
+USE
+[EVO-CHEM]
 GO
 
-DROP PROCEDURE [dbo].[UpdateZRAStandardCodes]
+DROP PROCEDURE
+[dbo].[UpdateZRAStandardCodes]
 GO
 
 SET ANSI_NULLS ON
@@ -9,8 +11,6 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
-
 
 
 
@@ -26,17 +26,15 @@ CREATE PROCEDURE [dbo].[UpdateZRAStandardCodes]
    
 AS
 BEGIN
-    UPDATE ZRAStandardCodes
-    SET  
+UPDATE ZRAStandardCodes
+SET resultDt=@resultDt,
+    cdCls= @cdCls,
+    cdClsNm= @cdClsNm,
+    cd= @cd,
+    cdNm= @cdNm,
+    userDfnNm1= @userDfnNm1
 
-	resultDt=@resultDt ,
-	cdCls= @cdCls ,
-	cdClsNm= @cdClsNm ,
-	cd= @cd ,
-	cdNm= @cdNm ,
-	userDfnNm1= @userDfnNm1 
- 
-    WHERE cd= @cd;
+WHERE cd = @cd;
 END;
 
 

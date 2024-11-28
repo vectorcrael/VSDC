@@ -1,9 +1,10 @@
-
 -----------------------------------------------------------
 --UpdateFiscalDetails Stored Proc to insert fiscal details
 -- CONVERSION DONE OF SIGNATURE TO BINARY
 -----------------------------------------------------------
-DROP PROCEDURE [dbo].[UpdateFiscalDetails]
+DROP
+PROCEDURE
+[dbo].[UpdateFiscalDetails]
 GO
 
 CREATE PROCEDURE [dbo].[UpdateFiscalDetails]
@@ -16,12 +17,11 @@ CREATE PROCEDURE [dbo].[UpdateFiscalDetails]
 	@VsdcDate NVARCHAR(255)
 AS
 BEGIN
-    UPDATE InvNum
-    SET  
-    imgOrderSignature = @Signature,  
-    cGIVNumber = @InternalData, 
-    cPermitNumber = @InvoiceSequence
-    WHERE InvNumber = @InvNumber;
+UPDATE InvNum
+SET imgOrderSignature = @Signature,
+    cGIVNumber        = @InternalData,
+    cPermitNumber     = @InvoiceSequence
+WHERE InvNumber = @InvNumber;
 END;
 
 

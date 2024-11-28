@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ServicesLayer\ServicesLayer.csproj" />
+        <ProjectReference Include="..\ServicesLayer\ServicesLayer.csproj"/>
     </ItemGroup>
 
 </Project>

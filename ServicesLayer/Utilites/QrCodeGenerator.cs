@@ -1,8 +1,4 @@
-using System;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using QRCoder;
 
 namespace ServicesLayer;
@@ -11,15 +7,15 @@ public class QrCodeGenerator
 {
     public static byte[] GenerateQrCodeAsBinary(string input)
     {
-        using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+        using (var qrGenerator = new QRCodeGenerator())
         {
-            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(input, QRCodeGenerator.ECCLevel.Q))
+            using (var qrCodeData = qrGenerator.CreateQrCode(input, QRCodeGenerator.ECCLevel.Q))
             {
-                using (QRCode qrCodeurl = new QRCode(qrCodeData))
+                using (var qrCodeurl = new QRCode(qrCodeData))
                 {
-                    using (Bitmap qrCodeImage = qrCodeurl.GetGraphic(20))
+                    using (var qrCodeImage = qrCodeurl.GetGraphic(20))
                     {
-                        using (MemoryStream memoryStream = new MemoryStream())
+                        using (var memoryStream = new MemoryStream())
                         {
                             qrCodeImage.Save(memoryStream, ImageFormat.Png);
                             return memoryStream.ToArray();

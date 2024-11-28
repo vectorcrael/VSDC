@@ -1,21 +1,19 @@
 using ServicesLayer.DTOs;
 
-namespace VSDCAPI
-{
-    public interface IFiscalService
-    {
-        Task testServerRunning();
-        Task<ZraResponse> initializeDeviceAsync();
-        Task updateSelectCodes();
-        Task updateClassificationCodes();
-        Task<List<ZraResponse?>> updateStockMaster();
-        Task<List<ZraResponse?>> adjustStockMaster();
-        Task updateImports();
-        Task <List<ZraResponse>>receivedImports();
-        Task fiscalizePurchases();
-        Task <List<ZraResponse>> fiscalizeInvoices();
-        Task<SmartPurchases> getPurchases();
-        Task UpdateStockAdjustments();
-    }
+namespace ServicesLayer.Services;
 
+public interface IFiscalService
+{
+    Task TestServerRunning();
+    Task<ZraResponse> InitializeDeviceAsync();
+    Task UpdateSelectCodes();
+    Task UpdateClassificationCodes();
+    Task<List<ZraResponse?>> UpdateStockMaster();
+    Task<List<ZraResponse?>> AdjustStockMaster();
+    Task UpdateImports();
+    Task<List<ZraResponse>> ReceivedImports();
+    Task FiscalizePurchases();
+    Task<List<ZraResponse>> FiscalizeInvoices();
+    Task<SmartPurchases> GetPurchases();
+    Task UpdateStockAdjustments();
 }

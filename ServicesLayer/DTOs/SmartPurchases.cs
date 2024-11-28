@@ -1,4 +1,3 @@
-
 public class SmartPurchases
 {
     public List<Sale> saleList { get; set; }

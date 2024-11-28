@@ -1,14 +1,14 @@
-
 -----------------------------------------------------------
 ----ZraPurchase view to extract purchases
 -----------------------------------------------------------
 DROP VIEW [dbo].[ZraPurchase]
-GO
+    GO
 
-CREATE VIEW [dbo].[ZraPurchase] 
+CREATE VIEW [dbo
+].[ZraPurchase
+]
 AS
-SELECT TOP 5
-	COALESCE(AP.OrderNum, AP.InvNumber, null) AS Origin,
+SELECT TOP 5 COALESCE(AP.OrderNum, AP.InvNumber, null) AS Origin,
 	CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
 	COALESCE(NULLIF(Inv.InvNumber, ''), Inv.GrvNumber) AS InvoiceNumber,
 	COALESCE(NULLIF(Inv.InvNumber, ''), Inv.GrvNumber) AS SupplierInvoiceNumber,
@@ -23,20 +23,23 @@ SELECT TOP 5
 		WHEN Curr.CurrencyLink = 2 THEN 'ZAR'
 		WHEN Curr.CurrencyLink = 3 THEN 'EUR'
 		ELSE 'ZMW'
-	END AS CurrencyType,
+END
+AS CurrencyType,
 	CAST(Inv.fExchangeRate AS DECIMAL(8,4)) AS "ConversionRate",
     Inv.cAccountName AS CustomerName,
     Inv.cAccountName AS "BuyerTaxAccountName",
     CASE -- Check the invoice type mapping and update accordingly
 		WHEN Inv.DocType IN (2,5) THEN 'S'
 		ELSE 'R'
-	END AS ReceiptTypeCode,
+END
+AS ReceiptTypeCode,
     Inv.cTaxNumber AS CustomerTpin,
 	Inv.InvDate AS SaleDate,
     CASE
 		WHEN Inv.DocType = 1 THEN '06'
 		ELSE NULL
-	END AS RefundedReasonCode
+END
+AS RefundedReasonCode
 FROM [InvNum] as Inv
 WITH (NOLOCK) 
 Left join _bvInvNumAPFull AS AP ON Inv.AutoIndex = AP.AutoIndex

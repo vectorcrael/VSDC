@@ -1,16 +1,18 @@
 ﻿-----------------------------------------------------------
 --ZraInvoice view to extract invoices for fiscalization
 -----------------------------------------------------------
-CREATE VIEW [dbo].[ZraInvoice] 
+CREATE VIEW [dbo
+].[ZraInvoice
+]
 AS
- 
-SELECT TOP 5
-CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
+
+SELECT TOP 5 CAST(Inv.AutoIndex AS VARCHAR(20)) AS Id,
 Inv.InvNumber AS InvoiceNumber,
 CASE 
         WHEN Inv.DocType = 1 THEN COALESCE(OrigInv.cDSMExtOrderNum, '0')
         ELSE '0'
-    END AS OriginalInvoiceNumber,
+END
+AS OriginalInvoiceNumber,
 COALESCE(NULLIF(RTRIM(OrigInv2.ulIDSOrdDestinationCountryCode), ''), NULLIF(RTRIM(OrigInv2.ulIDInvDestinationCountryCode), ''), null) AS DestinationCountryCode,
 COALESCE(NULLIF(RTRIM(OrigInv2.ucIDSOrdZRALOCALPURCHASEORDER), ''), NULLIF(RTRIM(OrigInv2.ucIDInvZRALOCALPURCHASEORDER), ''), null) AS LocalPurchaseOrder,
 '000' AS BranchId,
@@ -23,7 +25,8 @@ WHEN Curr.CurrencyLink = 1 THEN 'USD'
 WHEN Curr.CurrencyLink = 2 THEN 'EUR'
 WHEN Curr.CurrencyLink = 3 THEN 'ZAR'
 ELSE 'ZMW'
-END AS CurrencyType,
+END
+AS CurrencyType,
 CAST(Inv.fExchangeRate AS DECIMAL(8,4)) AS "ConversionRate",
     Inv.cAccountName AS CustomerName,
     Inv.cAccountName AS "BuyerTaxAccountName",
@@ -31,13 +34,15 @@ CAST(Inv.fExchangeRate AS DECIMAL(8,4)) AS "ConversionRate",
 WHEN Inv.DocType = 0 THEN 'S'
 WHEN Inv.DocType = 4 THEN 'S'
 WHEN inv.DocType = 1 THEN 'R'
-END AS ReceiptTypeCode,
+END
+AS ReceiptTypeCode,
     Inv.cTaxNumber AS CustomerTpin,
 Inv.InvDate AS SaleDate,
     CASE
 WHEN Inv.DocType = 1 THEN '06'
 ELSE NULL
-END AS RefundReasonCode
+END
+AS RefundReasonCode
 ,inv.*
 FROM [InvNum] as Inv
 WITH (NOLOCK)
