@@ -322,6 +322,7 @@ namespace DataLayer.Services
                     "@taxblAmt, @vatAmt, @iplAmt, @tlAmt, @exciseTxAmt, @ttotAmt", parameters, cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
+                await context.Database.CloseConnectionAsync();
                 return result;
             }
             catch (OperationCanceledException)
