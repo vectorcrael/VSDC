@@ -45,7 +45,7 @@ public class DataService(AppDbContext context) : IDataService
     public async Task<List<ZRASTockAdjustment>> GetOtherSrockAdjustmentsAsync()
     {
         return await context.ZRASTockAdjustments
-            .FromSqlRaw("Select * from ZRASTockAdjustment")
+            .FromSqlRaw("Select * from ZRASTockAdjustments")
             .ToListAsync();
     }
 
