@@ -35,7 +35,7 @@ public static class DataMapper
             bhfId = DeviceDetails.BhfId,
             itemCd = import.ItemClsCd ?? "", 
             itemClsCd = Convert.ToInt32(import.ItemClsCd ?? "0"),
-            itemTyCd =  import.ItemTyCd ,
+            itemTyCd =  import.ItemTyCd.ToString() ,
             itemNm = import.ItemNm ?? "",
             orgnNatCd = "ZM",
             pkgUnitCd = import.PkgUnitCd ?? "",

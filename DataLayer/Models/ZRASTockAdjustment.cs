@@ -27,5 +27,5 @@ public class ZRASTockAdjustment
     public double? TaxblAmt { get; set; }
     public string VatCatCd { get; set; }
     public double? TaxAmt { get; set; }
-    public string ItemTyCd { get; set; }
+    public int ItemTyCd { get; set; }
 }
