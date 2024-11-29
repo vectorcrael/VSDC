@@ -9,7 +9,7 @@ public class ZRASTockAdjustment
     public string? CustNm { get; set; }
     public string? RegTyCd { get; set; }
     public string SarTyCd { get; set; }
-    public decimal? TotTaxblAmt { get; set; }
+    public double? TotTaxblAmt { get; set; }
     public double? TotTaxAmt { get; set; }
     public double? TotAmt { get; set; }
     public string? OcrnDt { get; set; }
