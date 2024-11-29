@@ -10,8 +10,8 @@ public class ZRASTockAdjustment
     public string? RegTyCd { get; set; }
     public string SarTyCd { get; set; }
     public decimal? TotTaxblAmt { get; set; }
-    public float? TotTaxAmt { get; set; }
-    public float? TotAmt { get; set; }
+    public double? TotTaxAmt { get; set; }
+    public double? TotAmt { get; set; }
     public string? OcrnDt { get; set; }
     public int ItemSeq { get; set; }
     public string? ItemCd { get; set; }
@@ -20,11 +20,11 @@ public class ZRASTockAdjustment
     public string? PkgUnitCd { get; set; }
     public int Pkg { get; set; }
     public string QtyUnitCd { get; set; }
-    public float? Qty { get; set; }
-    public float? Prc { get; set; }
-    public float? SplyAmt { get; set; }
+    public double? Qty { get; set; }
+    public double? Prc { get; set; }
+    public double? SplyAmt { get; set; }
     public int? TotDcAmt { get; set; }
-    public float? TaxblAmt { get; set; }
+    public double? TaxblAmt { get; set; }
     public string VatCatCd { get; set; }
-    public float? TaxAmt { get; set; }
+    public double? TaxAmt { get; set; }
 }
