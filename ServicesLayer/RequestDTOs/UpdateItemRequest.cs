@@ -29,4 +29,5 @@ public class UpdateItemRequest
     public string regrId { get; set; } = "1";
     public string modrNm { get; set; }
     public string modrId { get; set; }
+    
 }

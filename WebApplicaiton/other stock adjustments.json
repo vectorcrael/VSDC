@@ -1,0 +1,20 @@
+[
+    {
+    "data": null,
+    "resultCd": "913",
+    "resultDt": null,
+    "resultMsg": "Code value error among request parameters. []"
+  },
+  {
+    "data": null,
+    "resultCd": "910",
+    "resultDt": null,
+    "resultMsg": "Request parameter error: Validation error for fields: [ 'dftPrc': numeric value out of bounds (<18 digits>.<4 digits> expected). rejected value: '2928.128532152501']]"
+  },
+  {
+  "Request object": {"tpin":"1002546945","bhfId":"000","itemCd":"1017160000","itemClsCd":1017160000,"itemTyCd":"M","itemNm":"AMETRYN 500SC 20L","itemStdNm":null,"orgnNatCd":"ZM","pkgUnitCd":"EA","qtyUnitCd":"EA","vatCatCd":"D","iplCatCd":null,"tlCatCd":null,"exciseTxCatCd":null,"btchNo":null,"dftPrc":123.0,"addInfo":null,"sftyQty":0.0,"isrcAplcbYn":"N","useYn":"Y","regrNm":"ADMIN","regrId":"ADMIN","modrNm":"ADMIN","modrId":"ADMIN"},
+  
+  "Updated Stock Items" : {"data":null,"resultCd":"913","resultDt":null,"resultMsg":"Code value error among request parameters.  [<ItemTyCd>]"}
+  }
+
+]
