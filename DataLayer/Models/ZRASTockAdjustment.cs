@@ -5,8 +5,8 @@ namespace DataLayer.Models;
 [Keyless]
 public class ZRASTockAdjustment
 {
-    public string CustTpin { get; set; }
-    public string CustNm { get; set; }
+    public string? CustTpin { get; set; }
+    public string? CustNm { get; set; }
     public string RegTyCd { get; set; }
     public string SarTyCd { get; set; }
     public decimal? TotTaxblAmt { get; set; }
