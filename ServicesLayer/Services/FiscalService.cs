@@ -432,16 +432,13 @@ public class FiscalService(
             //No need to save items individually
             //if response is OK THEN save items
             if (purchase.Items != null)
-                foreach (var item in purchase.Items)
-                {
-                    var request = DataMapper.MapData(item);
-                    request.orgnNatCd = purchase.orgnNatCd;
-                    logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                    var response = await apiClient.SaveItems(request);
-                    stockMasters.Add(response);
-                    logger.LogInformation("Updated Stock Items: {JsonObject}",
-                        JsonConvert.SerializeObject(response));
-                }
+            {
+                var request = DataMapper.MapStockData(purchase);
+                logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+                var response = await apiClient.SaveStockItem(request);
+                stockMasters.Add(response);
+                logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            }
 
         return stockMasters;
     }
@@ -465,13 +462,13 @@ public class FiscalService(
 
         return stockMasters;
     }
-    
+
     public async Task<List<ZraResponse?>> saveItemFromStockAdjustments()
     {
         logger.LogInformation("Save items from stocks");
         var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
-        
+
         foreach (var item in stocks)
         {
             var request = DataMapper.MapData(item);

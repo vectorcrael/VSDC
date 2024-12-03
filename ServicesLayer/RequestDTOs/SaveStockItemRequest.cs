@@ -7,9 +7,9 @@ public class SaveStockItemRequest
     public int sarNo { get; set; }
     public int orgSarNo { get; set; }
     public string regTyCd { get; set; }
-    public object custTpin { get; set; }
-    public object custNm { get; set; }
-    public object custBhfId { get; set; }
+    public string custTpin { get; set; }
+    public string custNm { get; set; }
+    public string custBhfId { get; set; }
     public string sarTyCd { get; set; }
     public string ocrnDt { get; set; }
     public int totItemCnt { get; set; }
