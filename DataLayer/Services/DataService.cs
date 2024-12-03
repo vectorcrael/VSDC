@@ -239,7 +239,7 @@ public class DataService(AppDbContext context) : IDataService
             new SqlParameter("@invcFcurAmt", item.invcFcurAmt ?? (object)DBNull.Value),
             new SqlParameter("@invcFcurCd", item.invcFcurCd),
             new SqlParameter("@invcFcurExcrt", item.invcFcurExcrt ?? (object)DBNull.Value),
-            new SqlParameter("@dclRefNum", item.dclRefNum)
+            new SqlParameter("@dclRefNum", item.dclRefNum ?? (object)DBNull.Value)
         };
 
         return await context.Database.ExecuteSqlRawAsync(

@@ -91,7 +91,7 @@ public static class DataMapper
             bhfId = DeviceDetails.BhfId,
             itemCd = import.ItemCode ?? "",
             itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
-            itemTyCd = import.ItemDesc ?? "",
+            itemTyCd = import.itemTyCd.ToString(),
             itemNm = import.ItemSequenceNumber.ToString() ?? "",
             orgnNatCd = import.ItemCode ?? "",
             pkgUnitCd = import.PackagingUnitCode ?? "",
@@ -423,6 +423,7 @@ public static class DataMapper
     {
         return new DeviceInit
         {
+            Tpin = deviceInfo.tin,
             TaxprNm = deviceInfo.taxprNm,
             BsnsActv = deviceInfo.bsnsActv,
             BhfId = deviceInfo.bhfId,
