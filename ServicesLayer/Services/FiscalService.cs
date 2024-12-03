@@ -435,6 +435,7 @@ public class FiscalService(
                 foreach (var item in purchase.Items)
                 {
                     var request = DataMapper.MapData(item);
+                    request.orgnNatCd = purchase.orgnNatCd;
                     logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
                     var response = await apiClient.SaveItems(request);
                     stockMasters.Add(response);

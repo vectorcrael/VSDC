@@ -93,7 +93,7 @@ public static class DataMapper
             itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
             itemTyCd = import.itemTyCd.ToString(),
             itemNm = import.ItemSequenceNumber.ToString() ?? "",
-            orgnNatCd = import.ItemCode ?? "",
+            orgnNatCd = "ZM",
             pkgUnitCd = import.PackagingUnitCode ?? "",
             qtyUnitCd = import.QuantityUnitCode ?? "",
             vatCatCd = import.TaxLabel ?? "",
