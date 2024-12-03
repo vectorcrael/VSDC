@@ -25,7 +25,7 @@ public static class DataMapper
             taxAmt = (double)(import.TaxAmt ?? 0),
             totAmt = import.TotAmt ?? 0
         };
-    } 
+    }
 
     public static UpdateItemRequest MapData(ZRASTockAdjustment import)
     {
@@ -33,9 +33,9 @@ public static class DataMapper
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            itemCd = import.ItemClsCd ?? "", 
+            itemCd = import.ItemClsCd ?? "",
             itemClsCd = Convert.ToInt32(import.ItemClsCd ?? "0"),
-            itemTyCd =  import.ItemTyCd.ToString() ,
+            itemTyCd = import.ItemTyCd.ToString(),
             itemNm = import.ItemNm ?? "",
             orgnNatCd = "ZM",
             pkgUnitCd = import.PkgUnitCd ?? "",
@@ -108,6 +108,58 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId
+        };
+    }
+
+    public static SaveStockItemRequest MapStockData(ZraPurchase import)
+    {
+        var itemList = new List<ItemList>();
+        foreach (var item in import!.Items)
+        {
+            itemList.Add(
+                new ItemList()
+                {
+                    itemSeq = item.ItemSequenceNumber,
+                    itemCd = item.ItemCode ?? "0",
+                    itemClsCd = item.ItemClassificationCode ?? "0",
+                    itemNm = item.ItemDesc ?? "",
+                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    //pkg = 0.0,
+                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    qty = item.Quantity,
+                    prc = (double)item.UnitPrice,
+                    splyAmt = (double)item.UnitPrice,
+                    // totDcAmt= item.UnitPrice,
+                    taxblAmt = (double)item.taxblAmt,
+                    vatCatCd = item.vatCatCd,
+                    taxAmt = (double)item.taxAmt,
+                    totAmt = (double)item.TotalAmount
+                }
+            );
+        }
+
+        return new SaveStockItemRequest
+        {
+            tpin = DeviceDetails.Tpin,
+            bhfId = DeviceDetails.BhfId,
+            sarNo = Convert.ToInt32(import.SupplierInvoiceNumber),
+            orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
+            regTyCd = import.regTyCd,
+            custTpin = import.CustomerTpin ?? "",
+            custNm = import.CustomerName,
+            custBhfId = import.BranchId,
+            sarTyCd = import.ReceiptTypeCode,
+            ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
+            totItemCnt = import.Items.Count,
+            totTaxblAmt = (double)import.Items.Sum(item => item.taxblAmt),
+            totTaxAmt = (double)import.Items.Sum(item => item.taxAmt),
+            totAmt = (double)import.Items.Sum(item => item.TotalAmount),
+            remark = "Imported from Service",
+            regrNm = DeviceDetails.regrNm,
+            regrId = DeviceDetails.regrId,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId,
+            itemList = itemList
         };
     }
 
