@@ -8,6 +8,10 @@ namespace WebApplicaiton.Controllers;
 [ApiController]
 public class FiscalizationController(IFiscalService fiscalService) : ControllerBase
 {
+    /// <summary>
+    /// Initialize a new device on the ZRA system
+    /// </summary>
+    /// <returns>status response from ZRA system</returns>
     [HttpGet("initialize-device")]
     public async Task<IActionResult> InitializeDevice()
     {
@@ -53,8 +57,9 @@ public class FiscalizationController(IFiscalService fiscalService) : ControllerB
     [HttpGet("fiscalise-purchases")]
     public async Task<IActionResult> FiscalisePurchases()
     {
-        await fiscalService.FiscalizePurchases();
-        return Ok("Purchases Fiscalised and Stocks Updated");
+        var responses = await fiscalService.FiscalizePurchases();
+        Console.Write("Purchases Fiscalised and Stocks Updated");
+        return Ok(JsonConvert.SerializeObject(responses));
     }
 
     [HttpGet("fiscalise-invoices")]

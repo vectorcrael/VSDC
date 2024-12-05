@@ -142,10 +142,10 @@ public static class DataMapper
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            sarNo = Convert.ToInt32(import.SupplierInvoiceNumber),
+            //sarNo = Convert.ToInt32(import.SupplierInvoiceNumber),
             orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
             regTyCd = import.regTyCd,
-            custTpin = import.CustomerTpin ?? "",
+            custTpin = import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId,
             sarTyCd = import.ReceiptTypeCode,

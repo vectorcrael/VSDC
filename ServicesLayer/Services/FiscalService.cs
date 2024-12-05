@@ -299,7 +299,7 @@ public class FiscalService(
         logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(testResp));
     }
 
-    public async Task FiscalizePurchases()
+    public async Task<List<ZraResponse?>> FiscalizePurchases()
     {
         logger.LogInformation("Purchases running.");
 
@@ -319,7 +319,9 @@ public class FiscalService(
             }
         }
 
-        await saveItemFromPurchases(purchases);
+        logger.LogInformation("Purchase object: {JsonObject}",JsonConvert.SerializeObject(purchases));
+        var stockupdate = await saveItemFromPurchases(purchases);
+        return stockupdate;
     }
 
     public async Task<List<ZraResponse>> FiscalizeInvoices()
@@ -429,17 +431,13 @@ public class FiscalService(
         var stockMasters = new List<ZraResponse?>();
 
         foreach (var purchase in purchases)
-            //No need to save items individually
-            //if response is OK THEN save items
-            if (purchase.Items != null)
-            {
-                var request = DataMapper.MapStockData(purchase);
-                logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-                var response = await apiClient.SaveStockItem(request);
-                stockMasters.Add(response);
-                logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
-            }
-
+        {
+            var request = DataMapper.MapStockData(purchase);
+            logger.LogInformation("Stockitem Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await apiClient.SaveStockItem(request);
+            stockMasters.Add(response);
+            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
         return stockMasters;
     }
 
