@@ -34,10 +34,13 @@ public class ItemList
     public string pkgUnitCd { get; set; }
     public string qtyUnitCd { get; set; }
     public decimal qty { get; set; }
+    public decimal pkg { get; set; }
     public double prc { get; set; }
     public double splyAmt { get; set; }
     public double taxblAmt { get; set; }
     public string vatCatCd { get; set; }
     public double taxAmt { get; set; }
     public double totAmt { get; set; }
+    public double totDcAmt {get; set;}
+
 }
