@@ -5,7 +5,7 @@ namespace DataLayer.Models;
 [Keyless]
 public class ZraInvoice
 {
-    public int totItemCnts;
+    public int totItemCnts { get; set; }
     public required string Id { get; set; }
     public required string InvoiceNumber { get; set; }
     public int? OriginalInvoiceNumber { get; set; }
@@ -22,13 +22,11 @@ public class ZraInvoice
     public string? ReceiptTypeCode { get; set; }
     public string? CustomerTpin { get; set; }
     public DateTime SaleDate { get; set; }
-
     public string? RefundReasonCode { get; set; }
     //public double ? taxAmtA{get;set;}
-
-    public List<ZraInvoiceItem>? Items { get; set; } = new();
     public double invtottax { get; set; }
     public double invtotincl { get; set; }
     public double invtotexcl { get; set; }
-    public int totItemCnt { get; set; }
+    public int totItemCnt { get; set; }    
+    public List<ZraInvoiceItem>? Items { get; set; } = new();
 }

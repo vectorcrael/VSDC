@@ -83,31 +83,54 @@ public static class DataMapper
         };
     }
 
-    public static UpdateItemRequest MapData(ZraPurchaseItem import)
+    public static SaveStockItemRequest MapStockData(ZraInvoice import)
     {
-        return new UpdateItemRequest
+        var itemList = new List<ItemList>();
+        foreach (var item in import!.Items)
+        {
+            itemList.Add(
+                new ItemList()
+                {
+                    itemSeq = item.ItemSequenceNumber,
+                    itemCd = item.ItemCode ?? "0",
+                    itemClsCd = item.ItemClassificationCode ?? "0",
+                    itemNm = item.ItemDesc ?? "",
+                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    pkg = item.Quantity,
+                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    qty = item.Quantity,
+                    prc = (double)item.UnitPrice,
+                    splyAmt = (double)item.UnitPrice,
+                    totDcAmt =(double) item.DiscountAmount,
+                    taxblAmt = (double)item.VatableAmount,
+                    vatCatCd = item.vatCatCd,
+                    taxAmt = (double)item.TaxAmount,
+                    totAmt = (double)item.TotalAmount
+                }
+            );
+        }
+        
+        return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            itemCd = import.ItemCode ?? "",
-            itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
-            itemTyCd = import.itemTyCd.ToString(),
-            itemNm = import.ItemSequenceNumber.ToString() ?? "",
-            orgnNatCd = "ZM",
-            pkgUnitCd = import.PackagingUnitCode ?? "",
-            qtyUnitCd = import.QuantityUnitCode ?? "",
-            vatCatCd = import.TaxLabel ?? "",
-            iplCatCd = null,
-            tlCatCd = null,
-            exciseTxCatCd = null,
-            btchNo = null,
-            dftPrc = (double)import.UnitPrice,
-            isrcAplcbYn = "N",
-            useYn = "Y",
+            orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
+            regTyCd = "0",
+            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null: import.CustomerTpin,
+            custNm = import.CustomerName,
+            custBhfId = import.BranchId,
+            sarTyCd ="02",
+            ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
+            totItemCnt = import.Items.Count,
+            totTaxblAmt = (double)import.Items.Sum(item => item.VatableAmount),
+            totTaxAmt = (double)import.Items.Sum(item => item.TaxAmount),
+            totAmt = (double)import.Items.Sum(item => item.TotalAmount),
+            remark = "Imported from Service",
             regrNm = DeviceDetails.regrNm,
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
-            modrId = DeviceDetails.modrId
+            modrId = DeviceDetails.modrId,
+            itemList = itemList
         };
     }
 

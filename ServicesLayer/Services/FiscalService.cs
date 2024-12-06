@@ -447,17 +447,13 @@ public class FiscalService(
         var stockMasters = new List<ZraResponse?>();
 
         foreach (var invoice in invoices)
-            //No need to save items individually
-            //if response is OK THEN save items
-        foreach (var item in invoice.Items)
         {
-            var request = DataMapper.MapData(item);
+            var request = DataMapper.MapStockData(invoice);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-            var response = await apiClient.SaveItems(request);
+            var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
             logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
-
         return stockMasters;
     }
 
