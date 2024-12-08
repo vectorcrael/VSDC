@@ -115,7 +115,7 @@ public static class DataMapper
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
             orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
-            regTyCd = import.regTypeCd ?? "M",
+            regTyCd = import.regtycd ?? "M",
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null: import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId ?? "000",
