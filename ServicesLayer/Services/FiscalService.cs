@@ -129,7 +129,7 @@ public class FiscalService(
 
     public async Task<List<ZraResponse?>> UpdateStockMaster()
     {
-        logger.LogInformation("Updating Stock Master");
+        logger.LogInformation("Updating StockList Master");
         var stockMasterItems = await dataService.GetStockMastersAsync();
         var stockMasters = new List<ZraResponse?>();
 
@@ -139,7 +139,7 @@ public class FiscalService(
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveItems(request);
             stockMasters.Add(response);
-            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
         return stockMasters;
@@ -147,7 +147,7 @@ public class FiscalService(
 
     public async Task<List<ZraResponse?>> AdjustStockMaster()
     {
-        logger.LogInformation("Adjusting Stock Master");
+        logger.LogInformation("Adjusting StockList Master");
         var stockMasterItems = await dataService.GetStockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
 
@@ -170,7 +170,7 @@ public class FiscalService(
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
-            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
         return stockMasters;
@@ -178,7 +178,7 @@ public class FiscalService(
 
     public async Task UpdateStockAdjustments()
     {
-        logger.LogInformation("Updating Stock Master");
+        logger.LogInformation("Updating StockList Master");
 
         var stockMasterItems = await dataService.GetStockMastersAsync();
         var itemSeq = 0;
@@ -209,7 +209,7 @@ public class FiscalService(
         };
         logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
         var response = await apiClient.SaveStockItem(request);
-        logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
     }
 
     public async Task UpdateSelectCodes()
@@ -319,8 +319,8 @@ public class FiscalService(
             }
         }
 
-        logger.LogInformation("Purchase object: {JsonObject}",JsonConvert.SerializeObject(purchases));
-        var stockupdate = await saveItemFromPurchases(purchases);
+        logger.LogInformation("Purchase object: {JsonObject}", JsonConvert.SerializeObject(purchases));
+        var stockupdate = await SaveItemFromPurchases(purchases);
         return stockupdate;
     }
 
@@ -425,9 +425,9 @@ public class FiscalService(
         return response;
     }
 
-    public async Task<List<ZraResponse?>> saveItemFromPurchases(List<ZraPurchase> purchases)
+    public async Task<List<ZraResponse?>> SaveItemFromPurchases(List<ZraPurchase> purchases)
     {
-        logger.LogInformation("Save Invoice Items to stocks");
+        logger.LogInformation("Save Purchase Items to stocks");
         var stockMasters = new List<ZraResponse?>();
 
         foreach (var purchase in purchases)
@@ -436,8 +436,9 @@ public class FiscalService(
             logger.LogInformation("Stockitem Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
-            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
+
         return stockMasters;
     }
 
@@ -452,12 +453,13 @@ public class FiscalService(
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
-            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
+
         return stockMasters;
     }
 
-    public async Task<List<ZraResponse?>> saveItemFromStockAdjustments()
+    public async Task<List<ZraResponse?>> SaveItemFromStockAdjustments()
     {
         logger.LogInformation("Save items from stocks");
         var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
@@ -469,9 +471,39 @@ public class FiscalService(
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveItems(request);
             stockMasters.Add(response);
-            logger.LogInformation("Updated Stock Items: {JsonObject}", JsonConvert.SerializeObject(response));
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
+        return stockMasters;
+    }
+
+    public async Task<List<ZraResponse?>> SaveStockItem()
+    {
+        logger.LogInformation("Save items from stocks");
+        var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
+        var stockMasters = new List<ZraResponse?>();
+
+        foreach (var item in stocks)
+        {
+            var request = DataMapper.MapStockData(item);
+            logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await apiClient.SaveStockItem(request);
+            stockMasters.Add(response);
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
+
+        return stockMasters;
+    }
+
+    public async Task<List<ZraResponse?>> SaveStockMaster(StockList stockList)
+    {
+        logger.LogInformation("Save items from stocks");
+        var stockMasters = new List<ZraResponse?>();
+        var request = DataMapper.MapStockMaster(stockList);
+        logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+        var response = await apiClient.SaveStockMaster(request);
+        stockMasters.Add(response);
+        logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         return stockMasters;
     }
 }

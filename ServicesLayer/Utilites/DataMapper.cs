@@ -6,6 +6,34 @@ namespace ServicesLayer.Utilites;
 
 public static class DataMapper
 {
+    public static SaveStockMasterRequest MapStockMaster(StockList stockList)
+    {
+        
+        var request = new SaveStockMasterRequest
+        {
+            tpin = DeviceDetails.Tpin,
+            bhfId = DeviceDetails.BhfId,
+            regrId = DeviceDetails.regrId,
+            regrNm = DeviceDetails.regrNm,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId,
+            stockItemList = new List<StockItemList>()
+        };
+
+        if (stockList.stockItemList.Count > 0)
+        {
+            foreach (var item in stockList.stockItemList)
+            {
+                request.stockItemList.Add(new StockItemList
+                {
+                    itemCd = item.itemCode,
+                    rsdQty = item.quantity,
+                });
+            }
+        }
+
+        return request;
+    }
     public static ItemList MapDataItem(ZraStockMaster import, int itemSeq)
     {
         return new ItemList
@@ -52,6 +80,54 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId
+        };
+    }
+    
+    public static SaveStockItemRequest MapStockData(ZRASTockAdjustment import)
+    {
+        var itemList = new List<ItemList>
+        {
+            new ItemList()
+            {
+                itemSeq = import.ItemSeq,
+                itemCd = import.ItemCd ?? "0",
+                itemClsCd = import.ItemClsCd ?? "0",
+                itemNm = import.ItemNm ?? "",
+                pkgUnitCd = import.PkgUnitCd ?? "",
+                pkg =import.Pkg,
+                qtyUnitCd = import.QtyUnitCd ?? "",
+                qty = (decimal)(import.Qty ?? 0) ,
+                prc = (import.Prc ?? 0),
+                splyAmt = import.SplyAmt ?? 0,
+                totDcAmt = import.TotDcAmt ?? 0,
+                taxblAmt = import.TaxblAmt ?? 0,
+                vatCatCd = import.VatCatCd ?? "",
+                taxAmt = import.TaxAmt ?? 0,
+                totAmt = import.TotAmt ?? 0
+            }
+        };
+        
+        return new SaveStockItemRequest
+        {
+            tpin = DeviceDetails.Tpin,
+            bhfId = DeviceDetails.BhfId,
+            orgSarNo = 0,
+            regTyCd = import.RegTyCd ?? "M",
+            custTpin = import.CustTpin ?? "",
+            custNm = import.CustNm ?? "",
+            custBhfId = "000",
+            sarTyCd =import.SarTyCd,
+            ocrnDt = import.OcrnDt ?? DateTime.Today.ToString("yyyyMMdd"),
+            totItemCnt = 1,
+            totTaxblAmt = (import.TaxblAmt ?? 0),
+            totTaxAmt = import.TaxAmt ?? 0,
+            totAmt = import.TotAmt ?? 0,
+            remark = "Imported ZRA StockList Adjustment",
+            regrNm = DeviceDetails.regrNm,
+            regrId = DeviceDetails.regrId,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId,
+            itemList = itemList
         };
     }
 

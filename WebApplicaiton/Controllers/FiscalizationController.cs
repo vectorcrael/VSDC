@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ServicesLayer.DTOs;
 using ServicesLayer.Services;
 
 namespace WebApplicaiton.Controllers;
@@ -80,7 +81,21 @@ public class FiscalizationController(IFiscalService fiscalService) : ControllerB
     [HttpGet("other-stock-adjustments")]
     public async Task<IActionResult> OtherStockAdjustments()
     {
-        var stocks = await fiscalService.saveItemFromStockAdjustments();
+        var stocks = await fiscalService.SaveItemFromStockAdjustments();
+        return Ok(JsonConvert.SerializeObject(stocks));
+    }
+    
+    [HttpGet("make-stock-adjustments")]
+    public async Task<IActionResult> MakeStockAdjustments()
+    {
+        var stocks = await fiscalService.SaveStockItem();
+        return Ok(JsonConvert.SerializeObject(stocks));
+    }
+    
+    [HttpPost("save-stock-master")]
+    public async Task<IActionResult> SaveStockMaster([FromBody] StockList stocklist)
+    {
+        var stocks = await fiscalService.SaveStockMaster(stocklist);
         return Ok(JsonConvert.SerializeObject(stocks));
     }
 }
