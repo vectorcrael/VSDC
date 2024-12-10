@@ -36,7 +36,7 @@ public class FiscalService(
             throw new ApplicationException("Failed to get purchases\n" + JsonConvert.SerializeObject(response));
         }
 
-        var jsonData = (JObject)response!.Data;
+        var jsonData = (JObject)response!.Data!;
         var purchases = jsonData.ToObject<SmartPurchases>();
 
         foreach (var saveToSave in purchases!.saleList.Select(DataMapper.MapToSmartPurchase))
@@ -118,9 +118,8 @@ public class FiscalService(
         var jsonData = (JObject)response!.Data;
         var imports = jsonData.ToObject<GetImports>();
 
-        foreach (var import in imports!.itemList)
+        foreach (var item in imports!.itemList.Select(DataMapper.MapData))
         {
-            var item = DataMapper.MapData(import);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var saveResponse = await dataService.SetImportsAsync(item);
             logger.LogInformation("Updated Import: {JsonObject}", JsonConvert.SerializeObject(saveResponse));
@@ -133,9 +132,8 @@ public class FiscalService(
         var stockMasterItems = await dataService.GetStockMastersAsync();
         var stockMasters = new List<ZraResponse?>();
 
-        foreach (var item in stockMasterItems)
+        foreach (var request in stockMasterItems.Select(DataMapper.MapData))
         {
-            var request = DataMapper.MapData(item);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveItems(request);
             stockMasters.Add(response);
@@ -160,11 +158,11 @@ public class FiscalService(
                 regrNm = DataMapper.DeviceDetails.regrNm,
                 regrId = DataMapper.DeviceDetails.regrId,
                 modrNm = DataMapper.DeviceDetails.modrNm,
-                modrId = DataMapper.DeviceDetails.modrId
+                modrId = DataMapper.DeviceDetails.modrId,
+                itemList = []
             };
 
-            request.itemList = new List<ItemList>();
-            var itemSeq = 1;
+            const int itemSeq = 1;
             request.itemList.Add(DataMapper.MapDataItem(item, itemSeq));
 
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
@@ -366,7 +364,7 @@ public class FiscalService(
             }
         }
 
-        var stockSave = await saveItemFromInvoices(invoices);
+        var stockSave = await SaveItemFromInvoices(invoices);
         responses.AddRange(stockSave!);
         return responses;
     }
@@ -442,14 +440,13 @@ public class FiscalService(
         return stockMasters;
     }
 
-    public async Task<List<ZraResponse?>> saveItemFromInvoices(List<ZraInvoice> invoices)
+    public async Task<List<ZraResponse?>> SaveItemFromInvoices(List<ZraInvoice> invoices)
     {
         logger.LogInformation("Save Invoice Items to stocks");
         var stockMasters = new List<ZraResponse?>();
 
-        foreach (var invoice in invoices)
+        foreach (var request in invoices.Select(DataMapper.MapStockData))
         {
-            var request = DataMapper.MapStockData(invoice);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
@@ -465,9 +462,8 @@ public class FiscalService(
         var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
 
-        foreach (var item in stocks)
+        foreach (var request in stocks.Select(DataMapper.MapData))
         {
-            var request = DataMapper.MapData(item);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveItems(request);
             stockMasters.Add(response);
@@ -483,9 +479,8 @@ public class FiscalService(
         var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
 
-        foreach (var item in stocks)
+        foreach (var request in stocks.Select(DataMapper.MapStockData))
         {
-            var request = DataMapper.MapStockData(item);
             logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
