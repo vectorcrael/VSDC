@@ -428,9 +428,8 @@ public class FiscalService(
         logger.LogInformation("Save Purchase Items to stocks");
         var stockMasters = new List<ZraResponse?>();
 
-        foreach (var purchase in purchases)
+        foreach (var request in purchases.Select(DataMapper.MapStockData))
         {
-            var request = DataMapper.MapStockData(purchase);
             logger.LogInformation("Stockitem Request object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SaveStockItem(request);
             stockMasters.Add(response);
@@ -459,7 +458,7 @@ public class FiscalService(
     public async Task<List<ZraResponse?>> SaveItemFromStockAdjustments()
     {
         logger.LogInformation("Save items from stocks");
-        var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
+        var stocks = await dataService.GetOtherStockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
 
         foreach (var request in stocks.Select(DataMapper.MapData))
@@ -476,7 +475,7 @@ public class FiscalService(
     public async Task<List<ZraResponse?>> SaveStockItem()
     {
         logger.LogInformation("Save items from stocks");
-        var stocks = await dataService.GetOtherSrockAdjustmentsAsync();
+        var stocks = await dataService.GetOtherStockAdjustmentsAsync();
         var stockMasters = new List<ZraResponse?>();
 
         foreach (var request in stocks.Select(DataMapper.MapStockData))
@@ -487,6 +486,7 @@ public class FiscalService(
             logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
+        
         return stockMasters;
     }
 
