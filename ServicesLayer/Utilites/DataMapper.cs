@@ -89,7 +89,7 @@ public static class DataMapper
         var itemList = new List<ItemList>
         {
             new ItemList()
-            {
+            {   
                 itemSeq = import.ItemSeq,
                 itemCd = import.ItemCd ?? "0",
                 itemClsCd = import.ItemClsCd ?? "0",
@@ -98,7 +98,7 @@ public static class DataMapper
                 pkg = import.Pkg,
                 qtyUnitCd = import.QtyUnitCd ?? "",
                 qty = (decimal)(import.Qty ?? 0),
-                prc = (import.Prc ?? 0),
+                prc = import.Prc ?? 0,
                 splyAmt = import.SplyAmt ?? 0,
                 totDcAmt = import.TotDcAmt ?? 0,
                 taxblAmt = import.TaxblAmt ?? 0,
@@ -114,13 +114,13 @@ public static class DataMapper
             bhfId = DeviceDetails.BhfId,
             orgSarNo = 0,
             regTyCd = import.RegTyCd ?? "M",
-            custTpin = import.CustTpin ?? "",
+            custTpin = string.IsNullOrWhiteSpace(import.CustTpin) ? null : import.CustTpin ,
             custNm = import.CustNm ?? "",
             custBhfId = "000",
             sarTyCd = import.SarTyCd,
             ocrnDt = import.OcrnDt ?? DateTime.Today.ToString("yyyyMMdd"),
             totItemCnt = 1,
-            totTaxblAmt = (import.TaxblAmt ?? 0),
+            totTaxblAmt = import.TaxblAmt ?? 0,
             totTaxAmt = import.TaxAmt ?? 0,
             totAmt = import.TotAmt ?? 0,
             remark = "Imported ZRA StockList Adjustment",
