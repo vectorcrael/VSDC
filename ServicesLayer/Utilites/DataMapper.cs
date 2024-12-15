@@ -98,13 +98,13 @@ public static class DataMapper
                 pkg = import.Pkg,
                 qtyUnitCd = import.QtyUnitCd ?? "",
                 qty = (decimal)(import.Qty ?? 0),
-                prc = import.Prc ?? 0,
-                splyAmt = import.SplyAmt ?? 0,
+                prc = Math.Round( import.Prc ?? 0, 4),
+                splyAmt = Math.Round(import.SplyAmt ?? 0, 4) ,
                 totDcAmt = import.TotDcAmt ?? 0,
-                taxblAmt = import.TaxblAmt ?? 0,
+                taxblAmt = Math.Round(import.TaxblAmt ?? 0, 4) ,
                 vatCatCd = import.VatCatCd ?? "",
-                taxAmt = import.TaxAmt ?? 0,
-                totAmt = import.TotAmt ?? 0
+                taxAmt = Math.Round(import.TaxAmt ?? 0, 4) ,
+                totAmt = Math.Round(import.TotAmt ?? 0.00, 4) 
             }
         };
 
@@ -120,9 +120,9 @@ public static class DataMapper
             sarTyCd = import.SarTyCd,
             ocrnDt = import.OcrnDt ?? DateTime.Today.ToString("yyyyMMdd"),
             totItemCnt = 1,
-            totTaxblAmt = import.TaxblAmt ?? 0,
-            totTaxAmt = import.TaxAmt ?? 0,
-            totAmt = import.TotAmt ?? 0,
+            totTaxblAmt = Math.Round(import.TaxblAmt ?? 0.00, 4) ,
+            totTaxAmt = Math.Round(import.TaxAmt ?? 0.00, 4) ,
+            totAmt = Math.Round(import.TotAmt ?? 0.00, 4) ,
             remark = "Imported ZRA StockList Adjustment",
             regrNm = DeviceDetails.regrNm,
             regrId = DeviceDetails.regrId,
