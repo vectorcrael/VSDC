@@ -14,5 +14,5 @@ public class StockItem
     public string itemCode { get; set; }
 
     [JsonProperty("quantity")]
-    public int quantity { get; set; }
+    public double quantity { get; set; }
 }

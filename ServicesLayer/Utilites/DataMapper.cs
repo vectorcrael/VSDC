@@ -195,7 +195,7 @@ public static class DataMapper
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId ?? "000",
-            sarTyCd = "02",
+            sarTyCd = import.sartycd,
             ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
             totItemCnt = import.Items.Count,
             totTaxblAmt = (double)import.Items.Sum(item => item.VatableAmount),
@@ -247,7 +247,7 @@ public static class DataMapper
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId,
-            sarTyCd = "02",
+            sarTyCd = import.sartycd,
             ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
             totItemCnt = import.Items.Count,
             totTaxblAmt = (double)import.Items.Sum(item => item.taxblAmt),
@@ -649,7 +649,7 @@ public static class DataMapper
                             new StockItem()
                             {
                                 itemCode = item.ItemCode,
-                                quantity = Convert.ToInt32(item.Quantity)
+                                quantity = item.rsdQty
                             }
                         );
         return new StockList()
@@ -663,7 +663,7 @@ public static class DataMapper
         var stockList = new List<StockItem>();
         foreach (var invoice in invoices)
             if (invoice.Items != null)
-                stockList.AddRange(invoice.Items.Select(item => new StockItem() { itemCode = item.ItemCode, quantity = Convert.ToInt32(item.Quantity) }));
+                stockList.AddRange(invoice.Items.Select(item => new StockItem() { itemCode = item.ItemCode, quantity = item.rsdQty }));
         return new StockList()
         {
             stockItemList = stockList

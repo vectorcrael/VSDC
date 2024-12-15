@@ -25,4 +25,5 @@ public class ZraInvoiceItem
     public decimal TaxAmount { get; set; }
     public string vatCatCd { get; set; }
     public int itemTyCd { get; set; }
+    public double rsdQty { get; set; }
 }

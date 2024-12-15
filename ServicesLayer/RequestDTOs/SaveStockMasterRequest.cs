@@ -14,5 +14,5 @@ public class SaveStockMasterRequest
 public class StockItemList
 {
     public string itemCd { get; set; }
-    public int rsdQty { get; set; }
+    public double rsdQty { get; set; }
 }
