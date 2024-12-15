@@ -195,7 +195,7 @@ public static class DataMapper
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null: import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId ?? "000",
-            sarTyCd ="02",
+            sarTyCd ="11",
             ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
             totItemCnt = import.Items.Count,
             totTaxblAmt = (double)import.Items.Sum(item => item.VatableAmount),
