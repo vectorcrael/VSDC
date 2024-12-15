@@ -1,4 +1,5 @@
-﻿using DataLayer.Models;
+﻿using System.Collections.Frozen;
+using DataLayer.Models;
 using ServicesLayer.DTOs;
 using VSDCAPI;
 
@@ -21,7 +22,7 @@ public static class DataMapper
 
         if (stockList.stockItemList.Count > 0)
         {
-            foreach (var item in stockList.stockItemList)
+            foreach (var item in stockList.stockItemList.ToFrozenSet())
             {
                 request.stockItemList.Add(new StockItemList
                 {
@@ -664,15 +665,16 @@ public static class DataMapper
         foreach (var invoice in invoices)
             if (invoice.Items != null)
                 stockList.AddRange(invoice.Items.Select(item => new StockItem() { itemCode = item.ItemCode, quantity = item.rsdQty }));
+   
         return new StockList()
         {
-            stockItemList = stockList
+            stockItemList = stockList.ToFrozenSet().ToList()
         };
     }
 
     public static StockList ConvertToStockList(List<ZRASTockAdjustment> import)
     {
-        var stockList = import.Select(item => new StockItem() { itemCode = item.ItemCd ?? "0.00", quantity = item.rsdQty ?? 0.00 }).ToList();
+        var stockList = import.Select(item => new StockItem() { itemCode = item.ItemCd ?? "0.00", quantity = item.rsdQty ?? 0.00 }).ToFrozenSet().ToList();
         return new StockList()
         {
             stockItemList = stockList
