@@ -8,7 +8,6 @@ public static class DataMapper
 {
     public static SaveStockMasterRequest MapStockMaster(StockList stockList)
     {
-        
         var request = new SaveStockMasterRequest
         {
             tpin = DeviceDetails.Tpin,
@@ -34,6 +33,7 @@ public static class DataMapper
 
         return request;
     }
+
     public static ItemList MapDataItem(ZraStockMaster import, int itemSeq)
     {
         return new ItemList
@@ -82,7 +82,7 @@ public static class DataMapper
             modrId = DeviceDetails.modrId
         };
     }
-    
+
     public static SaveStockItemRequest MapStockData(ZRASTockAdjustment import)
     {
         var itemList = new List<ItemList>
@@ -94,9 +94,9 @@ public static class DataMapper
                 itemClsCd = import.ItemClsCd ?? "0",
                 itemNm = import.ItemNm ?? "",
                 pkgUnitCd = import.PkgUnitCd ?? "",
-                pkg =import.Pkg,
+                pkg = import.Pkg,
                 qtyUnitCd = import.QtyUnitCd ?? "",
-                qty = (decimal)(import.Qty ?? 0) ,
+                qty = (decimal)(import.Qty ?? 0),
                 prc = (import.Prc ?? 0),
                 splyAmt = import.SplyAmt ?? 0,
                 totDcAmt = import.TotDcAmt ?? 0,
@@ -106,7 +106,7 @@ public static class DataMapper
                 totAmt = import.TotAmt ?? 0
             }
         };
-        
+
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
@@ -116,7 +116,7 @@ public static class DataMapper
             custTpin = import.CustTpin ?? "",
             custNm = import.CustNm ?? "",
             custBhfId = "000",
-            sarTyCd =import.SarTyCd,
+            sarTyCd = import.SarTyCd,
             ocrnDt = import.OcrnDt ?? DateTime.Today.ToString("yyyyMMdd"),
             totItemCnt = 1,
             totTaxblAmt = (import.TaxblAmt ?? 0),
@@ -177,7 +177,7 @@ public static class DataMapper
                     qty = item.Quantity,
                     prc = (double)item.UnitPrice,
                     splyAmt = (double)item.UnitPrice,
-                    totDcAmt =(double) item.DiscountAmount,
+                    totDcAmt = (double)item.DiscountAmount,
                     taxblAmt = (double)item.VatableAmount,
                     vatCatCd = item.vatCatCd,
                     taxAmt = (double)item.TaxAmount,
@@ -185,17 +185,17 @@ public static class DataMapper
                 }
             );
         }
-        
+
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
             orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
             regTyCd = import.regtycd ?? "M",
-            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null: import.CustomerTpin,
+            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId ?? "000",
-            sarTyCd ="02",
+            sarTyCd = "02",
             ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
             totItemCnt = import.Items.Count,
             totTaxblAmt = (double)import.Items.Sum(item => item.VatableAmount),
@@ -228,7 +228,7 @@ public static class DataMapper
                     qty = item.Quantity,
                     prc = (double)item.UnitPrice,
                     splyAmt = (double)item.UnitPrice,
-                    totDcAmt =(double) item.DiscountAmount,
+                    totDcAmt = (double)item.DiscountAmount,
                     taxblAmt = (double)item.taxblAmt,
                     vatCatCd = item.vatCatCd,
                     taxAmt = (double)item.taxAmt,
@@ -244,10 +244,10 @@ public static class DataMapper
             //sarNo = Convert.ToInt32(import.SupplierInvoiceNumber),
             orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
             regTyCd = import.regTyCd,
-            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null: import.CustomerTpin,
+            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
             custNm = import.CustomerName,
             custBhfId = import.BranchId,
-            sarTyCd ="02",
+            sarTyCd = "02",
             ocrnDt = import.SaleDate.ToString("yyyyMMdd"),
             totItemCnt = import.Items.Count,
             totTaxblAmt = (double)import.Items.Sum(item => item.taxblAmt),
@@ -636,5 +636,37 @@ public static class DataMapper
         public static string regrId { get; set; } = "ADMIN";
         public static string modrNm { get; set; } = "ADMIN";
         public static string modrId { get; set; } = "ADMIN";
+    }
+
+    public static StockList ConvertToStockList(List<ZraInvoice> invoices)
+    {
+        var stockList = new List<StockItem>();
+        foreach (var invoice in invoices)
+            if (invoice.Items != null)
+                foreach (var item in invoice.Items)
+                    if (item.ItemCode != null)
+                        stockList.Add(
+                            new StockItem()
+                            {
+                                itemCode = item.ItemCode,
+                                quantity = Convert.ToInt32(item.Quantity)
+                            }
+                        );
+        return new StockList()
+        {
+            stockItemList = stockList
+        };
+    }
+    
+    public static StockList ConvertToStockList(List<ZraPurchase> invoices)
+    {
+        var stockList = new List<StockItem>();
+        foreach (var invoice in invoices)
+            if (invoice.Items != null)
+                stockList.AddRange(invoice.Items.Select(item => new StockItem() { itemCode = item.ItemCode, quantity = Convert.ToInt32(item.Quantity) }));
+        return new StockList()
+        {
+            stockItemList = stockList
+        };
     }
 }

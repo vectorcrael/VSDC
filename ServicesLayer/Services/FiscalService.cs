@@ -319,7 +319,12 @@ public class FiscalService(
 
         logger.LogInformation("Purchase object: {JsonObject}", JsonConvert.SerializeObject(purchases));
         var stockupdate = await SaveItemFromPurchases(purchases);
-        return stockupdate;
+        
+        var stocklist = DataMapper.ConvertToStockList(purchases);
+        var stockAdjust = await SaveStockMaster(stocklist);
+        stockAdjust.AddRange(stockupdate);
+        
+        return stockAdjust;
     }
 
     public async Task<List<ZraResponse>> FiscalizeInvoices()
@@ -366,6 +371,10 @@ public class FiscalService(
 
         var stockSave = await SaveItemFromInvoices(invoices);
         responses.AddRange(stockSave!);
+
+        StockList stocklist = DataMapper.ConvertToStockList(invoices);
+        var stockAdjust = await SaveStockMaster(stocklist);
+        responses.AddRange(stockAdjust!);
         return responses;
     }
 
