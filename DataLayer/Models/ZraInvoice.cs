@@ -28,6 +28,7 @@ public class ZraInvoice
     public double invtotexcl { get; set; }
     public int totItemCnt { get; set; }    
     public string? regtycd { get; set; }
+    public string sartycd { get; set; }
 
     public List<ZraInvoiceItem>? Items { get; set; } = new();
 }

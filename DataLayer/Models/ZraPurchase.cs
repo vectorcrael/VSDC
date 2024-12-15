@@ -24,5 +24,7 @@ public class ZraPurchase
     public string? CustomerTpin { get; set; }
     public DateTime SaleDate { get; set; }
     public string? RefundedReasonCode { get; set; }
+    public string sartycd { get; set; }
+
     public List<ZraPurchaseItem>? Items { get; set; } = new();
 }
