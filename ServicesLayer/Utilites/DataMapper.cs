@@ -392,7 +392,7 @@ public static class DataMapper
     public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
     {
         var custPin = new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray());
-        var noVatOnPatent = zraInvoice.invtottax == 0 ? true : false;
+        var noVatOnPatent = zraInvoice.invtottax == 0;
 
         var invoice = new SaveSalesRequest
         {
@@ -412,8 +412,8 @@ public static class DataMapper
                 ? DateTime.Today.ToString("yyyyMMdd")
                 : zraInvoice.SaleDate.ToString("yyyyMMdd"),
             rfdRsnCd = zraInvoice.RefundReasonCode,
-            taxblAmtA = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-            taxblAmtD = noVatOnPatent ? (double)zraInvoice.Items.Sum(item => item.VatableAmount) : 0,
+            taxblAmtA = zraInvoice.Items.Where(item => item.vatCatCd == "A").Sum(item => item.VatableAmount),
+            taxblAmtD = zraInvoice.Items.Where(item => item.vatCatCd == "D").Sum(item => item.VatableAmount),
             taxblAmtTot = 0, //noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
             taxAmtTot = 0, //noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
             prchrAcptcYn = "N",
@@ -457,7 +457,7 @@ public static class DataMapper
                 isrccNm = "",
                 isrcRt = 0,
                 isrcAmt = 0,
-                vatCatCd = noVatOnPatent ? "D" : "A",
+                vatCatCd = item.vatCatCd,
                 exciseTxCatCd = "",
                 tlCatCd = item.TaxLabel,
                 iplCatCd = "",

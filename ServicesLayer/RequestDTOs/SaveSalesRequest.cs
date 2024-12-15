@@ -22,12 +22,12 @@ public class SaveSalesRequest
     public object rfdRsnCd { get; set; }
     public int totItemCnt { get; set; }
 
-    public double taxblAmtA { get; set; } = 0;
+    public decimal taxblAmtA { get; set; } = 0;
     public double taxblAmtB { get; set; } = 0;
     public double taxblAmtC1 { get; set; } = 0;
     public double taxblAmtC2 { get; set; } = 0;
     public double taxblAmtC3 { get; set; } = 0;
-    public double taxblAmtD { get; set; } = 0;
+    public decimal taxblAmtD { get; set; } = 0;
     public double taxblAmtRvat { get; set; } = 0;
     public double taxblAmtE { get; set; } = 0;
     public double taxblAmtF { get; set; } = 0;
