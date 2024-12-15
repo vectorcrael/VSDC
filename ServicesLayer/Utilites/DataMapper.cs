@@ -669,4 +669,13 @@ public static class DataMapper
             stockItemList = stockList
         };
     }
+
+    public static StockList ConvertToStockList(List<ZRASTockAdjustment> import)
+    {
+        var stockList = import.Select(item => new StockItem() { itemCode = item.ItemCd ?? "0.00", quantity = item.rsdQty ?? 0.00 }).ToList();
+        return new StockList()
+        {
+            stockItemList = stockList
+        };
+    }
 }

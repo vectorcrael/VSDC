@@ -495,6 +495,9 @@ public class FiscalService(
             logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
+        StockList stocklist = DataMapper.ConvertToStockList(stocks);
+        var stockAdjust = await SaveStockMaster(stocklist);
+        stockMasters.AddRange(stockAdjust!);
         
         return stockMasters;
     }
