@@ -5,7 +5,7 @@ namespace DataLayer.Models;
 [Keyless]
 public class ZraPurchase
 {
-    public string Origin { get; set; }
+    public int Origin { get; set; }
     public string orgnNatCd { get; set; }
     public string Id { get; set; }
     public string InvoiceNumber { get; set; }
