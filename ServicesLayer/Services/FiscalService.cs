@@ -237,16 +237,16 @@ public class FiscalService(
         //save the data back to the database
 
         foreach (var codeGroup in zraCodes!.clsList)
-        foreach (var code in codeGroup.dtlList)
-        {
-            var zraClassCode = DataMapper.MapSelectCode(code);
-            zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
-            zraClassCode.CdCls = codeGroup.cdCls;
-            zraClassCode.CdClsNm = codeGroup.cdClsNm;
-            var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
-            logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
-                JsonConvert.SerializeObject(zraClassCode));
-        }
+            foreach (var code in codeGroup.dtlList)
+            {
+                var zraClassCode = DataMapper.MapSelectCode(code);
+                zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
+                zraClassCode.CdCls = codeGroup.cdCls;
+                zraClassCode.CdClsNm = codeGroup.cdClsNm;
+                var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
+                logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
+                    JsonConvert.SerializeObject(zraClassCode));
+            }
 
         logger.LogInformation("Done uploading the Select Codes.");
         selectCodesUpdated = true;
@@ -302,11 +302,13 @@ public class FiscalService(
         logger.LogInformation("Purchases running.");
 
         var purchases = await dataService.GetZraPurchasesAsync();
+        List<ZraResponse?> responses = [];
         foreach (var purchase in purchases)
         {
             var request = DataMapper.ConvertPurchase(purchase);
             logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(request));
             var response = await apiClient.SavePurchases(request);
+            responses.Add(response!);
             logger.LogInformation("Logging JSON object: {JsonObject}", JsonConvert.SerializeObject(response));
 
             if (response!.ResultCd == "000")
@@ -316,19 +318,19 @@ public class FiscalService(
                 logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
             }
         }
+        if (purchases.Count > 0)
+        {
+            logger.LogInformation("Purchase object: {JsonObject}", JsonConvert.SerializeObject(purchases));
+            responses.AddRange((await SaveItemFromPurchases(purchases))!);
+            responses.AddRange((await SaveStockMaster(DataMapper.ConvertToStockList(purchases)))!);
+        }
 
-        logger.LogInformation("Purchase object: {JsonObject}", JsonConvert.SerializeObject(purchases));
-        var stockUpdate = await SaveItemFromPurchases(purchases);
-        stockUpdate.AddRange(await SaveStockMaster(DataMapper.ConvertToStockList(purchases)));
-        
-        return stockUpdate;
+        return responses;
     }
 
     public async Task<List<ZraResponse>> FiscalizeInvoices()
     {
         var responses = new List<ZraResponse>();
-
-        //steps to fiscalise invoices
         var invoices = await dataService.GetZraInvoicesAsync();
 
         foreach (var invoice in invoices)
@@ -340,18 +342,17 @@ public class FiscalService(
 
             if (response!.Data != null && response.ResultCd == "000")
             {
-                //once the signature is generated save back to the database
-                var jsonData = (JObject)response.Data; // Cast response.Data to JObject
+                var jsonData = (JObject)response.Data;
                 var sd = jsonData.ToObject<SaveInvoiceData>();
                 var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 
                 var dbUpdate = await dataService.UpdateFiscalDetailsAsync(
-                    qrCode, //sd.rcptSign
+                    qrCode,
                     sd.intrlData,
                     saveInvoices.cisInvcNo,
                     saveInvoices.rcptTyCd,
                     sd.rcptNo.ToString(),
-                    sd.rcptSign, //sd.qrCodeUrl,
+                    sd.rcptSign,
                     sd.vsdcRcptPbctDate);
 
                 var converted = DateTime.TryParse(response.ResultDt, out var resultDt);
@@ -365,13 +366,12 @@ public class FiscalService(
                 await dataService.AddFiscalInfoAsync(fiscalInfo);
             }
         }
-
-        var stockSave = await SaveItemFromInvoices(invoices);
-        responses.AddRange(stockSave!);
-
-        StockList stocklist = DataMapper.ConvertToStockList(invoices);
-        var stockAdjust = await SaveStockMaster(stocklist);
-        responses.AddRange(stockAdjust!);
+        if (invoices.Count > 0)
+        {
+            responses.AddRange((await SaveItemFromInvoices(invoices))!);
+            StockList stocklist = DataMapper.ConvertToStockList(invoices);
+            responses.AddRange((await SaveStockMaster(stocklist))!);
+        }
         return responses;
     }
 
@@ -492,10 +492,12 @@ public class FiscalService(
             logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
 
-        StockList stocklist = DataMapper.ConvertToStockList(stocks);
-        var stockAdjust = await SaveStockMaster(stocklist);
-        stockMasters.AddRange(stockAdjust!);
-        
+        if (stocks.Count > 0)
+        {
+            StockList stocklist = DataMapper.ConvertToStockList(stocks);
+            var stockAdjust = await SaveStockMaster(stocklist);
+            stockMasters.AddRange(stockAdjust!);
+        }
         return stockMasters;
     }
 
@@ -503,11 +505,14 @@ public class FiscalService(
     {
         logger.LogInformation("Save items from stocks");
         var stockMasters = new List<ZraResponse?>();
-        var request = DataMapper.MapStockMaster(stockList);
-        logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
-        var response = await apiClient.SaveStockMaster(request);
-        stockMasters.Add(response);
-        logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        if (stockList.stockItemList.Count > 0)
+        {
+            var request = DataMapper.MapStockMaster(stockList);
+            logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await apiClient.SaveStockMaster(request);
+            stockMasters.Add(response);
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
         return stockMasters;
     }
 }
