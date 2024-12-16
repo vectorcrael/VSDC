@@ -392,44 +392,55 @@ public static class DataMapper
     public static SaveSalesRequest ConvertInvoice(ZraInvoice zraInvoice)
     {
         var custPin = new string(zraInvoice.CustomerTpin!.Where(char.IsDigit).ToArray());
-        var noVatOnPatent = zraInvoice.invtottax == 0;
 
         var invoice = new SaveSalesRequest
         {
             bhfId = DeviceDetails.BhfId,
-            tpin = DeviceDetails.Tpin,
-            orgSdcId = "SDC0010001160", //to be automated by Nigel
+            tpin = DeviceDetails.Tpin,            
+            regrNm = DeviceDetails.regrNm,
+            modrId = DeviceDetails.modrId,
+            modrNm = DeviceDetails.modrNm,
+            orgSdcId = "SDC0010001160", 
             orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
             cisInvcNo = zraInvoice.InvoiceNumber,
-            custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, //verify this
+            custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, 
             custNm = zraInvoice.CustomerName,
             salesTyCd = "N",
             rcptTyCd = zraInvoice.ReceiptTypeCode,
             pmtTyCd = zraInvoice.PaymentTypeCode,
-            salesSttsCd = "02",
-            cfmDt = zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
-            salesDt = zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30)
-                ? DateTime.Today.ToString("yyyyMMdd")
-                : zraInvoice.SaleDate.ToString("yyyyMMdd"),
-            rfdRsnCd = zraInvoice.RefundReasonCode,
-            taxblAmtA = zraInvoice.Items.Where(item => item.vatCatCd == "A").Sum(item => item.VatableAmount),
-            taxblAmtD = zraInvoice.Items.Where(item => item.vatCatCd == "D").Sum(item => item.VatableAmount),
-            taxblAmtTot = 0, //noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
-            taxAmtTot = 0, //noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.TaxAmount),
-            prchrAcptcYn = "N",
+            salesSttsCd = "02",                       
+            prchrAcptcYn = "N", 
             //regrId = zraInvoice.RefundReasonCode,
-            regrNm = DeviceDetails.regrNm,
-            modrId = DeviceDetails.modrId,
-            modrNm = DeviceDetails.modrNm,
-            saleCtyCd = "1",
+            saleCtyCd = "1",            
+            dbtRsnCd = "",
+            invcAdjustReason = "",
             lpoNumber = zraInvoice.LocalPurchaseOrder,
             currencyTyCd = zraInvoice.CurrencyType,
             exchangeRt = zraInvoice.ConversionRate.ToString("F2"),
             destnCountryCd = zraInvoice.DestinationCountryCode,
-            dbtRsnCd = "",
-            invcAdjustReason = "",
+            cfmDt = zraInvoice.SaleDate.ToString("yyyyMMddHHmmss"),
+            salesDt = zraInvoice.SaleDate.Date < DateTime.Today.AddDays(-30) ? DateTime.Today.ToString("yyyyMMdd") : zraInvoice.SaleDate.ToString("yyyyMMdd"),
+            rfdRsnCd = zraInvoice.RefundReasonCode,
+            taxblAmtA = zraInvoice.Items.Where(item => item.vatCatCd == "A").Sum(item => item.VatableAmount),
+            taxblAmtB = zraInvoice.Items.Where(item => item.vatCatCd == "B").Sum(item => item.VatableAmount),
+            taxblAmtC1 = zraInvoice.Items.Where(item => item.vatCatCd == "C1").Sum(item => item.VatableAmount),
+            taxblAmtC2 = zraInvoice.Items.Where(item => item.vatCatCd == "C2").Sum(item => item.VatableAmount),
+            taxblAmtC3 = zraInvoice.Items.Where(item => item.vatCatCd == "C3").Sum(item => item.VatableAmount),
+            taxblAmtD = zraInvoice.Items.Where(item => item.vatCatCd == "D").Sum(item => item.VatableAmount),
+            taxblAmtE = zraInvoice.Items.Where(item => item.vatCatCd == "E").Sum(item => item.VatableAmount),
+            taxblAmtF = zraInvoice.Items.Where(item => item.vatCatCd == "F").Sum(item => item.VatableAmount),
+            taxAmtA = zraInvoice.Items.Where(item => item.vatCatCd == "A").Sum(item => item.TaxAmount),
+            taxAmtB = zraInvoice.Items.Where(item => item.vatCatCd == "B").Sum(item => item.TaxAmount),
+            taxAmtC1 = zraInvoice.Items.Where(item => item.vatCatCd == "C1").Sum(item => item.TaxAmount),
+            taxAmtC2 = zraInvoice.Items.Where(item => item.vatCatCd == "C2").Sum(item => item.TaxAmount),
+            taxAmtC3 = zraInvoice.Items.Where(item => item.vatCatCd == "C3").Sum(item => item.TaxAmount),
+            taxAmtD = zraInvoice.Items.Where(item => item.vatCatCd == "D").Sum(item => item.TaxAmount),
+            taxAmtE = zraInvoice.Items.Where(item => item.vatCatCd == "E").Sum(item => item.TaxAmount),
+            taxAmtF = zraInvoice.Items.Where(item => item.vatCatCd == "F").Sum(item => item.TaxAmount),
+            taxblAmtTot = 0, 
+            taxAmtTot = 0, 
             totAmt = (double)zraInvoice.Items.Sum(item => item.TotalAmount),
-            vatTaxblAmt = noVatOnPatent ? 0 : (double)zraInvoice.Items.Sum(item => item.VatableAmount),
+            vatTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
             totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
             totItemCnt = zraInvoice.Items.Count,
             totTaxAmt = (double)zraInvoice.Items.Sum(item => item.TaxAmount)
@@ -471,15 +482,6 @@ public static class DataMapper
                 exciseTxAmt = 0,
                 totAmt = (double)item.TotalAmount
             });
-        ;
-
-        invoice.taxAmtA = invoice.itemList
-            .Where(item => item.vatCatCd == "A")
-            .Sum(item => item.vatAmt);
-
-        invoice.taxAmtA = invoice.itemList
-            .Where(item => item.vatCatCd == "A")
-            .Sum(item => item.vatAmt);
 
         return invoice;
     }

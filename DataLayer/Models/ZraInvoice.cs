@@ -22,7 +22,7 @@ public class ZraInvoice
     public string? CustomerTpin { get; set; }
     public DateTime SaleDate { get; set; }
     public string? RefundReasonCode { get; set; }
-    //public double ? taxAmtA{get;set;}
+    public string? OrigDocID { get; set; }
     public double invtottax { get; set; }
     public double invtotincl { get; set; }
     public double invtotexcl { get; set; }

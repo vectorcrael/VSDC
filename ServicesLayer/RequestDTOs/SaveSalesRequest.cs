@@ -23,14 +23,14 @@ public class SaveSalesRequest
     public int totItemCnt { get; set; }
 
     public decimal taxblAmtA { get; set; } = 0;
-    public double taxblAmtB { get; set; } = 0;
-    public double taxblAmtC1 { get; set; } = 0;
-    public double taxblAmtC2 { get; set; } = 0;
-    public double taxblAmtC3 { get; set; } = 0;
+    public decimal taxblAmtB { get; set; } = 0;
+    public decimal taxblAmtC1 { get; set; } = 0;
+    public decimal taxblAmtC2 { get; set; } = 0;
+    public decimal taxblAmtC3 { get; set; } = 0;
     public decimal taxblAmtD { get; set; } = 0;
     public double taxblAmtRvat { get; set; } = 0;
-    public double taxblAmtE { get; set; } = 0;
-    public double taxblAmtF { get; set; } = 0;
+    public decimal taxblAmtE { get; set; } = 0;
+    public decimal taxblAmtF { get; set; } = 0;
     public double taxblAmtIpl1 { get; set; } = 0;
     public int taxblAmtIpl2 { get; set; } = 0;
     public double taxblAmtTl { get; set; } = 0;
@@ -53,15 +53,15 @@ public class SaveSalesRequest
     public int taxRtEcm { get; set; } = 5;
     public int taxRtExeeg { get; set; } = 3;
     public int taxRtTot { get; set; } = 0;
-    public double taxAmtA { get; set; } = 0;
-    public double taxAmtB { get; set; } = 0;
-    public double taxAmtC1 { get; set; } = 0;
-    public double taxAmtC2 { get; set; } = 0;
-    public double taxAmtC3 { get; set; } = 0;
-    public double taxAmtD { get; set; } = 0;
+    public decimal taxAmtA { get; set; } = 0;
+    public decimal taxAmtB { get; set; } = 0;
+    public decimal taxAmtC1 { get; set; } = 0;
+    public decimal taxAmtC2 { get; set; } = 0;
+    public decimal taxAmtC3 { get; set; } = 0;
+    public decimal taxAmtD { get; set; } = 0;
     public double taxAmtRvat { get; set; } = 0;
-    public double taxAmtE { get; set; } = 0;
-    public double taxAmtF { get; set; } = 0;
+    public decimal taxAmtE { get; set; } = 0;
+    public decimal taxAmtF { get; set; } = 0;
     public double taxAmtIpl1 { get; set; } = 0;
     public double taxAmtIpl2 { get; set; } = 0;
     public double taxAmtTl { get; set; } = 0;
