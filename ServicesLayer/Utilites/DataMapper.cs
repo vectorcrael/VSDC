@@ -355,7 +355,7 @@ public static class DataMapper
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            invcNo = ParseNumber(purchase.Id),
+            invcNo = ParseNumber(purchase.InvoiceNumber),
             orgInvcNo = ParseNumber(purchase.OriginalInvoiceNumber),
             //spplrTpin = purchase.CustomerTpin ?? "9999999990",
             spplrBhfId = "000",
