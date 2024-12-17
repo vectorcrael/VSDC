@@ -318,7 +318,7 @@ public class FiscalService(
                 logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
 
                 var dbInvUpdate =
-                    await dataService.AddPurchasFiscalInfoAsync(request.invcNo, request.invcNo);
+                    await dataService.AddPurchasFiscalInfoAsync(request.invcNo, Convert.ToInt32(purchase.Id));
                 logger.LogInformation("Purchase Update: {JsonObject}", JsonConvert.SerializeObject(dbInvUpdate));
 
             }
