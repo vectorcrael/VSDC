@@ -49,11 +49,9 @@ public class InvoiceController(IDataService fiscalInfoService) : ControllerBase
     }
 
     [HttpPost("update-fiscal-details")]
-    public async Task<IActionResult> UpdateFiscalDetails(byte[] signature, string internalData, string invoiceNumber,
-        string invoiceType, string invoiceSequence, string qrCode, string vsdcDate)
+    public async Task<IActionResult> UpdateFiscalDetails(FiscalDetails fiscalDetails)
     {
-        await fiscalInfoService.UpdateFiscalDetailsAsync(signature, internalData, invoiceNumber, invoiceType,
-            invoiceSequence, qrCode, vsdcDate);
+        await fiscalInfoService.UpdateFiscalDetailsAsync(fiscalDetails);
         return NoContent();
     }
 

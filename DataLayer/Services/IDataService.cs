@@ -10,14 +10,12 @@ public interface IDataService
     Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(string refId);
     Task<List<PurchaseInfo>> GetAllPurchasesAsync();
     Task<List<ZraPurchaseItem>> GetPurchaseItemsAsync(string refId);
-
-    Task<int> UpdateFiscalDetailsAsync(byte[] qrCodeBinary, string internalData, string invoiceNumber,
-        string invoiceType, string invoiceSequence, string signature, string vsdcDate);
-
+    Task<int> UpdateFiscalDetailsAsync(FiscalDetails fiscalDetails);
     Task<List<ZraStockMaster>> GetStockMastersAsync();
     Task<List<ZraStockMaster>> GetStockAdjustmentsAsync();
     Task<ZraPurchase?> GetZraSinglePurchaseAsync(string refId);
     Task<int> UpdateZraPurchaseAsync(ZraPurchase zraPurchase);
+    Task<int> AddPurchasFiscalInfoAsync(int invnumber, int id);
     Task<int> UpdateZraPurchaseRegTcdAsync(string refId);
     Task<List<ZraPurchase>> GetZraPurchasesAsync();
     Task<List<DeviceInit>> GetAllDeviceInitsAsync();

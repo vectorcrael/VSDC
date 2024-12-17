@@ -237,16 +237,16 @@ public class FiscalService(
         //save the data back to the database
 
         foreach (var codeGroup in zraCodes!.clsList)
-            foreach (var code in codeGroup.dtlList)
-            {
-                var zraClassCode = DataMapper.MapSelectCode(code);
-                zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
-                zraClassCode.CdCls = codeGroup.cdCls;
-                zraClassCode.CdClsNm = codeGroup.cdClsNm;
-                var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
-                logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
-                    JsonConvert.SerializeObject(zraClassCode));
-            }
+        foreach (var code in codeGroup.dtlList)
+        {
+            var zraClassCode = DataMapper.MapSelectCode(code);
+            zraClassCode.ResultDt = DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss");
+            zraClassCode.CdCls = codeGroup.cdCls;
+            zraClassCode.CdClsNm = codeGroup.cdClsNm;
+            var savedCode = await dataService.SetZraSelectCodesAsync(zraClassCode);
+            logger.LogInformation("record updated {savedCode}: {JsonObject}", savedCode,
+                JsonConvert.SerializeObject(zraClassCode));
+        }
 
         logger.LogInformation("Done uploading the Select Codes.");
         selectCodesUpdated = true;
@@ -316,8 +316,14 @@ public class FiscalService(
                 var dbUpdate =
                     await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
                 logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
+
+                var dbInvUpdate =
+                    await dataService.AddPurchasFiscalInfoAsync(request.invcNo, request.invcNo);
+                logger.LogInformation("Purchase Update: {JsonObject}", JsonConvert.SerializeObject(dbInvUpdate));
+
             }
         }
+
         if (purchases.Count > 0)
         {
             logger.LogInformation("Purchase object: {JsonObject}", JsonConvert.SerializeObject(purchases));
@@ -347,13 +353,16 @@ public class FiscalService(
                 var qrCode = QrCodeGenerator.GenerateQrCodeAsBinary(sd!.qrCodeUrl);
 
                 var dbUpdate = await dataService.UpdateFiscalDetailsAsync(
-                    qrCode,
-                    sd.intrlData,
-                    saveInvoices.cisInvcNo,
-                    saveInvoices.rcptTyCd,
-                    sd.rcptNo.ToString(),
-                    sd.rcptSign,
-                    sd.vsdcRcptPbctDate);
+                    new FiscalDetails()
+                    {
+                        qrCodeBinary = qrCode,
+                        internalData = sd.intrlData,
+                        invoiceNumber = saveInvoices.cisInvcNo,
+                        invoiceType = saveInvoices.rcptTyCd,
+                        invoiceSequence = sd.rcptNo.ToString(),
+                        signature = sd.rcptSign,
+                        vsdcDate = sd.vsdcRcptPbctDate
+                    });
 
                 var converted = DateTime.TryParse(response.ResultDt, out var resultDt);
 
@@ -366,12 +375,14 @@ public class FiscalService(
                 await dataService.AddFiscalInfoAsync(fiscalInfo);
             }
         }
+
         if (invoices.Count > 0)
         {
             responses.AddRange((await SaveItemFromInvoices(invoices))!);
             StockList stocklist = DataMapper.ConvertToStockList(invoices);
             responses.AddRange((await SaveStockMaster(stocklist))!);
         }
+
         return responses;
     }
 
@@ -498,6 +509,7 @@ public class FiscalService(
             var stockAdjust = await SaveStockMaster(stocklist);
             stockMasters.AddRange(stockAdjust!);
         }
+
         return stockMasters;
     }
 
@@ -513,6 +525,7 @@ public class FiscalService(
             stockMasters.Add(response);
             logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
         }
+
         return stockMasters;
     }
 }

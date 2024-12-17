@@ -17,8 +17,7 @@ public class DataService(AppDbContext context) : IDataService
         context.FiscalInfos.Add(fiscalInfo);
         await context.SaveChangesAsync();
     }
-
-    // Methods for ZraInvoice
+    
     public async Task<List<ZraInvoice>> GetZraInvoicesAsync()
     {
         var invoices = await context.ZraInvoices
@@ -55,8 +54,7 @@ public class DataService(AppDbContext context) : IDataService
             .FromSqlRaw("EXEC GetZraPurchaseItem @RefId={0}", refId)
             .ToListAsync();
     }
-
-    // Methods for PurchaseInfo
+    
     public async Task<List<PurchaseInfo>> GetAllPurchasesAsync()
     {
         return await context.PurchaseInfos
@@ -64,18 +62,17 @@ public class DataService(AppDbContext context) : IDataService
             .ToListAsync();
     }
 
-    public async Task<int> UpdateFiscalDetailsAsync(byte[] qrCodeBinary, string internalData, string invoiceNumber,
-        string invoiceType, string invoiceSequence, string signature, string vsdcDate)
+    public async Task<int> UpdateFiscalDetailsAsync(FiscalDetails fiscalDetails)
     {
         var parameters = new[]
         {
-            new SqlParameter("@QrCode", qrCodeBinary),
-            new SqlParameter("@InternalData", internalData),
-            new SqlParameter("@InvNumber", invoiceNumber),
-            new SqlParameter("@InvoiceType", invoiceType),
-            new SqlParameter("@InvoiceSequence", invoiceSequence),
-            new SqlParameter("@Signature", signature),
-            new SqlParameter("@VsdcDate", vsdcDate)
+            new SqlParameter("@QrCode", fiscalDetails.qrCodeBinary),
+            new SqlParameter("@InternalData", fiscalDetails.internalData),
+            new SqlParameter("@InvNumber", fiscalDetails.invoiceNumber),
+            new SqlParameter("@InvoiceType", fiscalDetails.invoiceType),
+            new SqlParameter("@InvoiceSequence", fiscalDetails.invoiceSequence),
+            new SqlParameter("@Signature", fiscalDetails.signature),
+            new SqlParameter("@VsdcDate", fiscalDetails.vsdcDate)
         };
 
         return await context.Database.ExecuteSqlRawAsync(
@@ -88,13 +85,6 @@ public class DataService(AppDbContext context) : IDataService
         var masters = await context.ZraStockMasters
             .FromSqlRaw("SELECT * FROM ZraStockMaster")
             .ToListAsync();
-
-        // foreach (var master in masters)
-        // {
-        //     var dbInvoices = await GetInvoiceItemsAsync(master.ItemCode);
-        //     if (dbInvoices.Count > 0)
-        //         master.Items = dbInvoices.ToList();
-        // }
 
         return masters;
     }
@@ -397,6 +387,17 @@ public class DataService(AppDbContext context) : IDataService
             .ExecuteSqlRawAsync("UPDATE ZraPurchase SET InvoiceNumber = @InvoiceNumber WHERE Id = @Id", parameters);
        
         return result;
+    }
+    
+    public async Task <int> AddPurchasFiscalInfoAsync(int invnumber, int id)
+    {
+        var parameters = new[]
+        {
+            new SqlParameter("@invnumber", invnumber),
+            new SqlParameter("@id", id),
+        };
+
+        return await context.Database.ExecuteSqlRawAsync("update InvNum set cPermitNumber=@invnumber  where AutoIndex=@id ;", parameters);
     }
 
     public async Task<int> UpdateZraPurchaseRegTcdAsync(string refId)
