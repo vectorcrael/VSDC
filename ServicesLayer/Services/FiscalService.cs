@@ -54,10 +54,10 @@ public class FiscalService(
         var updatedImports = new List<ZraResponse>();
 
         var receivedImports = await dataService.GetImportsAsync();
-        var itemSeq = 1;
         
         foreach (var import in receivedImports)
         {
+            var itemSeq = 1;
             var request = new UpdateImportItemsRequest
             {
                 tpin = DataMapper.DeviceDetails.Tpin,
