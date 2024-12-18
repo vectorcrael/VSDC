@@ -88,6 +88,12 @@ public class FiscalService(
             else
             {
                 updatedImports.Add(response);
+                var udpatePurchaseInfo = await dataService.UpdatePurchaseAsync(
+                    Convert.ToInt32(import.taskCd),
+                    response.ResultMsg,
+                    response.ResultDt
+                );
+                logger.LogInformation("Saved import {taskId} Imports: {JsonObject}", import.taskCd, JsonConvert.SerializeObject(udpatePurchaseInfo));
             }
         }
 
