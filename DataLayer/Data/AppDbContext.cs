@@ -25,6 +25,8 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<ZraStockMaster> ZraStockMasters { get; set; }
     public virtual DbSet<ZraPurchase> ZraPurchases { get; set; }
     public virtual DbSet<ZraImportData> ZraImportDatas { get; set; }
+    public virtual DbSet<ZRAImportsRec> ZRAImportsRecs { get; set; }
+    public virtual DbSet<ZRAImportsRecItem> ZRAImportsRecItems { get; set; }
     public virtual DbSet<ZraPurchaseItem> ZraPurchaseItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -53,8 +53,9 @@ public class FiscalService(
         logger.LogInformation("Received Imports ");
         var updatedImports = new List<ZraResponse>();
 
-        var receivedImports = await dataService.GetReceivedImportAsync();
-
+        var receivedImports = await dataService.GetImportsAsync();
+        var itemSeq = 1;
+        
         foreach (var import in receivedImports)
         {
             var request = new UpdateImportItemsRequest
@@ -63,20 +64,17 @@ public class FiscalService(
                 bhfId = DataMapper.DeviceDetails.BhfId,
                 taskCd = import.taskCd,
                 dclDe = import.dclDe,
-                importItemList =
-                [
-                    new ImportItem
-                    {
-                        itemSeq = (int)(import.itemSeq ?? 0),
-                        hsCd = import.hsCd,
-                        itemClsCd = "10101504",
-                        itemCd = "Chemicals",
-                        imptItemSttsCd = "3",
-                        remark = "remark",
-                        modrNm = "Admin",
-                        modrId = "Admin"
-                    }
-                ]
+                importItemList = import.lines.Select(item => new ImportItem
+                {
+                    itemSeq = itemSeq++,
+                    hsCd = import.hsCd ?? "",
+                    itemClsCd = item.itemClsCd ?? "",
+                    itemCd = item.itemCd ?? "",
+                    imptItemSttsCd = (item.imptItemSttsCd ?? 0).ToString(),
+                    remark = "",
+                    modrNm = DataMapper.DeviceDetails.modrNm,
+                    modrId = DataMapper.DeviceDetails.modrId
+                }).ToList()
             };
 
             var response = await apiClient.UpdateImportItems(request);

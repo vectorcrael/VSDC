@@ -41,11 +41,15 @@ public class FiscalizationController(IFiscalService fiscalService) : ControllerB
         return Ok(JsonConvert.SerializeObject(response));
     }
 
-    [HttpGet("update-imports")]
+    /// <summary>
+    /// This is used to get imports from ZRA server and saves to Pastel
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("get-imports")]
     public async Task<IActionResult> UpdateImports()
     {
         await fiscalService.UpdateImports();
-        return Ok("Imports Updated");
+        return Ok("Imports received");
     }
 
     [HttpGet("received-imports")]

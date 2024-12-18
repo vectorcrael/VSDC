@@ -27,6 +27,7 @@ public interface IDataService
     Task<int> SetImportsAsync(ZraImportData item);
     Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt);
     Task<List<ZraImportData>> GetReceivedImportAsync();
+    Task<List<ZRAImportsRec>> GetImportsAsync();
     Task<int> SetSmartInvoiceAsync(SmartPurchase smartPurchase);
     Task<List<ZRASTockAdjustment>> GetOtherStockAdjustmentsAsync();
 }

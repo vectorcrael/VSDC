@@ -273,6 +273,29 @@ public class DataService(AppDbContext context) : IDataService
             .FromSqlRaw("SELECT * FROM RecievedImports")
             .ToListAsync();
     }
+    
+    public async Task<List<ZRAImportsRec>> GetImportsAsync()
+    {
+        var imports = await context.ZRAImportsRecs
+            .FromSqlRaw("SELECT * FROM ZRAImportsRec")
+            .ToListAsync();
+
+        foreach (var import in imports)
+        {
+            var dbItems = await GetImportItemsAsync(import.dclNo);
+            if (dbItems.Count > 0)
+                import.lines = dbItems.ToList();
+        }
+        
+        return imports;
+    }
+    
+    public async Task<List<ZRAImportsRecItem>> GetImportItemsAsync(string refId)
+    {
+        return await context.ZRAImportsRecItems
+            .FromSqlRaw("EXEC Getimportdetail @ref={0}", refId)
+            .ToListAsync();
+    }
 
     public async Task<int> SetSmartInvoiceAsync(SmartPurchase smartPurchase)
     {
