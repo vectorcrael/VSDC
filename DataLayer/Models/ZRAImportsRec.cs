@@ -15,10 +15,8 @@ public class ZRAImportsRec
 [Keyless]
 public class ZRAImportsRecItem
 {
-    public int? itemSeq { get; set; }
-    public string? hsCd { get; set; }
     public string? itemClsCd { get; set; }
     public string? itemCd { get; set; }
     public int? imptItemSttsCd { get; set; }
-    public string? remark { get; set; }
+
 }
