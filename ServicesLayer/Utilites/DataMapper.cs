@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Diagnostics;
 using DataLayer.Models;
 using ServicesLayer.DTOs;
 using VSDCAPI;
@@ -159,11 +160,57 @@ public static class DataMapper
             modrId = DeviceDetails.modrId
         };
     }
+    
+    public static SaveStockItemRequest MapStockData(ZRAImportsRec import)
+    {
+        var itemSequence = 1;
+        var itemList = import.lines.Select(item => new ItemList()
+            {
+                itemSeq = itemSequence++,
+                itemCd = item.itemCd ?? "0",
+                itemClsCd = item.itemClsCd ?? "0",
+                itemNm = item.ItemDesc ?? "",
+                pkgUnitCd = item.PackagingUnitCode ?? "",
+                pkg = item.Quantity,
+                qtyUnitCd = item.QuantityUnitCode ?? "",
+                qty = item.Quantity,
+                prc = item.UnitPrice!.Value,
+                splyAmt = item.UnitPrice!.Value,
+                totDcAmt = item.DiscountAmount!.Value,
+                taxblAmt = item.VatableAmount!.Value,
+                vatCatCd = item.vatCatCd!,
+                taxAmt = item.TaxAmount!.Value,
+                totAmt = item.TotalAmount!.Value
+            })
+            .ToList();
 
+        return new SaveStockItemRequest
+        {
+            tpin = DeviceDetails.Tpin,
+            bhfId = DeviceDetails.BhfId,
+            orgSarNo = import.OriginalInvoiceNumber!.Value,
+            regTyCd = import.regtycd ?? "M",
+            custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
+            custNm = import.CustomerName ?? "",
+            custBhfId = import.BranchId ?? "000",
+            sarTyCd = import.sartycd ?? "",
+            ocrnDt = import.SaleDate!.Value.ToString("yyyyMMdd"),
+            totItemCnt = import.lines.Count,
+            totTaxblAmt = import.lines.Sum(item => item.VatableAmount) ?? 0,
+            totTaxAmt = import.lines.Sum(item => item.TaxAmount) ?? 0,
+            totAmt = import.lines.Sum(item => item.TotalAmount) ?? 0,
+            remark = "ZraImportsRec Imported from Service",
+            regrNm = DeviceDetails.regrNm,
+            regrId = DeviceDetails.regrId,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId,
+            itemList = itemList
+        };
+    }
     public static SaveStockItemRequest MapStockData(ZraInvoice import)
     {
         var itemList = new List<ItemList>();
-        foreach (var item in import!.Items)
+        foreach (var item in import.Items)
         {
             itemList.Add(
                 new ItemList()
@@ -680,6 +727,24 @@ public static class DataMapper
         return new StockList()
         {
             stockItemList = stockList
+        };
+    }
+
+    public static StockList ConvertToStockList(List<ZRAImportsRec> updatedImportsRec)
+    {
+        List<StockItem> stocks = [];
+        foreach (var import in updatedImportsRec)
+        {
+            var stockList = import.lines!.Select(item => new StockItem
+            {
+                itemCode = item.itemCd ?? "0.00", 
+                quantity = (item.imptItemSttsCd ?? 0)
+            }).ToFrozenSet().ToList();
+            stocks.AddRange(stockList);
+        }
+        return new StockList
+        {
+            stockItemList = stocks
         };
     }
 }

@@ -51,10 +51,10 @@ public class FiscalService(
     public async Task<List<ZraResponse>> ReceivedImports()
     {
         logger.LogInformation("Received Imports ");
-        var updatedImports = new List<ZraResponse>();
+        var responses = new List<ZraResponse>();
 
         var receivedImports = await dataService.GetImportsAsync();
-        
+        var updatedImportsRec = new List<ZRAImportsRec>();
         foreach (var import in receivedImports)
         {
             var itemSeq = 1;
@@ -87,17 +87,41 @@ public class FiscalService(
             }
             else
             {
-                updatedImports.Add(response);
+                responses.Add(response);
                 var udpatePurchaseInfo = await dataService.UpdatePurchaseAsync(
                     Convert.ToInt32(import.taskCd),
                     response.ResultMsg,
                     response.ResultDt
                 );
                 logger.LogInformation("Saved import {taskId} Imports: {JsonObject}", import.taskCd, JsonConvert.SerializeObject(udpatePurchaseInfo));
+                updatedImportsRec.Add(import);
             }
         }
 
-        return updatedImports;
+        if (updatedImportsRec.Count > 0)
+        {
+            responses.AddRange((await SaveItemFromInvoices(updatedImportsRec))!);
+            StockList stocklist = DataMapper.ConvertToStockList(updatedImportsRec);
+            responses.AddRange((await SaveStockMaster(stocklist))!);
+        }
+
+        return responses;
+    }
+
+    private async Task<IEnumerable<ZraResponse>> SaveItemFromInvoices(List<ZRAImportsRec> updatedImportsRec)
+    {
+        logger.LogInformation("Save ZRAImportsRec Items to stocks");
+        var stockMasters = new List<ZraResponse?>();
+
+        foreach (var request in updatedImportsRec.Select(DataMapper.MapStockData))
+        {
+            logger.LogInformation("Request object: {JsonObject}", JsonConvert.SerializeObject(request));
+            var response = await apiClient.SaveStockItem(request);
+            stockMasters.Add(response);
+            logger.LogInformation("Updated StockList Items: {JsonObject}", JsonConvert.SerializeObject(response));
+        }
+
+        return stockMasters!;
     }
 
     public async Task UpdateImports()

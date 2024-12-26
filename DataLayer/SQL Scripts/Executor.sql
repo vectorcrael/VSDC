@@ -1,9 +1,7 @@
-DECLARE
-@RC int
-DECLARE
-@RefId varchar(50)
+DECLARE @RC int
+DECLARE @RefId varchar(50)
 
--- TODO: Set parameter values here.
+@RefId = 0
 
 EXECUTE @RC = [dbo].[GetZraInvoiceItem] 
    @RefId
