@@ -176,7 +176,7 @@ public static class DataMapper
             ocrnDt = import.SaleDate!.Value.ToString("yyyyMMdd"),
             totItemCnt = import.lines.Count,
             totTaxblAmt = import.lines.Sum(item => item.VatableAmount) ?? 0,
-            totTaxAmt = import.lines.Sum(item => item.TaxAmount) ?? 0,
+            totTaxAmt = import.lines.Sum(item => item.TaxAmt) ?? 0,
             totAmt = import.lines.Sum(item => item.TotalAmount) ?? 0,
             remark = "ZraImportsRec Imported from Service",
             regrNm = DeviceDetails.regrNm,
@@ -190,15 +190,15 @@ public static class DataMapper
                     itemClsCd = item.itemClsCd ?? "0",
                     itemNm = item.ItemDesc ?? "",
                     pkgUnitCd = item.PackagingUnitCode ?? "",
-                    pkg = item.Quantity,
+                    pkg = item.Quantity ?? 0,
                     qtyUnitCd = item.QuantityUnitCode ?? "",
-                    qty = item.Quantity,
+                    qty = item.Quantity ?? 0,
                     prc = item.UnitPrice!.Value,
                     splyAmt = item.UnitPrice!.Value,
                     totDcAmt = item.DiscountAmount!.Value,
                     taxblAmt = item.VatableAmount!.Value,
                     vatCatCd = item.vatCatCd!,
-                    taxAmt = item.TaxAmount!.Value,
+                    taxAmt = item.TaxAmt!.Value,
                     totAmt = item.TotalAmount!.Value
                 })
                 .ToList()
@@ -720,7 +720,7 @@ public static class DataMapper
             var stockList = import.lines!.Select(item => new StockItem
             {
                 itemCode = item.itemCd ?? "0.00", 
-                quantity = (item.imptItemSttsCd ?? 0)
+                quantity = item.rsdQty ?? 0
             }).ToFrozenSet().ToList();
             stocks.AddRange(stockList);
         }
