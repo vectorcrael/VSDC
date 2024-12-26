@@ -287,7 +287,7 @@ public static class DataMapper
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            itemCd = import.ItemCode ?? "",
+            itemCd = import.ItemCode,
             itemClsCd = Convert.ToInt32(import.ItemClassificationCode),
             itemTyCd = import.ItemTypeCode ?? "",
             itemNm = import.Description ?? "",
@@ -338,44 +338,12 @@ public static class DataMapper
 
     public static SavePurchasesRequest ConvertPurchase(ZraPurchase purchase)
     {
-        var list = new List<ItemList2>();
-        foreach (var item in purchase!.Items)
-        {
-            var listItem = new ItemList2
-            {
-                itemSeq = item.ItemSequenceNumber,
-                itemCd = item.ItemCode,
-                itemClsCd = item.ItemClassificationCode,
-                itemNm = item.ItemDesc,
-                bcd = null,
-                pkgUnitCd = item.PackagingUnitCode,
-                pkg = 0,
-                qtyUnitCd = item.QuantityUnitCode,
-                qty = item.Quantity,
-                prc = Math.Round(item.UnitPrice, 4),
-                splyAmt = Math.Round(item.TotalAmount, 4),
-                dcRt = 0,
-                dcAmt = 0,
-                taxTyCd = item.vatCatCd,
-                iplCatCd = null,
-                tlCatCd = null,
-                taxblAmt = (double)item.taxblAmt,
-                vatCatCd = item.vatCatCd,
-                iplTaxblAmt = null,
-                tlTaxblAmt = null,
-                taxAmt = (double)item.taxAmt,
-                totAmt = (double)item.TotalAmount
-            };
-            list.Add(listItem);
-        }
-
         return new SavePurchasesRequest
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
             invcNo = purchase.InvoiceNumber,
             orgInvcNo =purchase.OriginalInvoiceNumber,
-            //spplrTpin = purchase.CustomerTpin ?? "9999999990",
             spplrBhfId = "000",
             spplrNm = purchase.CustomerName,
             spplrInvcNo = purchase.InvoiceNumber.ToString(),
@@ -388,16 +356,41 @@ public static class DataMapper
             pchsDt = purchase.SaleDate.ToString("yyyyMMdd") ?? DateTime.Today.ToString("yyyyMMdd"),
             cnclReqDt = "",
             cnclDt = "",
-            totItemCnt = list.Count,
-            totTaxblAmt = list.Sum(item => item.taxblAmt),
-            totTaxAmt = list.Sum(item => item.taxAmt),
-            totAmt = list.Sum(item => item.totAmt),
+            totItemCnt = purchase.Items.Count,
+            totTaxblAmt = (double)purchase.Items.Sum(item => item.taxblAmt),
+            totTaxAmt = (double)purchase.Items.Sum(item => item.taxAmt),
+            totAmt = (double)purchase.Items.Sum(item => item.TotalAmount),
             remark = "remarks",
             regrNm = purchase.IssuerName,
             regrId = purchase.IssuerId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = list
+            itemList = purchase.Items.Select(item => new ItemList2
+                {
+                    itemSeq = item.ItemSequenceNumber,
+                    itemCd = item.ItemCode,
+                    itemClsCd = item.ItemClassificationCode,
+                    itemNm = item.ItemDesc,
+                    bcd = null,
+                    pkgUnitCd = item.PackagingUnitCode,
+                    pkg = 0,
+                    qtyUnitCd = item.QuantityUnitCode,
+                    qty = item.Quantity,
+                    prc = Math.Round(item.UnitPrice, 4),
+                    splyAmt = Math.Round(item.TotalAmount, 4),
+                    dcRt = 0,
+                    dcAmt = 0,
+                    taxTyCd = item.vatCatCd,
+                    iplCatCd = null,
+                    tlCatCd = null,
+                    taxblAmt = (double)item.taxblAmt,
+                    vatCatCd = item.vatCatCd,
+                    iplTaxblAmt = null,
+                    tlTaxblAmt = null,
+                    taxAmt = (double)item.taxAmt,
+                    totAmt = (double)item.TotalAmount
+                })
+                .ToList()
         };
     }
 
