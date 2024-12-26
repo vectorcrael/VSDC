@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServicesLayer.DTOs;
-using ServicesLayer.Utilites;
+using ServicesLayer.Utilities;
 using VSDCAPI;
 
 namespace ServicesLayer.Services;

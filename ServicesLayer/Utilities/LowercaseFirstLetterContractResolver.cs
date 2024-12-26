@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Serialization;
 
-namespace ServicesLayer;
+namespace ServicesLayer.Utilities;
 
 public class LowercaseFirstLetterContractResolver : DefaultContractResolver
 {

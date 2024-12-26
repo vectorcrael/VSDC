@@ -1,10 +1,9 @@
 ﻿using System.Collections.Frozen;
-using System.Diagnostics;
 using DataLayer.Models;
 using ServicesLayer.DTOs;
 using VSDCAPI;
 
-namespace ServicesLayer.Utilites;
+namespace ServicesLayer.Utilities; 
 
 public static class DataMapper
 {
@@ -18,21 +17,13 @@ public static class DataMapper
             regrNm = DeviceDetails.regrNm,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            stockItemList = new List<StockItemList>()
-        };
-
-        if (stockList.stockItemList.Count > 0)
-        {
-            foreach (var item in stockList.stockItemList.ToFrozenSet())
-            {
-                request.stockItemList.Add(new StockItemList
+            stockItemList = stockList.stockItemList.Select(item =>
+                new StockItemList
                 {
                     itemCd = item.itemCode,
-                    rsdQty = item.quantity,
-                });
-            }
-        }
-
+                    rsdQty = item.quantity
+                }).ToFrozenSet().ToList()
+        };
         return request;
     }
 
@@ -41,8 +32,8 @@ public static class DataMapper
         return new ItemList
         {
             itemSeq = itemSeq,
-            itemCd = import.ItemCode ?? "",
-            itemClsCd = import.ItemClassificationCode ?? "",
+            itemCd = import.ItemCode,
+            itemClsCd = import.ItemClassificationCode,
             itemTyCd = import.ItemTypeCode ?? "",
             itemNm = import.OriginNationCode ?? "",
             pkgUnitCd = import.PackagingUnitCode ?? "",
@@ -65,12 +56,12 @@ public static class DataMapper
             bhfId = DeviceDetails.BhfId,
             itemCd = import.ItemClsCd ?? "",
             itemClsCd = Convert.ToInt32(import.ItemClsCd ?? "0"),
-            itemTyCd = import.ItemTyCd.ToString(),
+            itemTyCd = import.ItemTyCd!.Value.ToString(),
             itemNm = import.ItemNm ?? "",
             orgnNatCd = "ZM",
             pkgUnitCd = import.PkgUnitCd ?? "",
-            qtyUnitCd = import.QtyUnitCd ?? "",
-            vatCatCd = import.VatCatCd ?? "",
+            qtyUnitCd = import.QtyUnitCd,
+            vatCatCd = import.VatCatCd,
             iplCatCd = null,
             tlCatCd = null,
             exciseTxCatCd = null,
@@ -87,28 +78,6 @@ public static class DataMapper
 
     public static SaveStockItemRequest MapStockData(ZRASTockAdjustment import)
     {
-        var itemList = new List<ItemList>
-        {
-            new ItemList()
-            {   
-                itemSeq = import.ItemSeq,
-                itemCd = import.ItemCd ?? "0",
-                itemClsCd = import.ItemClsCd ?? "0",
-                itemNm = import.ItemNm ?? "",
-                pkgUnitCd = import.PkgUnitCd ?? "",
-                pkg = import.Pkg,
-                qtyUnitCd = import.QtyUnitCd ?? "",
-                qty = (decimal)(import.Qty ?? 0),
-                prc = Math.Round( import.Prc ?? 0, 4),
-                splyAmt = Math.Round(import.SplyAmt ?? 0, 4) ,
-                totDcAmt = import.TotDcAmt ?? 0,
-                taxblAmt = Math.Round(import.TaxblAmt ?? 0, 4) ,
-                vatCatCd = import.VatCatCd ?? "",
-                taxAmt = Math.Round(import.TaxAmt ?? 0, 4) ,
-                totAmt = Math.Round(import.TotAmt ?? 0.00, 4) 
-            }
-        };
-
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
@@ -129,7 +98,27 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = itemList
+            itemList =
+            [
+                new ItemList
+                {
+                    itemSeq = import.ItemSeq,
+                    itemCd = import.ItemCd ?? "0",
+                    itemClsCd = import.ItemClsCd ?? "0",
+                    itemNm = import.ItemNm ?? "",
+                    pkgUnitCd = import.PkgUnitCd ?? "",
+                    pkg = import.Pkg,
+                    qtyUnitCd = import.QtyUnitCd,
+                    qty = (decimal)(import.Qty ?? 0),
+                    prc = Math.Round(import.Prc ?? 0, 4),
+                    splyAmt = Math.Round(import.SplyAmt ?? 0, 4),
+                    totDcAmt = import.TotDcAmt ?? 0,
+                    taxblAmt = Math.Round(import.TaxblAmt ?? 0, 4),
+                    vatCatCd = import.VatCatCd,
+                    taxAmt = Math.Round(import.TaxAmt ?? 0, 4),
+                    totAmt = Math.Round(import.TotAmt ?? 0.00, 4)
+                }
+            ]
         };
     }
 
@@ -142,11 +131,11 @@ public static class DataMapper
             itemCd = import.ItemCode ?? "",
             itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
             itemTyCd = import.itemTyCd.ToString(),
-            itemNm = import.ItemSequenceNumber.ToString() ?? "",
+            itemNm = import.ItemSequenceNumber.ToString(),
             orgnNatCd = "ZM",
             pkgUnitCd = import.PackagingUnitCode ?? "",
             qtyUnitCd = import.QuantityUnitCode ?? "",
-            vatCatCd = import.vatCatCd ?? "",
+            vatCatCd = import.vatCatCd,
             iplCatCd = null,
             tlCatCd = null,
             exciseTxCatCd = null,
@@ -226,7 +215,7 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = import.Items.Select(item => new ItemList()
+            itemList = import.Items.Select(item => new ItemList
                 {
                     itemSeq = item.ItemSequenceNumber,
                     itemCd = item.ItemCode ?? "0",
@@ -270,15 +259,15 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = import.Items.Select(item => new ItemList()
+            itemList = import.Items.Select(item => new ItemList
                 {
                     itemSeq = item.ItemSequenceNumber,
-                    itemCd = item.ItemCode ?? "0",
-                    itemClsCd = item.ItemClassificationCode ?? "0",
-                    itemNm = item.ItemDesc ?? "",
-                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    itemCd = item.ItemCode,
+                    itemClsCd = item.ItemClassificationCode,
+                    itemNm = item.ItemDesc,
+                    pkgUnitCd = item.PackagingUnitCode,
                     pkg = item.Quantity,
-                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    qtyUnitCd = item.QuantityUnitCode,
                     qty = item.Quantity,
                     prc = (double)item.UnitPrice,
                     splyAmt = (double)item.UnitPrice,
@@ -299,7 +288,7 @@ public static class DataMapper
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
             itemCd = import.ItemCode ?? "",
-            itemClsCd = Convert.ToInt32(import.ItemClassificationCode ?? "0"),
+            itemClsCd = Convert.ToInt32(import.ItemClassificationCode),
             itemTyCd = import.ItemTypeCode ?? "",
             itemNm = import.Description ?? "",
             orgnNatCd = import.OriginNationCode ?? "",
