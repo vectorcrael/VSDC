@@ -11,7 +11,9 @@ public class ZRAImportsRec
     public string? dclNo { get; set; }
     public List<ZRAImportsRecItem> lines { get; set; } = [];
     public string? vatCatCd { get; set; }
-    public int? OriginalInvoiceNumber { get; set; }
+    public string? SupplierInvoiceNumber { get; set; }
+    public string? OriginalInvoiceNumber { get; set; }
+    public int? InvoiceNumber { get; set; }
     public string? regtycd { get; set; }
     public string? CustomerTpin { get; set; }
     public string? CustomerName { get; set; }

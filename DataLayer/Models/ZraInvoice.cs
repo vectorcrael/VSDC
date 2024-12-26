@@ -31,5 +31,5 @@ public class ZraInvoice
     public string sartycd { get; set; }
     public double taxblAmtC1 { get; set; }
     public double taxblAmtC2 { get; set; }
-    public List<ZraInvoiceItem>? Items { get; set; } = [];
+    public List<ZraInvoiceItem> Items { get; set; } = [];
 }

@@ -163,32 +163,11 @@ public static class DataMapper
     
     public static SaveStockItemRequest MapStockData(ZRAImportsRec import)
     {
-        var itemSequence = 1;
-        var itemList = import.lines.Select(item => new ItemList()
-            {
-                itemSeq = itemSequence++,
-                itemCd = item.itemCd ?? "0",
-                itemClsCd = item.itemClsCd ?? "0",
-                itemNm = item.ItemDesc ?? "",
-                pkgUnitCd = item.PackagingUnitCode ?? "",
-                pkg = item.Quantity,
-                qtyUnitCd = item.QuantityUnitCode ?? "",
-                qty = item.Quantity,
-                prc = item.UnitPrice!.Value,
-                splyAmt = item.UnitPrice!.Value,
-                totDcAmt = item.DiscountAmount!.Value,
-                taxblAmt = item.VatableAmount!.Value,
-                vatCatCd = item.vatCatCd!,
-                taxAmt = item.TaxAmount!.Value,
-                totAmt = item.TotalAmount!.Value
-            })
-            .ToList();
-
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            orgSarNo = import.OriginalInvoiceNumber!.Value,
+            orgSarNo = import.InvoiceNumber!.Value,
             regTyCd = import.regtycd ?? "M",
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
             custNm = import.CustomerName ?? "",
@@ -204,36 +183,29 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = itemList
-        };
-    }
-    public static SaveStockItemRequest MapStockData(ZraInvoice import)
-    {
-        var itemList = new List<ItemList>();
-        foreach (var item in import.Items)
-        {
-            itemList.Add(
-                new ItemList()
+            itemList = import.lines.Select(item => new ItemList()
                 {
-                    itemSeq = item.ItemSequenceNumber,
-                    itemCd = item.ItemCode ?? "0",
-                    itemClsCd = item.ItemClassificationCode ?? "0",
+                    itemSeq = import.lines.IndexOf(item)+1,
+                    itemCd = item.itemCd ?? "0",
+                    itemClsCd = item.itemClsCd ?? "0",
                     itemNm = item.ItemDesc ?? "",
                     pkgUnitCd = item.PackagingUnitCode ?? "",
                     pkg = item.Quantity,
                     qtyUnitCd = item.QuantityUnitCode ?? "",
                     qty = item.Quantity,
-                    prc = (double)item.UnitPrice,
-                    splyAmt = (double)item.UnitPrice,
-                    totDcAmt = (double)item.DiscountAmount,
-                    taxblAmt = (double)item.VatableAmount,
-                    vatCatCd = item.vatCatCd,
-                    taxAmt = (double)item.TaxAmount,
-                    totAmt = (double)item.TotalAmount
-                }
-            );
-        }
-
+                    prc = item.UnitPrice!.Value,
+                    splyAmt = item.UnitPrice!.Value,
+                    totDcAmt = item.DiscountAmount!.Value,
+                    taxblAmt = item.VatableAmount!.Value,
+                    vatCatCd = item.vatCatCd!,
+                    taxAmt = item.TaxAmount!.Value,
+                    totAmt = item.TotalAmount!.Value
+                })
+                .ToList()
+        };
+    }
+    public static SaveStockItemRequest MapStockData(ZraInvoice import)
+    {
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
@@ -254,17 +226,7 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = itemList
-        };
-    }
-
-    public static SaveStockItemRequest MapStockData(ZraPurchase import)
-    {
-        var itemList = new List<ItemList>();
-        foreach (var item in import!.Items)
-        {
-            itemList.Add(
-                new ItemList()
+            itemList = import.Items.Select(item => new ItemList()
                 {
                     itemSeq = item.ItemSequenceNumber,
                     itemCd = item.ItemCode ?? "0",
@@ -277,19 +239,21 @@ public static class DataMapper
                     prc = (double)item.UnitPrice,
                     splyAmt = (double)item.UnitPrice,
                     totDcAmt = (double)item.DiscountAmount,
-                    taxblAmt = (double)item.taxblAmt,
+                    taxblAmt = (double)item.VatableAmount,
                     vatCatCd = item.vatCatCd,
-                    taxAmt = (double)item.taxAmt,
+                    taxAmt = (double)item.TaxAmount,
                     totAmt = (double)item.TotalAmount
-                }
-            );
-        }
+                })
+                .ToList()
+        };
+    }
 
+    public static SaveStockItemRequest MapStockData(ZraPurchase import)
+    {
         return new SaveStockItemRequest
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            //sarNo = Convert.ToInt32(import.SupplierInvoiceNumber),
             orgSarNo = Convert.ToInt32(import.OriginalInvoiceNumber),
             regTyCd = import.regTyCd,
             custTpin = string.IsNullOrWhiteSpace(import.CustomerTpin) ? null : import.CustomerTpin,
@@ -306,7 +270,25 @@ public static class DataMapper
             regrId = DeviceDetails.regrId,
             modrNm = DeviceDetails.modrNm,
             modrId = DeviceDetails.modrId,
-            itemList = itemList
+            itemList = import.Items.Select(item => new ItemList()
+                {
+                    itemSeq = item.ItemSequenceNumber,
+                    itemCd = item.ItemCode ?? "0",
+                    itemClsCd = item.ItemClassificationCode ?? "0",
+                    itemNm = item.ItemDesc ?? "",
+                    pkgUnitCd = item.PackagingUnitCode ?? "",
+                    pkg = item.Quantity,
+                    qtyUnitCd = item.QuantityUnitCode ?? "",
+                    qty = item.Quantity,
+                    prc = (double)item.UnitPrice,
+                    splyAmt = (double)item.UnitPrice,
+                    totDcAmt = (double)item.DiscountAmount,
+                    taxblAmt = (double)item.taxblAmt,
+                    vatCatCd = item.vatCatCd,
+                    taxAmt = (double)item.taxAmt,
+                    totAmt = (double)item.TotalAmount
+                })
+                .ToList()
         };
     }
 
