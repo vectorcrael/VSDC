@@ -9,8 +9,6 @@ public class ZRAImportsRec
     public string? dclDe { get; set; }
     public string? hsCd { get; set; }
     public string? dclNo { get; set; }
-    public List<ZRAImportsRecItem> lines { get; set; } = [];
-    public string? vatCatCd { get; set; }
     public string? SupplierInvoiceNumber { get; set; }
     public string? OriginalInvoiceNumber { get; set; }
     public int? InvoiceNumber { get; set; }
@@ -20,6 +18,7 @@ public class ZRAImportsRec
     public string? BranchId { get; set; }
     public string? sartycd { get; set; }
     public DateTime? SaleDate { get; set; }
+    public List<ZRAImportsRecItem> lines { get; set; } = [];
 }
 
 [Keyless]
