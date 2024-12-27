@@ -37,7 +37,7 @@ public class ItemList2
     public string itemCd { get; set; }
     public string itemClsCd { get; set; }
     public string itemNm { get; set; }
-    public object bcd { get; set; }
+    public string? bcd { get; set; }
     public string pkgUnitCd { get; set; }
     public int pkg { get; set; }
     public string qtyUnitCd { get; set; }
@@ -47,12 +47,12 @@ public class ItemList2
     public int dcRt { get; set; }
     public int dcAmt { get; set; }
     public string taxTyCd { get; set; }
-    public string iplCatCd { get; set; }
-    public string tlCatCd { get; set; }
+    public string? iplCatCd { get; set; }
+    public string? tlCatCd { get; set; }
     public double taxblAmt { get; set; }
     public string vatCatCd { get; set; }
-    public string iplTaxblAmt { get; set; }
-    public string tlTaxblAmt { get; set; }
+    public string? iplTaxblAmt { get; set; }
+    public string? tlTaxblAmt { get; set; }
     public double taxAmt { get; set; }
     public double totAmt { get; set; }
 }

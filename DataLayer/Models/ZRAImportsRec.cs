@@ -31,16 +31,16 @@ public class ZRAImportsRecItem
     public string? PackagingUnitCode { get; set; }
     public decimal? Quantity { get; set; }
     public string? QuantityUnitCode { get; set; }
-    public double? UnitPrice { get; set; }
-    public double? DiscountAmount { get; set; }
-    public double? VatableAmount { get; set; }
+    public decimal? UnitPrice { get; set; }
+    public decimal? DiscountAmount { get; set; }
+    public decimal? VatableAmount { get; set; }
     public string? vatCatCd { get; set; }
     public string? TaxLabel { get; set; }
-    public double? TaxAmt { get; set; }
-    public double? TaxblAmt { get; set; }
-    public double? TotalAmount { get; set; }
+    public decimal? TaxAmt { get; set; }
+    public decimal? TaxblAmt { get; set; }
+    public decimal? TotalAmount { get; set; }
     public int? isTaxInclusive { get; set; }
     public int? itemTyCd { get; set; }
     public string? sartycd { get; set; }
-    public double? rsdQty { get; set; }
+    public decimal? rsdQty { get; set; }
 }

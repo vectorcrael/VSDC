@@ -164,9 +164,9 @@ public static class DataMapper
             sarTyCd = import.sartycd ?? "",
             ocrnDt = import.SaleDate!.Value.ToString("yyyyMMdd"),
             totItemCnt = import.lines.Count,
-            totTaxblAmt = import.lines.Sum(item => item.VatableAmount) ?? 0,
-            totTaxAmt = import.lines.Sum(item => item.TaxAmt) ?? 0,
-            totAmt = import.lines.Sum(item => item.TotalAmount) ?? 0,
+            totTaxblAmt = (double) (import.lines.Sum(item => item.VatableAmount) ?? 0),
+            totTaxAmt =(double) (import.lines.Sum(item => item.TaxAmt) ?? 0),
+            totAmt =(double) (import.lines.Sum(item => item.TotalAmount) ?? 0),
             remark = "ZraImportsRec Imported from Service",
             regrNm = DeviceDetails.regrNm,
             regrId = DeviceDetails.regrId,
@@ -182,13 +182,13 @@ public static class DataMapper
                     pkg = item.Quantity!.Value,
                     qtyUnitCd = item.QuantityUnitCode ?? "",
                     qty = item.Quantity!.Value,
-                    prc = item.UnitPrice!.Value,
-                    splyAmt = item.UnitPrice!.Value,
-                    totDcAmt = item.DiscountAmount!.Value,
-                    taxblAmt = item.VatableAmount!.Value,
+                    prc = (double)item.UnitPrice!.Value,
+                    splyAmt = (double)item.UnitPrice!.Value,
+                    totDcAmt = (double)item.DiscountAmount!.Value,
+                    taxblAmt = (double)item.VatableAmount!.Value,
                     vatCatCd = item.vatCatCd!,
-                    taxAmt = item.TaxAmt!.Value,
-                    totAmt = item.TotalAmount!.Value
+                    taxAmt = (double)item.TaxAmt!.Value,
+                    totAmt = (double)item.TotalAmount!.Value
                 })
                 .ToList()
         };
@@ -352,8 +352,8 @@ public static class DataMapper
             rcptTyCd = purchase.ReceiptTypeCode,
             pmtTyCd = purchase.PaymentTypeCode,
             pchsSttsCd = "02",
-            cfmDt = purchase.SaleDate.ToString("yyyyMMddHHmmss") ?? DateTime.Now.ToString("yyyyMMddHHmmss"),
-            pchsDt = purchase.SaleDate.ToString("yyyyMMdd") ?? DateTime.Today.ToString("yyyyMMdd"),
+            cfmDt = purchase.SaleDate.ToString("yyyyMMddHHmmss"),
+            pchsDt = purchase.SaleDate.ToString("yyyyMMdd"),
             cnclReqDt = "",
             cnclDt = "",
             totItemCnt = purchase.Items.Count,
@@ -412,7 +412,7 @@ public static class DataMapper
             modrId = DeviceDetails.modrId,
             modrNm = DeviceDetails.modrNm,
             orgSdcId = "SDC0010001160", 
-            orgInvcNo = (int)zraInvoice.OriginalInvoiceNumber,
+            orgInvcNo = zraInvoice.OriginalInvoiceNumber!.Value,
             cisInvcNo = zraInvoice.InvoiceNumber,
             custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, 
             custNm = zraInvoice.CustomerName,
@@ -454,10 +454,9 @@ public static class DataMapper
             vatTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
             totTaxblAmt = (double)zraInvoice.Items.Sum(item => item.VatableAmount),
             totItemCnt = zraInvoice.Items.Count,
-            totTaxAmt = (double)zraInvoice.Items.Sum(item => item.TaxAmount)
+            totTaxAmt = (double)zraInvoice.Items.Sum(item => item.TaxAmount),
+            itemList = []
         };
-
-        invoice.itemList = new List<ItemList3>();
 
         foreach (var item in zraInvoice.Items)
             invoice.itemList.Add(new ItemList3
@@ -526,9 +525,9 @@ public static class DataMapper
             sftyQty = 0,
             isrcAplcbYn = null,
             useYn = null,
-            regrNm = null,
-            modrNm = null,
-            modrId = null
+            regrNm = DeviceDetails.regrNm,
+            modrNm = DeviceDetails.modrNm,
+            modrId = DeviceDetails.modrId
         };
     }
 
@@ -702,7 +701,7 @@ public static class DataMapper
             var stockList = import.lines!.Select(item => new StockItem
             {
                 itemCode = item.itemCd ?? "0.00", 
-                quantity = item.rsdQty ?? 0
+                quantity = (double)(item.rsdQty ?? 0)
             }).ToFrozenSet().ToList();
             stocks.AddRange(stockList);
         }
