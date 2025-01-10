@@ -342,7 +342,7 @@ public class FiscalService(
             if (response!.ResultCd == "000")
             {
                 var dbUpdate =
-                    await dataService.UpdatePurchaseAsync(request.invcNo, response.ResultMsg, response.ResultDt);
+                    await dataService.UpdatePurchaseAsync(purchase.InvoiceNumber, response.ResultMsg, response.ResultDt);
                 logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
 
                 var dbInvUpdate =
