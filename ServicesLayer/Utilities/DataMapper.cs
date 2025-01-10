@@ -342,11 +342,11 @@ public static class DataMapper
         {
             tpin = DeviceDetails.Tpin,
             bhfId = DeviceDetails.BhfId,
-            invcNo = purchase.InvoiceNumber,
+            invcNo = Convert.ToInt32(purchase.SupplierInvoiceNumber),
             orgInvcNo =purchase.OriginalInvoiceNumber,
             spplrBhfId = "000",
             spplrNm = purchase.CustomerName,
-            spplrInvcNo = purchase.SupplierInvoiceNumber,
+            spplrInvcNo = purchase.InvoiceNumber.ToString(),
             regTyCd = purchase.regTyCd,
             pchsTyCd = "N",
             rcptTyCd = purchase.ReceiptTypeCode,
