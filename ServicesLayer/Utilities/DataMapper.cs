@@ -346,7 +346,7 @@ public static class DataMapper
             orgInvcNo =purchase.OriginalInvoiceNumber,
             spplrBhfId = "000",
             spplrNm = purchase.CustomerName,
-            spplrInvcNo = purchase.InvoiceNumber.ToString(),
+            spplrInvcNo = purchase.SupplierInvoiceNumber,
             regTyCd = purchase.regTyCd,
             pchsTyCd = "N",
             rcptTyCd = purchase.ReceiptTypeCode,
