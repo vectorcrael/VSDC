@@ -4,7 +4,8 @@ public class SavePurchasesRequest
 {
     public string tpin { get; set; }
     public string bhfId { get; set; }
-    public int invcNo { get; set; }
+    public int? invcNo { get; set; }
+    public int? cisInvcNo { get; set; }
     public int orgInvcNo { get; set; }
     public string spplrTpin { get; set; }
     public string spplrBhfId { get; set; }

@@ -1,4 +1,6 @@
-﻿using DataLayer.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using DataLayer.Data;
 using DataLayer.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -255,11 +257,22 @@ public class DataService(AppDbContext context) : IDataService
 
     public async Task<int> UpdatePurchaseAsync(int invcNo, string message, string resultDt)
     {
+         //yyyy-MM-dd HH:mm:ss[.nnnnnnn]  20250318233257
+        var dateString = "";
+        string format = "yyyyMMddHHmmss";
+        DateTime dateTime;
+
+        if (DateTime.TryParseExact(resultDt, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+        {
+            // Successfully parsed
+            dateString = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
         var parameters = new[]
         {
             new SqlParameter("@invcNo", invcNo),
             new SqlParameter("@message", message),
-            new SqlParameter("@resultDt", resultDt)
+            new SqlParameter("@resultDt", dateString)
         };
 
         return await context.Database.ExecuteSqlRawAsync(

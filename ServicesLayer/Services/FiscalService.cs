@@ -345,8 +345,10 @@ public class FiscalService(
                     await dataService.UpdatePurchaseAsync(purchase.InvoiceNumber, response.ResultMsg, response.ResultDt);
                 logger.LogInformation("Purchase Saved: {JsonObject}", JsonConvert.SerializeObject(dbUpdate));
 
+                var requestNo = request.cisInvcNo.HasValue ? request.cisInvcNo.Value : request.invcNo ?? 0;
+
                 var dbInvUpdate =
-                    await dataService.AddPurchasFiscalInfoAsync(request.invcNo, Convert.ToInt32(purchase.Id));
+                    await dataService.AddPurchasFiscalInfoAsync(requestNo , Convert.ToInt32(purchase.Id));
                 logger.LogInformation("Purchase Update: {JsonObject}", JsonConvert.SerializeObject(dbInvUpdate));
 
             }
