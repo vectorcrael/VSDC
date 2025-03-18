@@ -7,7 +7,7 @@ namespace VSDCAPI;
 
 public class VSDCAPIApiClient : IVSDCAPIApiClient
 {
-    private readonly string _currentUrl = "localhost:8080/zrasandboxvsdc";
+    private readonly string _currentUrl = "localhost:8080/zraprodvsdc";
     private readonly HttpClient _httpClient;
     private readonly ILogger<VSDCAPIApiClient> _logger;
 

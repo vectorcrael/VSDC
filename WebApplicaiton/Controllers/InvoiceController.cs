@@ -28,7 +28,7 @@ public class InvoiceController(IDataService fiscalInfoService) : ControllerBase
     }
 
     [HttpGet("invoice-items/{refId}")]
-    public async Task<IActionResult> GetInvoiceItems(string refId)
+    public async Task<IActionResult> GetInvoiceItems(int refId)
     {
         var items = await fiscalInfoService.GetInvoiceItemsAsync(refId);
         return Ok(items);

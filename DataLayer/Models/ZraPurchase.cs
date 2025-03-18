@@ -6,7 +6,7 @@ namespace DataLayer.Models;
 public class ZraPurchase
 {
     public int Origin { get; set; }
-    public string orgnNatCd { get; set; }
+    public string? orgnNatCd { get; set; }
     public string Id { get; set; }
     public int InvoiceNumber { get; set; }
     public string SupplierInvoiceNumber { get; set; }

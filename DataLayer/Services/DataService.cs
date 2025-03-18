@@ -34,7 +34,7 @@ public class DataService(AppDbContext context) : IDataService
         return invoices;
     }
 
-    public async Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(string refId)
+    public async Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(int refId)
     {
         return await context.ZraInvoiceItems
             .FromSqlRaw("EXEC GetZraInvoiceItem @RefId={0}", refId)
@@ -282,7 +282,7 @@ public class DataService(AppDbContext context) : IDataService
 
         foreach (var import in imports)
         {
-            var dbItems = await GetImportItemsAsync(import.dclNo);
+            var dbItems = await GetImportItemsAsync(import.taskCd);
             if (dbItems.Count > 0)
                 import.lines = dbItems.ToList();
         }

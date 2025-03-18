@@ -7,7 +7,7 @@ public interface IDataService
     Task<List<FiscalInfo>> GetAllFiscalInfosAsync();
     Task AddFiscalInfoAsync(FiscalInfo fiscalInfo);
     Task<List<ZraInvoice>> GetZraInvoicesAsync();
-    Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(string refId);
+    Task<List<ZraInvoiceItem>> GetInvoiceItemsAsync(int refId);
     Task<List<PurchaseInfo>> GetAllPurchasesAsync();
     Task<List<ZraPurchaseItem>> GetPurchaseItemsAsync(string refId);
     Task<int> UpdateFiscalDetailsAsync(FiscalDetails fiscalDetails);
