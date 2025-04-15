@@ -15,10 +15,10 @@ public class SaveSalesRequest
     public string salesSttsCd { get; set; }
     public string cfmDt { get; set; }
     public string salesDt { get; set; }
-    public object stockRlsDt { get; set; } = null;
-    public object cnclReqDt { get; set; } = null;
-    public object cnclDt { get; set; } = null;
-    public object rfdDt { get; set; } = null;
+//    public object stockRlsDt { get; set; } = null;
+  //  public object cnclReqDt { get; set; } = null;
+    //public object cnclDt { get; set; } = null;
+    //public object rfdDt { get; set; } = null;
     public object rfdRsnCd { get; set; }
     public int totItemCnt { get; set; }
 
@@ -73,7 +73,7 @@ public class SaveSalesRequest
     public double vatTaxblAmt { get; set; } = 0;
     public double totAmt { get; set; } = 0;
     public string prchrAcptcYn { get; set; }
-    public string remark { get; set; } = null;
+    //public string remark { get; set; } = null;
     public string regrId { get; set; } = "admin";
     public string regrNm { get; set; }
     public string modrId { get; set; }

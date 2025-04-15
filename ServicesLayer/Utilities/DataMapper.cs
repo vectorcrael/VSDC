@@ -411,7 +411,7 @@ public static class DataMapper
             regrNm = DeviceDetails.regrNm,
             modrId = DeviceDetails.modrId,
             modrNm = DeviceDetails.modrNm,
-            orgSdcId = "SDC0010001160", 
+            orgSdcId = "SDC0010022568", 
             orgInvcNo = zraInvoice.OriginalInvoiceNumber!.Value,
             cisInvcNo = zraInvoice.InvoiceNumber,
             custTpin = string.IsNullOrWhiteSpace(custPin) ? null : custPin, 
@@ -447,7 +447,7 @@ public static class DataMapper
             taxAmtC3 = zraInvoice.Items.Where(item => item.vatCatCd == "C3").Sum(item => item.TaxAmount),
             taxAmtD = zraInvoice.Items.Where(item => item.vatCatCd == "D").Sum(item => item.TaxAmount),
             taxAmtE = zraInvoice.Items.Where(item => item.vatCatCd == "E").Sum(item => item.TaxAmount),
-            taxAmtF = zraInvoice.Items.Where(item => item.vatCatCd == "F").Sum(item => item.TaxAmount),
+            taxAmtF =zraInvoice.Items.Where(item => item.vatCatCd == "F").Sum(item => item.TaxAmount),
             taxblAmtTot = 0, 
             taxAmtTot = 0, 
             totAmt = (double)zraInvoice.Items.Sum(item => item.TotalAmount),
@@ -641,9 +641,9 @@ public static class DataMapper
 
     public static class DeviceDetails
     {
-        public static string Tpin { get; set; } = "1002546945";
+        public static string Tpin { get; } = "1012443282";
         public static string BhfId { get; set; } = "000";
-        public static string DvcSrlNo { get; set; } = "CHC-EVO";
+        public static string DvcSrlNo { get; set; } = "1012443282_VSDC";
         public static string LastReqDt { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");
         public static string regrNm { get; set; } = "ADMIN";
         public static string regrId { get; set; } = "ADMIN";
