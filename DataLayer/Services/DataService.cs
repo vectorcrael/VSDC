@@ -282,7 +282,7 @@ public class DataService(AppDbContext context) : IDataService
 
         foreach (var import in imports)
         {
-            var dbItems = await GetImportItemsAsync(import.dclNo);
+            var dbItems = await GetImportItemsAsync(import.taskCd);
             if (dbItems.Count > 0)
                 import.lines = dbItems.ToList();
         }

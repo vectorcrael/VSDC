@@ -18,9 +18,9 @@ public class ZraInvoiceItem
     public decimal UnitPrice { get; set; } // Price per unit
     public decimal TotalAmount { get; set; } // Total amount for the item
     public int IsTaxInclusive { get; set; } // Indicates if tax is included in the price
-    public decimal RRP { get; set; } // Recommended retail price
-    public double fQuantityLineTaxAmount { get; set; }
-    public double fQuantityLineTotExcl { get; set; }
+    //public decimal RRP { get; set; } // Recommended retail price
+    //public double fQuantityLineTaxAmount { get; set; }
+    //public double fQuantityLineTotExcl { get; set; }
     public decimal VatableAmount { get; set; }
     public decimal TaxAmount { get; set; }
     public string vatCatCd { get; set; }
